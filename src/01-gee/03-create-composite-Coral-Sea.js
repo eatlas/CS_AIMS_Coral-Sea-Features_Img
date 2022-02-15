@@ -97,7 +97,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200822T004711_20200822T004712_T55LBK",
     "COPERNICUS/S2/20210802T004709_20210802T004707_T55LBK"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
   
 // ======== Ashmore Reef (Coral Sea) - Far North =========
@@ -110,7 +110,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160823T004902_20160823T004856_T54LZP",
     "COPERNICUS/S2/20210603T004709_20210603T004707_T54LZP"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // OK images
 s2Utils.s2_composite_display_and_export(
