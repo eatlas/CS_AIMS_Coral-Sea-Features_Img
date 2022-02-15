@@ -1,0 +1,11 @@
+*.tif
+*.vrt
+*.png
+*.jpg
+pearl-only
+big-files/*
+!big-files/README.md
+unprocessed-data/*
+!unprocessed-data/README.md
+data/**/*.png
+data/*/*.jpg
