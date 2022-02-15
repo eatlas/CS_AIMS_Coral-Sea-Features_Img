@@ -38,8 +38,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Imagery:src/0
 var REF1_OPTIONS = {
   colourGrades: ['DeepFalse','TrueColour','ReefTop','Shallow','Slope'],
   exportScale: [10, 10, 10, 10, 30],
-  exportBasename: 'CS_AIMS_Marine-features_imagery_S2_R1',
-  exportFolder: 'EarthEngine/CS_AIMS_Marine-features_imagery/Coral-Sea',
+  exportBasename: 'CS_AIMS_Coral-Sea-Features_Imagery_S2_R1',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Imagery/Coral-Sea',
   
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
@@ -51,8 +51,8 @@ var REF1_OPTIONS = {
 // in the imagery are artefacts (from clouds) or real features.
 var REF2_OPTIONS = {
   colourGrades: ['DeepFalse','TrueColour','Slope'],
-  exportBasename: 'CS_AIMS_Marine-features_imagery_S2_R2',
-  exportFolder: 'EarthEngine/CS_AIMS_Marine-features_imagery/Coral-Sea',
+  exportBasename: 'CS_AIMS_Coral-Sea-Features_Imagery_S2_R2',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Imagery/Coral-Sea',
   exportScale: [10, 10, 30],
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
@@ -97,7 +97,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200822T004711_20200822T004712_T55LBK",
     "COPERNICUS/S2/20210802T004709_20210802T004707_T55LBK"
   ],
-  false, true, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
 
   
 // ======== Ashmore Reef (Coral Sea) - Far North =========
