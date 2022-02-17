@@ -11,8 +11,8 @@ var s2Utils = require('users/ericlawrey/World_AIMS_Marine-satellite-imagery:src/
 var OPEN_WATER_OPTIONS = {
   colourGrades: ['DeepFalse'],
   exportScale: [10],
-  exportBasename: 'World_AIMS_Marine-satellite-imagery_S2_R1',
-  exportFolder: 'EarthEngine/World_AIMS_Marine-satellite-imagery/Event-images',
+  exportBasename: 'CS_AIMS_Coral-Sea-Features_S2_R1',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features/Coral-Sea-Open-Water',
   
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
@@ -20,7 +20,7 @@ var OPEN_WATER_OPTIONS = {
 
 // (Central) Coral Sea
 // CLOUDY_PIXEL_PERCENTAGE = 0.1
-// 7 of 20 images
+// 20 of 20 images
 s2Utils.s2_composite_display_and_export(
   [
   
