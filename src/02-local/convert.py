@@ -9,22 +9,7 @@
 # Script environment - Windows
 # To run this Python script you will need GDAL installed. 
 
-# On Windows this can be done using OSGeo4W or Anaconda 
-# 1. Download and install Anaconda from (https://www.anaconda.com/products/individual). 
-# 2. Start the Anaconda Navigator / CMD.exe 
-# 3. Run conda install -c conda-forge gdal
-# 4. Test that GDAL installed OK by running: gdalinfo --version
-#    You should get something like: GDAL 3.0.2, released 2019/10/28
-# 5. cd <directory to this script (convert.py)>
-# 6. python convert.py
-# 
-# OSGeo4W
-# 1. Download and install OSGeo4W making sure GDAL gets installed (https://www.osgeo.org/projects/osgeo4w/)
-# 2. Start the OSGeo4W cmd window. The default path for this is C:\OSGeo4W64\OSGeo4W.bat
-# 3. Test that GDAL installed OK by running: gdalinfo --version
-#    You should get something like: GDAL 3.4.1, released 2021/12/27
-# 4. cd <directory to this script (convert.py)>
-# 5. python convert.py
+
 
 import os
 import subprocess
@@ -45,13 +30,13 @@ import glob
 #       - *.tif
 #     - Global
 #       - *.tif
-# data
+# bigfiles/data
 #     - CoralSea
 #       - S2_R1_DeepFalse
 #         - *.tif
 #       ...
 SRC_PATH = '../../unprocessed-data'
-OUT_PATH = '../../big-data/data'
+OUT_PATH = '../../big-files/data'
 
 
 if not os.path.exists(OUT_PATH):
