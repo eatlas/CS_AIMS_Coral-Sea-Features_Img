@@ -48,14 +48,14 @@ This collection contains composite imagery for 31 Sentinel 2 tiles in the Coral 
 For each tile there are 5 different colour and contrast enhancement styles intended 
 to highlight different features.
 
-![Preview map of this dataset](./media/CS_AIMS_Coral-Sea-Features_Imagery_preview-map.jpg)
+![Preview map of this dataset](./media/CS_AIMS_Coral-Sea-Features_Img_preview-map.jpg)
 A preview of the dataset and the image styles. 
 
 ## Folders
 `big-files`: This contains all large files in this dataset including all the final satellite
 imagery and GIS file to make preview maps. These files are not stored in the repository
 as GitHub and particularly Google Earth Engine impose limitations on repository storage.
-These files are available for [download and browsing](https://nextcloud.eatlas.org.au/apps/sharealias/a/cs-aims-coral-sea-features-imagery).
+These files are available for [download and browsing](https://nextcloud.eatlas.org.au/apps/sharealias/a/cs-aims-coral-sea-features-img).
 
 `media`: This contains preview images. These images are kept small to allow this repository
 to be uploaded to Google Earth Engine, which only supports small files.
@@ -122,17 +122,17 @@ If you want to entended the code in this repository it is probably better to
 clone the entire repository into GEE. To do this:
 
 1. Create an empty repository in GEE using `Scripts\NEW\Repository`. Name the 
-repository `CS_AIMS_Coral-Sea-Features_Imagery`. Technically the names don't need
+repository `CS_AIMS_Coral-Sea-Features_Img`. Technically the names don't need
 to match but it could get confusing if the names don't match.
 
 2. On you local machine clone the repository from GitHub. 
 ```
-git clone https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Imagery.git
+git clone https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Img.git
 ```
 
 3. Change into the newly downloaded empty repository, cloned from GEE. 
 ```
-cd CS_AIMS_Coral-Sea-Features_Imagery
+cd CS_AIMS_Coral-Sea-Features_Img
 ```
 
 4. Switch the push origin to the GEE repository. Find the path to your empty
@@ -140,12 +140,12 @@ GEE repository by hovering over the new repository and select the `Configure`
 button (it looks like a small cog). 
 This will show the command to clone the new repository to your local machine. For
 ```
-git clone https://earthengine.googlesource.com/users/<username>/CS_AIMS_Coral-Sea-Features_Imagery
+git clone https://earthengine.googlesource.com/users/<username>/CS_AIMS_Coral-Sea-Features_Img
 ```
 We are interesting in the path to the repository. Add this as the push
 origin.
 ```
-git remote set-url origin https://earthengine.googlesource.com/users/<username>/CS_AIMS_Coral-Sea-Features_Imagery
+git remote set-url origin https://earthengine.googlesource.com/users/<username>/CS_AIMS_Coral-Sea-Features_Img
 ```
 5. Push the repository up to GEE.
 ```
@@ -158,7 +158,7 @@ on GEE you will need to perform a `git pull`.
 ### Pushing code back to GitHub
 If you have write access you can push code back to GitHub instead of GEE using:
 ```
-git push https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Imagery.git
+git push https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Img.git
 ```
 
 
@@ -166,7 +166,7 @@ git push https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Imagery.git
 ## Common Issues with using the code
 
 ### Error in Google Earth Engine: Cannot find required repo: users/ericlawrey/CS_AIMS_Sentinel2-marine_V0:utils
-If you make a copy of the code in your own repository then you need to update the path to the `s2Utils` script to point at your local copy. The `users/ericlawrey/CS_AIMS_Coral-Sea-Features_Imagery:s2Utils` is not public, thus can't be referenced from a copy. To fix this update the username and repository name to match your copy. 
+If you make a copy of the code in your own repository then you need to update the path to the `s2Utils` script to point at your local copy. The `users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:s2Utils` is not public, thus can't be referenced from a copy. To fix this update the username and repository name to match your copy. 
 
 ### Does the `users/ericlawrey/World_ESA_Sentinel-2-tiling-grid` path need updating
 This dataset is made public on the Google Earth Engine to allow it to be easily reused in the code and so its path does not need updating. You can find details of this dataset [here](https://code.earthengine.google.com/?asset=users/ericlawrey/World_ESA_Sentinel-2-tiling-grid)
