@@ -35,10 +35,14 @@ installation to ensure all the paths are setup.
  
 Run this script from an OSGeo4W command window to ensure all the paths are correct.
 The default path for this is in C:\OSGeo4W64\OSGeo4W.bat but may also be C:\OSGeo4W\OSGeo4W.bat.
-In that command line window cd to the location of this script then run:
+In that command line window `cd` to the location of this script then run:
+```
 python convert.py
+```
 
 # Potential issues
 I installed OSGeo4W, ran python convert.py. It started up then gave the error 
 `gdal_translate.exe - System Error`
 `The code execution cannot proceed because gdal303.dll was not found. Reinstalling the program may fix this problem`.
+This problem seemed to be a bad version of OSGeo4W. Reinstalling from the previous
+version fixed this issue.

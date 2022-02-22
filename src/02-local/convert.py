@@ -38,6 +38,9 @@ import glob
 SRC_PATH = '../../unprocessed-data'
 OUT_PATH = '../../big-files/data'
 
+OUT_RAW = 'raw' # Lossless original data (with minor fix ups)
+OUT_PUBLIC = 'out'	# Compressed version of the data suitable for sharing 
+
 
 if not os.path.exists(OUT_PATH):
 	os.mkdir(OUT_PATH)
@@ -53,6 +56,19 @@ styles = [
 	'S2_R1_TrueColour', 'S2_R2_TrueColour','L8_R1_TrueColour', 'L8_R2_TrueColour',
 	'S2_R1_Slope', 'S2_R2_Slope','L8_R1_Slope', 'L8_R2_Slope'
 	]
+	
+	
+JPG = 'gdal_translate -mask 1 -co TILED=YES -co JPEG_QUALITY=96 -co COMPRESS=JPEG -co PHOTOMETRIC=YCBCR --config GDAL_TIFF_INTERNAL_MASK YES '
+LZW = 'gdal_translate -co "COMPRESS=LZW" -co "TILED=YES" -a_nodata 0 '
+processing = [
+	JPG, JPG, JPG, JPG,	# DeepMarine
+	JPG, JPG, JPG, JPG,	# DeepFalse
+	LZW, LZW, LZW, LZW,	# ReefTop
+	JPG, JPG, JPG, JPG,	# Shallow
+	JPG, JPG, JPG, JPG,	# TrueColour
+	LZW, LZW, LZW, LZW	# Slope
+	]
+	
 
 # Iterate through the regions in the SRC_PATH
 # Use slash on the end to only pick up directories.
@@ -71,14 +87,14 @@ for srcRegionDir in srcRegionDirs:
 	# Make sure we are dealing with a directory containing images. If not
 	# then there is a director in the SRC_PATH not corresponding to the
 	# expected structure.
-	if not (os.path.isdir(srcRegionDir) and (len(glob.glob(os.path.join(srcRegionDir,"*.tif"))) > 0)):
+	if not (os.path.isdir(srcRegionDir) and (len(glob.glob(os.path.join(srcRegionDir,"**/*.tif"))) > 0)):
 		print('Skipping region '+srcRegionDir)
 		continue
 
 	# Search through all the files to be processed, downloaded from Google Earth Engine
 	# We don't permanently retain these files because they are large. We should therefore
 	# consider the files in the SRC_PATH to be a temporary holding area.
-	srcFiles = glob.glob(os.path.join(srcRegionDir,"*.tif"))
+	srcFiles = glob.glob(os.path.join(srcRegionDir,"**/*.tif"))
 
 	fileCount = 1
 	numFiles = len(srcFiles)
@@ -97,15 +113,23 @@ for srcRegionDir in srcRegionDirs:
 		# Extract this to put each image style in a different directory.
 		# Assume that the naming convention is as in the example.
 		imgStyle = 'Unknown'
+		styleIndex = 1
 		for style in styles:
 			if(style in fileName):
 				imgStyle = style
+				break
+			styleIndex = styleIndex + 1		# Keep track so we can determine the appropriate 
+											# processing
 		if imgStyle == 'Unknown':
 			raise AssertionError('image contains unknown style: '+srcFile)
 		
+		# ------------- Lossless ----------------
+		# Generate the lossless version of the data. This can be used for subsequent reprocessing,
+		# but is large 200 - 300 MB per image.
+		
 		# Create an output directory for the region and style if it doesn't already exists
-		outStylePath = os.path.join(OUT_PATH, region, imgStyle)
-		print("Out path: "+outStylePath)
+		outStylePath = os.path.join(OUT_PATH, OUT_RAW, region, imgStyle)
+		print("Out raw path: "+outStylePath)
 		if not os.path.exists(outStylePath):
 			os.makedirs(outStylePath)
 		
@@ -117,8 +141,30 @@ for srcRegionDir in srcRegionDirs:
 		else:
 			#subprocess.call('gdal_translate -ot Byte -scale 0 1 1 255 -co "COMPRESS=LZW" -co "TILED=YES" -a_nodata 0 '+srcFile+' '+dest)
 			#subprocess.call('gdal_translate -scale 0 254 1 255 -co "COMPRESS=LZW" -co "TILED=YES" -a_nodata 0 '+srcFile+' '+dest)
-			subprocess.call('gdal_translate -co "COMPRESS=LZW" -co "TILED=YES" -a_nodata 0 '+srcFile+' '+dest)
-			subprocess.call('gdaladdo -r average '+dest+' 2 4 8 16 32 64 128')
+			subprocess.call(LZW+srcFile+' '+dest)
+			#subprocess.call('gdaladdo -r average '+dest)
+		
+		# ------------- Compressed output ----------------
+		# Generate the lossy version of the data suitable for public delivery.
+		# This compresses large images using JPG compression shrinking them to 40 - 50 MB each
+		
+		# Get the GDAL processing for the style. Some images have LZW and some are JPG compressed.
+		gdalProcessing = processing[styleIndex]
+		
+		# Create an output directory for the region and style if it doesn't already exists
+		outStylePath = os.path.join(OUT_PATH, OUT_PUBLIC, region, imgStyle)
+		print("Out public path: "+outStylePath)
+		if not os.path.exists(outStylePath):
+			os.makedirs(outStylePath)
+		
+		dest = os.path.join(outStylePath, fileName)
+		
+		# Test if the destination file already exists. If so skip over the conversion.
+		if os.path.isfile(dest): 
+			print("Skipping "+fileName+" as output already exists "+dest)
+		else:
+			subprocess.call(gdalProcessing+srcFile+' '+dest)
+			subprocess.call('gdaladdo -r average '+dest)
 
 # Build GDAL Virtual Raster for each of the styles. 
 # This allows all the images in a particular style to be loaded into QGIS and treated as a single
@@ -130,24 +176,26 @@ for srcRegionDir in srcRegionDirs:
 # If we use gdalbuildvrt directly here the paths are made relative and without the
 # conversion to 8.3 DOS names.
 
-outRegionDirs = glob.glob(os.path.join(OUT_PATH,"*/"))
-print(outRegionDirs)
-for outRegionDir in outRegionDirs:
-	# Look through all the directories that might have been created corresponding to 
-	# the image styles. We could have try to process all OUT_PATH folders, looking for
-	# any TIF files, however this way we won't accidentially attempt to create a virtual
-	# raster for folders created through some other process.
-	# Additionally if not all the styles have been downloaded from Google Earth Engine
-	# then there will be style directories that don't exist. We must handle this case.
-	for style in styles:
-		imgDir = os.path.join(outRegionDir,style)
-		# Only process if there is a directory for the style and it has some TIF files in it.
-		if os.path.isdir(imgDir) and (len(glob.glob(os.path.join(imgDir,"*.tif"))) > 0):
-			# Place the virtual raster in the directory with the tif images. This will
-			# help keep the relative paths clean.
-			print('==== Building Virtual Raster files '+imgDir+' =====')
-			cmdString = 'gdalbuildvrt '+style+'.vrt'+' *.tif'
-			print(cmdString)
-			subprocess.call(cmdString, cwd = imgDir)
-		else:
-			print("No files found for "+imgDir)
+outputPaths = [OUT_RAW, OUT_PUBLIC]
+for outputPath in outputPaths:
+	outRegionDirs = glob.glob(os.path.join(outputPath,"*/"))
+	print(outRegionDirs)
+	for outRegionDir in outRegionDirs:
+		# Look through all the directories that might have been created corresponding to 
+		# the image styles. We could have try to process all OUT_PATH folders, looking for
+		# any TIF files, however this way we won't accidentially attempt to create a virtual
+		# raster for folders created through some other process.
+		# Additionally if not all the styles have been downloaded from Google Earth Engine
+		# then there will be style directories that don't exist. We must handle this case.
+		for style in styles:
+			imgDir = os.path.join(OUT_PATH, outRegionDir,style)
+			# Only process if there is a directory for the style and it has some TIF files in it.
+			if os.path.isdir(imgDir) and (len(glob.glob(os.path.join(imgDir,"*.tif"))) > 0):
+				# Place the virtual raster in the directory with the tif images. This will
+				# help keep the relative paths clean.
+				print('==== Building Virtual Raster files '+imgDir+' =====')
+				cmdString = 'gdalbuildvrt '+style+'.vrt'+' *.tif'
+				print(cmdString)
+				subprocess.call(cmdString, cwd = imgDir)
+			else:
+				print("No files found for "+imgDir)
