@@ -14,7 +14,7 @@
 // === README: ====
 // If you modify your copy of s2Utils.js you must change this path, changing
 // the username. GEE only allows absolute paths.
-var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Imagery:src/01-gee/s2Utils.js');
+var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-gee/s2Utils.js');
  
 // Date range to iterate through the Sentinel 2 imagery.
 var START_DATE = '2015-01-01';

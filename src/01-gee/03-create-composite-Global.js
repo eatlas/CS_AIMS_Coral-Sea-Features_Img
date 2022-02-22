@@ -12,7 +12,7 @@
 // === README: ====
 // If you modify your copy of s2s2Utils.js you must change this path, changing
 // the username. GEE only allows absolute paths.
-var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Imagery:src/01-gee/s2Utils.js');
+var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-gee/s2Utils.js');
 
 // These are the options for the primary reference imagery.
 // The primary reference imagery should correspond to a composite
@@ -22,8 +22,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Imagery:src/0
 var REF1_OPTIONS = {
   colourGrades: ['TrueColour','DeepFalse','ReefTop','Shallow','Slope'],
   exportScale: [10, 10, 10, 10, 30],
-  exportBasename: 'CS_AIMS_Coral-Sea-Features_Imagery_S2_R1',
-  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Imagery/Global',
+  exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global',
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
 };
@@ -35,8 +35,8 @@ var REF1_OPTIONS = {
 var REF2_OPTIONS = {
   colourGrades: ['DeepFalse','Slope'],
     exportScale: [10, 30],
-  exportBasename: 'CS_AIMS_Coral-Sea-Features_Imagery_S2_R2',
-  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Imagery/Global',
+  exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R2',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global',
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
 };

@@ -1,4 +1,4 @@
-var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Imagery:src/gee/s2Utils.js');
+var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/gee/s2Utils.js');
 // ===============================================================
 //
 //                 CORAL SEA - OPEN WATER
@@ -16,7 +16,7 @@ var OPEN_WATER_OPTIONS = {
   colourGrades: ['DeepFalse'],
   exportScale: [10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_S2_R1',
-  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features/Coral-Sea-Open-Water',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea-Open-Water',
   
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
