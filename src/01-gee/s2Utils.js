@@ -2,7 +2,9 @@
 //
 // MIT License https://mit-license.org/
 //
-// Version: v1.0
+// Version: v1.0   initial release
+// Version: v1.0.1 Adjusted the small tile filter in createSelectSentinel2ImagesApp so that
+//                 more images are available for selection.
 
 /**
 * @module s2Utils
@@ -99,10 +101,10 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
   }
   var uniqueUtmTiles = exports.unique_s2_tiles(imageIds);
   // Make sure we are dealing with a single image tile.
-  if (uniqueUtmTiles.length > 1) {
-    throw "s2_composite only supports images from a single tile found: "+
-      String(uniqueUtmTiles);  
-  }
+  //if (uniqueUtmTiles.length > 1) {
+  //  throw "s2_composite only supports images from a single tile found: "+
+  //    String(uniqueUtmTiles);  
+  //}
   
   if (is_export && !Array.isArray(exportScale)) {
     throw "options.exportScale should be an array was: "+exportScale;
@@ -278,10 +280,11 @@ exports.s2_composite = function(imageIds, applySunglintCorrection, applyBrightne
   
   // We only support a single tile. This is to make processing the 
   // projection information more straight forward. 
-  var tiles = exports.unique_s2_tiles(imageIds);
-  if (tiles.length > 1) {
-    throw "s2_composite only supports images from a single tile found: "+String(tiles);  
-  }
+  //var tiles = exports.unique_s2_tiles(imageIds);
+  //if (tiles.length > 1) {
+  //  throw "s2_composite only supports images from a single tile found: "+String(tiles);  
+  //}
+  
   // Get the outter boundary polygon of the tiles
   // This is to help make the get_s2_cloud_collection process more
   // efficient. This part can be reused, however we only need it 
@@ -1634,7 +1637,7 @@ exports.createSelectSentinel2ImagesApp = function(tileID, startDate, endDate, cl
   // date range and with a suitable cloud cover.
   var images = ee.ImageCollection('COPERNICUS/S2')
       .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', cloudPixelPercentage))
-      .filter(ee.Filter.gt('system:asset_size', 500E6))  // Remove small fragments of tiles
+      .filter(ee.Filter.gt('system:asset_size', 100E6))  // Remove small fragments of tiles
       .filterDate(ee.Date(startDate), ee.Date(endDate))
       .filter(ee.Filter.inList('MGRS_TILE', ee.List([tileID])));
   
