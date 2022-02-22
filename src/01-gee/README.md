@@ -92,9 +92,3 @@ runTaskList();
 // Then run this command to confirm all of them.
 confirmAll();
 ```
-<div class="task legacy type-EXPORT_IMAGE
-        awaiting-user-config">
-          <div class="content"><!--?lit$995941447$-->CS_AIMS_Coral-Sea-Features_Imagery_S2_R1_Shallow_55LBK</div>
-          <ee-button class="run-button" type="action">
-          <!--?lit$995941447$-->Run</ee-button>
-        </div>
