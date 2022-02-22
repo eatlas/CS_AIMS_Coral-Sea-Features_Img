@@ -142,8 +142,8 @@ This will show the command to clone the new repository to your local machine. Fo
 ```
 git clone https://earthengine.googlesource.com/users/<username>/CS_AIMS_Coral-Sea-Features_Img
 ```
-We are interesting in the path to the repository. Add this as the push
-origin.
+We are interested in the path to the repository. Add this as the push
+origin. 
 ```
 git remote set-url origin https://earthengine.googlesource.com/users/<username>/CS_AIMS_Coral-Sea-Features_Img
 ```
@@ -166,7 +166,7 @@ git push https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Img.git
 ## Common Issues with using the code
 
 ### Error in Google Earth Engine: Cannot find required repo: users/ericlawrey/CS_AIMS_Sentinel2-marine_V0:utils
-If you make a copy of the code in your own repository then you need to update the path to the `s2Utils` script to point at your local copy. The `users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:s2Utils` is not public, thus can't be referenced from a copy. To fix this update the username and repository name to match your copy. 
+If you make a copy of the code in your own repository then you need to update the path to the `s2Utils` script to point at your local copy. The `users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:s2Utils` is not public, thus can't be referenced from a copy. To fix this update the username and repository name to match your copy. I haven't made it public on GEE because it might get out of sync with the Git version. 
 
 ### Does the `users/ericlawrey/World_ESA_Sentinel-2-tiling-grid` path need updating
 This dataset is made public on the Google Earth Engine to allow it to be easily reused in the code and so its path does not need updating. You can find details of this dataset [here](https://code.earthengine.google.com/?asset=users/ericlawrey/World_ESA_Sentinel-2-tiling-grid)
@@ -174,14 +174,12 @@ This dataset is made public on the Google Earth Engine to allow it to be easily 
 
 ## Videos
 
-The following videos provide a walk through of the using the Google Earth Engine 
-scripts to select good imagery then combine that imagery into a composite image 
-for download.
+[Selecting the best Coral Sea Sentinel 2 imagery (Coral Sea Mapping project)](https://www.youtube.com/watch?v=EqmLZmxZcQc) 
+This video is from the [original draft version of this dataset](https://eatlas.org.au/data/uuid/2932dc63-9c9b-465f-80bf-09073aacaf1c). This is a team training video on how to select images for creating composite images. Most of this video is still relevant in that the process used for classifying and choosing images to include in the final composites is the same as described in this video. The main changes are:
+- It is now recommended to get the source code into GEE that `git clone` and `git push` are used, as described above, instead manually copying each file.
+- The image selection script no longer generates lots of image colour grading styles to speed it up.
+- The Sentinel 2 utility library is now called `s2Utils` instead of `utils` to accomodate the Landsat utils library.
+- The dataset name was renamed from `CS_AIMS_Sentinel2-marine_V1` to `CS_AIMS_Coral-Sea-Features_Img` to indicate that this dataset contains the imagery used in the creation of the `Coral-Sea-Features` dataset.
 
-[![Video Step 1 Selecting Sentinel 2 images in GEE](./media/vimeo-thumbnail-648150983.jpg)](https://www.youtube.com/watch?v=D-CVQVNIjAs "Selecting clear Sentinel 2 imagery in Google Earth Engine (Coral Sea Mapping project) - Part 1 - Click to Watch!")
-
-[![Video Step 2 Creating composite images in GEE](./media/vimeo-thumbnail-648151138.jpg)](https://www.youtube.com/watch?v=bDF-Uq8Ljt8 "Viewing and exporting Sentinel 2 composite images in GEE (Coral Sea Mapping Project) - Part 2 - Click to Watch!")
-
-[![Video Sentinel 2 composite images in GEE](./media/2021-12-02_Selecting-best-imagery_Thumbnail.jpg)](https://www.youtube.com/watch?v=EqmLZmxZcQc "Selecting the best Coral Sea imagery (Coral Sea Mapping project) - Click to Watch!")
 
 
