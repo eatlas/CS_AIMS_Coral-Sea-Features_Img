@@ -1,12 +1,16 @@
-var s2Utils = require('users/ericlawrey/World_AIMS_Marine-satellite-imagery:src/gee/s2Utils.js');
+var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Imagery:src/gee/s2Utils.js');
 // ===============================================================
 //
 //                 CORAL SEA - OPEN WATER
 //
 // ===============================================================
 // These images correspond to areas that should have no reefs
-// in the Coral Sea. These scenes are include for checking that
+// in the Coral Sea. These scenes are included for checking that
 // there are no unknown reefs.
+// Some of the scenes neighbouring the GBR marine park have reefs
+// in the GBR. These are however not the focus of this imagery. As such
+// the selection of images was optimised for clarity in the open waters
+// of the Coral Sea.
 
 var OPEN_WATER_OPTIONS = {
   colourGrades: ['DeepFalse'],
@@ -43,6 +47,9 @@ s2Utils.s2_composite_display_and_export(
 // Maybe
 //COPERNICUS/S2/20170822T002711_20170822T002708_T55KDB
 //COPERNICUS/S2/20180514T002709_20180514T002706_T55KDB
+
+
+
 
 // (Central) Coral Sea, west Dianne bank
 // CLOUDY_PIXEL_PERCENTAGE = 0.1
