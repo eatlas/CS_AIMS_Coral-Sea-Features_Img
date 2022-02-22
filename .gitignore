@@ -2,7 +2,8 @@
 *.vrt
 *.png
 *.jpg
-pearl-only
+repo-only/*
+!repo-only/README.md
 big-files/*
 !big-files/README.md
 unprocessed-data/*
