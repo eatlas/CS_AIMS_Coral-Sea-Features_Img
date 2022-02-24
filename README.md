@@ -16,15 +16,21 @@ and exports them to Google Drive.
 2. Local Python scripts for subsequent optimisation of the image file format and 
 generation of GDAL virtual layers. 
 
-This repository does not contain the image data itself. You can download the final
-imagery.
+This repository does not contain the image data itself. You can [download and browse](https://nextcloud.eatlas.org.au/apps/sharealias/a/cs-aims-coral-sea-features-img) all
+the larges files in the project that could not be included in the repository due to
+their storage requirements. These files correspond should be placed in the `big-files`
+directory.
 
 
-This dataset contains processing for two regions:
-- Coral Sea: Used for mapping the reefs for the [Coral Sea mapping project](https://eatlas.org.au/projects-other/coral-sea-reef-mapping)
-- Global: Selected reef areas around Australia and the rest of the world. These
-were done to test how well the image processing algorithms work across the globe
-and to allow validation of the approach used for reef boundary mapping with a
+This dataset contains imagery for three regions:
+- `Coral Sea`: Used for mapping the reefs for the [Coral Sea mapping project](https://eatlas.org.au/projects-other/coral-sea-reef-mapping)
+- `Coral Sea Open Water`: This is satellite imagery of open water in the Coral Sea. This 
+imagery was produce to check for any as yet unknown coral reefs in the Coral Sea. This
+imagery will be of little interest otherwise, and so was separated out to shrink the
+size of the more useful `Coral Sea` imagery.
+- `Global`: This imagery corresponds to selected reef areas around Australia and the 
+rest of the world. These were done to test how well the image processing algorithms work 
+across the globe and to allow validation of the approach used for reef boundary mapping with a
 diverse set of reefs.
 
 This repository is intended to allow others to reproduce and extend this

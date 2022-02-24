@@ -47,8 +47,8 @@ import glob
 SRC_PATH = '../../unprocessed-data'
 OUT_PATH = '../../big-files/data'
 
-OUT_RAW = '../../pearl-only/raw-data/' # Lossless original data (with minor fix ups)
-OUT_PUBLIC = '../../big-files/data/out'	# Compressed version of the data suitable for sharing 
+OUT_RAW = '../../big-files/lossless/' # Lossless original data (with minor fix ups)
+OUT_PUBLIC = '../../big-files/lossy'	# Compressed version of the data suitable for sharing 
 
 
 if not os.path.exists(OUT_RAW):
@@ -93,6 +93,7 @@ JPG = 'gdal_translate -mask 1 -co TILED=YES -co JPEG_QUALITY=96 -co COMPRESS=JPE
 #                    ensure there was no overlap between the nodata and the imagery, at the expense that
 #                    the imagery doesn't represent true black (0).
 LZW = 'gdal_translate -co "COMPRESS=LZW" -co "TILED=YES" -a_nodata 0 '
+
 processing = [
 	JPG, JPG, JPG, JPG,	# DeepMarine
 	JPG, JPG, JPG, JPG,	# DeepFalse
@@ -102,6 +103,19 @@ processing = [
 	LZW, LZW, LZW, LZW	# Slope
 	]
 	
+# While QGIS can render the JPG compressed GeoTiff correctly they don't work properly
+# with the GDAL virtual layers. The compressed JPGs also cause issues with GeoServer
+# ImageMosaics, however this can be overcome by creating a footprints.properties file
+# with footprint_source=raster in it, along with setting the Footprint Behaviour in
+# the GeoServer layer settings to "Transparent".
+# The problem with the GeoTiff/JPG format is that even though we create an embed a 
+# separate image mask in the GeoTiff, GDAL virtual rasters ignores this mask during
+# the image overlapping process and simply uses the no-data value, which is noisy
+# due to the JPEG compression. This results in distracting messy black lines between
+# the image tiles.
+# Due to these limitations of the JPG GeoTiff format we must distribute the lossless
+# version of the imagery (for processing in QGIS) and lossy (JPG) for hosting on the
+# eAtlas GeoServer (this will reduce the storage requirements.
 
 # Iterate through the regions in the SRC_PATH
 # Use slash on the end to only pick up directories.
