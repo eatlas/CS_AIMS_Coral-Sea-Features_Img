@@ -76,15 +76,15 @@ styles = [
 #                is 0 and thus all values above 0 get set to 1 in the mask.
 # -co TILED=YES  Tile the data into 256x256 blocks instead of pixels rows. Makes extraction of data in the 
 #                middle of the image faster.
-# -co JPEG_QUALITY=96 Use very low JPEG compression. This compression level was chosen so that there would 
-#                be minimal visual loss even when zooming in at 400% zoom. This is important as many key features
+# -co JPEG_QUALITY=94 Use low JPEG compression. This compression level was chosen so that there would 
+#                be minimal visual loss even when zooming in at 200% zoom. This is important as many key features
 #                in the image (coral textures, beach rock) are on a couple of pixels in size. 
 # -co COMPRESS=JPEG Set the compression type to JPEG
 # -co PHOTOMETRIC=YCBCR Transform the colour space from RGB to YCBCR. This improves the JPEG compression
 #                efficiency by ~2x.
 # --config GDAL_TIFF_INTERNAL_MASK YES Create an internal mask layer. The important bit here is that this
 #                mask is not JPEG compressed so has a crisp boundary.
-JPG = 'gdal_translate -mask 1 -co TILED=YES -co JPEG_QUALITY=96 -co COMPRESS=JPEG -co PHOTOMETRIC=YCBCR --config GDAL_TIFF_INTERNAL_MASK YES '
+JPG = 'gdal_translate -mask 1 -co TILED=YES -co JPEG_QUALITY=94 -co COMPRESS=JPEG -co PHOTOMETRIC=YCBCR --config GDAL_TIFF_INTERNAL_MASK YES '
 
 # -co "COMPRESS=LZW" Use lossless compression
 # -co "TILED=YES"    Tile the data into blocks (see above)
@@ -199,6 +199,7 @@ for srcRegionDir in srcRegionDirs:
 			callStr = LZW+srcFile+' '+dest
 			print("system call: "+callStr)
 			subprocess.call(callStr)
+			subprocess.call('gdaladdo -r average '+dest)
 
 			#os.rename(origDest,newDest)
 		
