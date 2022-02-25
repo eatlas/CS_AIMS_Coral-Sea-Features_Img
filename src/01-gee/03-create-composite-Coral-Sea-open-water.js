@@ -1,4 +1,4 @@
-var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/gee/s2Utils.js');
+var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-gee/s2Utils.js');
 // ===============================================================
 //
 //                 CORAL SEA - OPEN WATER
