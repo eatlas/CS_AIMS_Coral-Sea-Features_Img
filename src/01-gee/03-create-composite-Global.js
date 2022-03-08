@@ -22,8 +22,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 var REF1_OPTIONS = {
   //colourGrades: ['TrueColour','DeepFalse','ReefTop','Shallow','Slope'],
   //exportScale: [10, 10, 10, 10, 30],
-  colourGrades: ['Slope'],
-  exportScale: [30],
+  colourGrades: ['TrueColour'],
+  exportScale: [10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global',
   applySunglintCorrection: true,
