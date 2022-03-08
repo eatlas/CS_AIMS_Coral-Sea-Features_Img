@@ -22,8 +22,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 var REF1_OPTIONS = {
   //colourGrades: ['TrueColour','DeepFalse','ReefTop','Shallow','Slope'],
   //exportScale: [10, 10, 10, 10, 30],
-  colourGrades: ['ReefTop'],
-  exportScale: [10],
+  colourGrades: ['Slope'],
+  exportScale: [30],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global',
   applySunglintCorrection: true,
@@ -69,7 +69,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190426T015629_20190426T015717_T51LXG", // 1, 1
     "COPERNICUS/S2/20190824T015029_20190824T015926_T51LXG"  // 0.5, 1.5
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
   
 // tileID = '51LXF';   // North West Shelf, Australia. Vulcan, Goeree Shoals
@@ -238,7 +238,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180904T021339_20180904T022251_T50KPC", // (4)  // Dredging plume
     "COPERNICUS/S2/20180909T021341_20180909T021620_T50KPC", // (3)  // Dredging plume
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 
 
@@ -273,7 +273,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180729T004709_20180729T004703_T54LZM",
     "COPERNICUS/S2/20200419T004659_20200419T004701_T54LZM"
   ],
-false, true, REF1_OPTIONS);
+false, false, REF1_OPTIONS);
 
 // COPERNICUS/S2/20181126T004659_20181126T004702_T54LZM // Example: Sunglint showing tidal flows through reefs.
 // COPERNICUS/S2/20190907T004711_20190907T004705_T54LZM // Example: Strong green banding in image
@@ -300,7 +300,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180724T004711_20180724T004707_T54LZN",
     "COPERNICUS/S2/20190828T004711_20190828T004707_T54LZN"
   ],
-false, true, REF1_OPTIONS);
+false, false, REF1_OPTIONS);
 
 // Australia, GBR, Cockburn Reef, Nomad Reef, Gallon Reef
 // CLOUDY_PIXEL_PERCENTAGE = 10
@@ -328,7 +328,7 @@ s2Utils.s2_composite_display_and_export(
 		"COPERNICUS/S2/20190909T003709_20190909T003706_T55LBE", //2
 		//"COPERNICUS/S2/20191208T003659_20191208T003658_T55LBE" //3
 	],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 
 //55LCD Australia, GBR, Lizard Island, Ribbon No 10 reef
@@ -366,7 +366,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180827T002711_20180827T002706_T55KCB", // Right
     "COPERNICUS/S2/20200715T003709_20200715T003706_T55KCB" // Left
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 // The primary image has a fair amount of cloud interference
 // and turbid waters. This second reference is for demonstrating
@@ -627,7 +627,7 @@ s2Utils.s2_composite_display_and_export(
 		"COPERNICUS/S2/20210418T011721_20210418T011719_T53LMH",
 		"COPERNICUS/S2/20210513T011729_20210513T011724_T53LMH"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
   
 
 
@@ -697,7 +697,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200909T005709_20200909T005710_T54LTH"
     //"COPERNICUS/S2/20200924T005711_20200924T005713_T54LTH"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 // ===============================================================
 //
@@ -765,7 +765,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200229T004709_20200229T004703_T54LZQ",	// Scattered clouds
     "COPERNICUS/S2/20200419T004659_20200419T004701_T54LZQ"	// Some banding, scattered clouds
   ], 
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 //====================================================
@@ -790,7 +790,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200510T220919_20200510T220917_T01KCV",
     "COPERNICUS/S2/20210917T220921_20210917T220921_T01KCV"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -819,7 +819,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210901T200851_20210901T200854_T06LWH",
     "COPERNICUS/S2/20210911T200851_20210911T200854_T06LWH"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -846,7 +846,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210628T200859_20210628T200854_T06LUJ",
     "COPERNICUS/S2/20211016T200859_20211016T200854_T06LUJ"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -963,7 +963,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200201T053711_20200201T053708_T43NCE",
     "COPERNICUS/S2/20210307T053721_20210307T053716_T43NCE"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -1051,7 +1051,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20171205T075211_20171205T075207_T37PFT",
     "COPERNICUS/S2/20171225T075211_20171225T075206_T37PFT"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
   
   
 // 51PWN - Philippines, Visayan Sea, Bantayan Island
@@ -1075,7 +1075,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20201210T022321_20201210T022322_T51PWN",
     "COPERNICUS/S2/20210305T022329_20210305T022325_T51PWN"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
   
 // 51MWT - Indonesia, Melilis Island
 // Very strong sunglint in this area and heavy clouds made
@@ -1094,7 +1094,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190721T021359_20190721T021806_T51MWT",
     "COPERNICUS/S2/20200122T021341_20200122T021338_T51MWT"
   ],
- false, true, REF1_OPTIONS);  
+ false, false, REF1_OPTIONS);  
   
   
   
