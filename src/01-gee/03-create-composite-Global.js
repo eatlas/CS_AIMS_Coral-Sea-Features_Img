@@ -107,7 +107,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190807T020029_20190807T020716_T51LWG",
     "COPERNICUS/S2/20190901T020021_20190901T020607_T51LWG"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 
   //51LUE Scott Reef, WA, Australia
@@ -146,7 +146,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20170713T020451_20170713T020619_T51LXH",
     "COPERNICUS/S2/20180703T020449_20180703T020824_T51LXH"
   ],
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
   
   
 // 49KGR - Australia, WA, Ningaloo reef
@@ -215,7 +215,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20161012T023442_20161012T023437_T49JGM",
     "COPERNICUS/S2/20161022T023242_20161022T023245_T49JGM",
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 // Australia, Western Australia, Port Headland
 //CLOUDY_PIXEL_PERCENTAGE = 0.1
@@ -238,7 +238,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180904T021339_20180904T022251_T50KPC", // (4)  // Dredging plume
     "COPERNICUS/S2/20180909T021341_20180909T021620_T50KPC", // (3)  // Dredging plume
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 
@@ -627,7 +627,7 @@ s2Utils.s2_composite_display_and_export(
 		"COPERNICUS/S2/20210418T011721_20210418T011719_T53LMH",
 		"COPERNICUS/S2/20210513T011729_20210513T011724_T53LMH"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 
 
@@ -718,7 +718,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190510T004711_20190510T004710_T54LXQ",  //scattered clouds, moderate water clarity
     "COPERNICUS/S2/20180917T004659_20180917T004657_T54LXQ"   //scattered clouds, moderate water clarity"
   ], 
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 
 
@@ -730,7 +730,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190110T004701_20190110T004701_T54LYQ",
     "COPERNICUS/S2/20190115T004709_20190115T004705_T54LYQ"
   ], 
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 // South central TS
 s2Utils.s2_composite_display_and_export(
@@ -748,7 +748,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20181022T004701_20181022T004703_T54LXP",
     "COPERNICUS/S2/20190510T004711_20190510T004710_T54LXP" 
   ], 
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
   
 
 
@@ -765,7 +765,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200229T004709_20200229T004703_T54LZQ",	// Scattered clouds
     "COPERNICUS/S2/20200419T004659_20200419T004701_T54LZQ"	// Some banding, scattered clouds
   ], 
- false, false, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
 
 
 //====================================================
@@ -819,7 +819,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210901T200851_20210901T200854_T06LWH",
     "COPERNICUS/S2/20210911T200851_20210911T200854_T06LWH"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -963,7 +963,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200201T053711_20200201T053708_T43NCE",
     "COPERNICUS/S2/20210307T053721_20210307T053716_T43NCE"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -1051,7 +1051,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20171205T075211_20171205T075207_T37PFT",
     "COPERNICUS/S2/20171225T075211_20171225T075206_T37PFT"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
   
 // 51PWN - Philippines, Visayan Sea, Bantayan Island
@@ -1075,7 +1075,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20201210T022321_20201210T022322_T51PWN",
     "COPERNICUS/S2/20210305T022329_20210305T022325_T51PWN"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 // 51MWT - Indonesia, Melilis Island
 // Very strong sunglint in this area and heavy clouds made
@@ -1094,7 +1094,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190721T021359_20190721T021806_T51MWT",
     "COPERNICUS/S2/20200122T021341_20200122T021338_T51MWT"
   ],
- false, false, REF1_OPTIONS);  
+ false, true, REF1_OPTIONS);  
   
   
   
