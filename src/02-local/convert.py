@@ -49,6 +49,7 @@ OUT_PATH = '../../big-files/data'
 
 OUT_RAW = '../../big-files/lossless/' # Lossless original data (with minor fix ups)
 OUT_PUBLIC = '../../big-files/lossy'	# Compressed version of the data suitable for sharing 
+OUT_PREVIEW = '../../big-files/preview'	# Path for preview images
 
 
 if not os.path.exists(OUT_RAW):
@@ -93,6 +94,14 @@ JPG = 'gdal_translate -mask 1 -co TILED=YES -co JPEG_QUALITY=94 -co COMPRESS=JPE
 #                    ensure there was no overlap between the nodata and the imagery, at the expense that
 #                    the imagery doesn't represent true black (0).
 LZW = 'gdal_translate -co "COMPRESS=LZW" -co "TILED=YES" -a_nodata 0 '
+
+# Preview image
+# --config GDAL_PAM_ENABLED NO    Disable the creation of the aux.xml files so the preview folders aren't cluttered.
+# -outsize 50% 50%                Reduce the size of the imagery to 50% (about 5500 pixels) for smaller file sizes
+# -r average                      Use averaging in the resizing to remove aliasing.
+# -co QUALITY=80                  Improve the image quality slightly above the default of 75.
+# -co EXIF_THUMBNAIL=YES          Embed a 128x128 pixel thumbnail. Might make browsing the previews faster?
+PREVIEW = 'gdal_translate -of JPEG -r average -outsize 50% 50% --config GDAL_PAM_ENABLED NO -co QUALITY=80 -co EXIF_THUMBNAIL=YES '
 
 processing = [
 	JPG, JPG, JPG, JPG,	# DeepMarine
@@ -172,7 +181,7 @@ for srcRegionDir in srcRegionDirs:
 		
 		# Handle shorting of the names (this was to reduce file path lengths).
 		# This is only a temporary hack so we don't have to regenerate and download all the imagery
-		# from GEE.
+		# from GEE. After the transistion this code is deprecated, but should affect the result.
 		# Rename the files
 		outFileName = fileName.replace("_Imagery_","_Img_")
 		
@@ -182,7 +191,7 @@ for srcRegionDir in srcRegionDirs:
 		
 		# Create an output directory for the region and style if it doesn't already exists
 		outStylePath = os.path.join(OUT_RAW, region, imgStyle)
-		print("Out raw path: "+outStylePath)
+		#print("Out raw path: "+outStylePath)
 		if not os.path.exists(outStylePath):
 			os.makedirs(outStylePath)
 		
@@ -191,13 +200,13 @@ for srcRegionDir in srcRegionDirs:
 		#newDest = os.path.join(outStylePath, outFileName)
 		
 		dest = os.path.join(outStylePath, outFileName)
-		print("Dest: "+str(os.path.isfile(dest))+" "+dest)
+		#print("Dest: "+str(os.path.isfile(dest))+" "+dest)
 		# Test if the destination file already exists. If so skip over the conversion.
 		if os.path.isfile(dest): 
 			print("Skipping "+fileName+" as output already exists "+dest)
 		else:
 			callStr = LZW+srcFile+' '+dest
-			print("system call: "+callStr)
+			print("Lossless system call: "+callStr)
 			subprocess.call(callStr)
 			subprocess.call('gdaladdo -r average '+dest)
 
@@ -212,7 +221,7 @@ for srcRegionDir in srcRegionDirs:
 		
 		# Create an output directory for the region and style if it doesn't already exists
 		outStylePath = os.path.join(OUT_PUBLIC, region, imgStyle)
-		print("Out public path: "+outStylePath)
+		# print("Out public path: "+outStylePath)
 		if not os.path.exists(outStylePath):
 			os.makedirs(outStylePath)
 
@@ -221,22 +230,49 @@ for srcRegionDir in srcRegionDirs:
 		if os.path.isfile(dest): 
 			print("Skipping "+fileName+" as output already exists "+dest)
 		else:
-
-			subprocess.call(gdalProcessing+srcFile+' '+dest)
+			callStr = gdalProcessing+srcFile+' '+dest
+			print("Lossy system call: "+callStr)
+			subprocess.call(callStr)
 			subprocess.call('gdaladdo -r average '+dest)
 			
+		# ------------- Preview images ----------------
+		# Generate JPEG preview images.
+		
+		# Create an output directory for the region and style if it doesn't already exists
+		outStylePath = os.path.join(OUT_PREVIEW, region, imgStyle)
+		#print("Out preview path: "+outStylePath)
+		if not os.path.exists(outStylePath):
+			os.makedirs(outStylePath)
+		
+		# Replace the .tif with .jpg in the filename
+		dest = os.path.join(outStylePath, outFileName.replace(".tif",".jpg"))
+		#print("Dest: "+str(os.path.isfile(dest))+" "+dest)
+		# Test if the destination file already exists. If so skip over the conversion.
+		if os.path.isfile(dest): 
+			print("Skipping "+fileName+" as output already exists "+dest)
+		else:
+			callStr = PREVIEW+srcFile+' '+dest
+			print("Preview system call: "+callStr)
+			subprocess.call(callStr)
+			
 
-# Build GDAL Virtual Raster for each of the styles. 
-# This allows all the images in a particular style to be loaded into QGIS and treated as a single
-# layer, making process and styling much more straight forward. We do the building of the 
-# virtual layer here because QGIS has two bugs that make its 'Build Virtual Raster' feature
+# Build GDAL Virtual Raster for each of the styles for the lossless version of the dataset.
+# We don't do this for the lossy version because the virtual raster format does not work
+# for the JPEG in GeoTiff lossy format. The virtual raster format in QGIS does not handle
+# the internal masking in the images properly resulting in masking being determined by the
+# lossy embedded JPEG image using the nodata value instead of the embedded mask. This results
+# in messy black boundaries between the images.
+
+# The Virtual raster format allows all the images in a particular style to be loaded into QGIS and 
+# treated as a single layer, making process and styling much more straight forward. We do the 
+# building of the virtual layer here because QGIS has two bugs that make its 'Build Virtual Raster' feature
 # unusable. The QGIS version (in version 3.18) makes all the file paths absolute making it not possible to
 # share the resulting maps, and it converts all the file paths to 8.3 DOS format which makes the
 # paths unreadable and probably not compatible across different platforms. 
 # If we use gdalbuildvrt directly here the paths are made relative and without the
 # conversion to 8.3 DOS names.
 
-outputPaths = [OUT_RAW, OUT_PUBLIC]
+outputPaths = [OUT_RAW]
 for outputPath in outputPaths:
 	outRegionDirs = glob.glob(os.path.join(outputPath,"*/"))
 	print("=================== Virtual Raster =====================")
