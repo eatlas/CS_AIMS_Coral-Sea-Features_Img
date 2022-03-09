@@ -28,6 +28,10 @@ of Virtual Raster settings, but didn't find one that forced it to use the correc
 There are also issues with making an image mosaic from these images in GeoServer, as it too uses
 the wrong masking by default. This can however be corrected (see below).
 
+`preview`: This contains half resolution JPEG images of the satellite imagery. They allow quick
+previewing of each of the images available in the `lossy` and `lossless` folders. These are not
+georeferenced images and so can't be used in a GIS application.
+
 `maps`: This folder contains QGIS map files used for generating preview maps for this dataset.
 
 ### Creating image mosaic in GeoServer
