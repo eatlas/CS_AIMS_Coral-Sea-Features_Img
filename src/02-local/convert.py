@@ -155,7 +155,6 @@ for srcRegionDir in srcRegionDirs:
 	# expected structure.
 	if not (os.path.isdir(srcRegionDir) and (len(srcFiles) > 0)):
 		print('Skipping region '+srcRegionDir)
-		print(srcFiles)
 		continue
 
 	fileCount = 1
