@@ -20,8 +20,10 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // to get the cleanest image.
 
 var REF1_OPTIONS = {
-  colourGrades: ['TrueColour','DeepFalse','ReefTop','Shallow','Slope'],
-  exportScale: [10, 10, 10, 10, 30],
+  //colourGrades: ['TrueColour','DeepFalse','ReefTop','Shallow','Slope'],
+  //exportScale: [10, 10, 10, 10, 30],
+  colourGrades: ['TrueColour'],
+  exportScale: [10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global',
   applySunglintCorrection: true,
@@ -67,7 +69,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190426T015629_20190426T015717_T51LXG", // 1, 1
     "COPERNICUS/S2/20190824T015029_20190824T015926_T51LXG"  // 0.5, 1.5
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
   
 // tileID = '51LXF';   // North West Shelf, Australia. Vulcan, Goeree Shoals
@@ -87,7 +89,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180918T015609_20180918T020006_T51LXF",
     "COPERNICUS/S2/20181008T015619_20181008T020050_T51LXF"  // 0.5, 1.5
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 // North West Shelf, Australia. Ashmore reef
 // CLOUDY_PIXEL_PERCENTAGE = 0.1
@@ -127,7 +129,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200910T020449_20200910T020454_T51LUE",
     "COPERNICUS/S2/20200905T020451_20200905T020822_T51LUE"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 // 51LXH - North West Shelf
@@ -166,7 +168,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160208T021842_20160208T024034_T49KGR",
     "COPERNICUS/S2/20160816T024352_20160816T073202_T49KGR"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
   
 // North West Shelf, Australia, Timor Sea, Big Bank Shoals
@@ -189,7 +191,7 @@ s2Utils.s2_composite_display_and_export(
     // OK
     "COPERNICUS/S2/20200604T015631_20200604T015627_T51LZJ"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 // Australia, WA, Shark bay. This scene is used to highlight
 // recognising dark substrates due to the seagrass meadows.
@@ -213,7 +215,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20161012T023442_20161012T023437_T49JGM",
     "COPERNICUS/S2/20161022T023242_20161022T023245_T49JGM",
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 // Australia, Western Australia, Port Headland
 //CLOUDY_PIXEL_PERCENTAGE = 0.1
@@ -236,7 +238,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180904T021339_20180904T022251_T50KPC", // (4)  // Dredging plume
     "COPERNICUS/S2/20180909T021341_20180909T021620_T50KPC", // (3)  // Dredging plume
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 
@@ -326,7 +328,7 @@ s2Utils.s2_composite_display_and_export(
 		"COPERNICUS/S2/20190909T003709_20190909T003706_T55LBE", //2
 		//"COPERNICUS/S2/20191208T003659_20191208T003658_T55LBE" //3
 	],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 
 //55LCD Australia, GBR, Lizard Island, Ribbon No 10 reef
@@ -343,7 +345,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160830T003952_20160830T003955_T55LCD",
     "COPERNICUS/S2/20180810T003701_20180810T003704_T55LCD"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 
 
@@ -356,7 +358,7 @@ s2Utils.s2_composite_display_and_export(
 s2Utils.s2_composite_display_and_export(
   [
     // Excellent
-    "COPERNICUS/S2/20161115T002712_20161115T002822_Tfalse, true, REF1_OPTIONS", // Right
+    "COPERNICUS/S2/20161115T002712_20161115T002822_T55KCB", // Right
     "COPERNICUS/S2/20190914T003701_20190914T003703_T55KCB", // Left
     "COPERNICUS/S2/20200730T003711_20200730T003710_T55KCB", // Left
 
@@ -364,7 +366,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180827T002711_20180827T002706_T55KCB", // Right
     "COPERNICUS/S2/20200715T003709_20200715T003706_T55KCB" // Left
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 // The primary image has a fair amount of cloud interference
 // and turbid waters. This second reference is for demonstrating
@@ -380,7 +382,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20191110T002711_20191110T002710_T55KCB", // Right
     "COPERNICUS/S2/20200526T003709_20200526T003705_T55KCB" // Left
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
   
 // 55KEV - Australia, GBR, Davies, Grub, Chicken
 // CLOUDY_PIXEL_PERCENTAGE = 0.1
@@ -397,7 +399,7 @@ s2Utils.s2_composite_display_and_export(
     //"COPERNICUS/S2/20200821T002709_20200821T002711_T55KEV", // (1) Low Water Quality, bit excellent view of plumes around reefs.
     "COPERNICUS/S2/20210915T002709_20210915T002703_T55KEV"  // (3)
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 // Good
 //COPERNICUS/S2/20180802T002709_20180802T002704_T55KEV
 //COPERNICUS/S2/20180827T002711_20180827T002706_T55KEV
@@ -447,7 +449,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210729T002101_20210729T002058_T55KFU",
     "COPERNICUS/S2/20210922T002049_20210922T002052_T55KFU"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -462,7 +464,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190809T002101_20190809T002058_T55KFU",
     "COPERNICUS/S2/20211012T002059_20211012T002055_T55KFU"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
 //55KGU Australia, GBR, Hardy Reef, Block Reef
 // Searched 89 out of 89 images
@@ -476,7 +478,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200714T002101_20200714T002059_T55KGU",
     "COPERNICUS/S2/20200813T002101_20200813T002100_T55KGU"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 //56KKC Australia, GBR, Cockatoo Reef, Hopley comparison
 // Searched 71 out of 71 images
@@ -498,7 +500,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210721T001109_20210721T001111_T56KKC",
     "COPERNICUS/S2/20210726T001111_20210726T001112_T56KKC"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -516,7 +518,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210507T001111_20210507T001108_T56KKC",
     "COPERNICUS/S2/20211029T001109_20211029T001110_T56KKC"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
 
 
@@ -541,7 +543,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180719T000241_20180719T000241_T56KMU", // (2)
     "COPERNICUS/S2/20180808T000241_20180808T000240_T56KMU", // (4)
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 // Good
 //COPERNICUS/S2/20160629T000219_20160629T044543_T56KMU
 //COPERNICUS/S2/20161027T000212_20161027T000214_T56KMU", // (3)
@@ -562,7 +564,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200815T001109_20200815T001112_T56KLB",
     "COPERNICUS/S2/20210731T001109_20210731T001110_T56KLB"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 // Good
 // COPERNICUS/S2/20180707T001109_20180707T001212_T56KLB
 // COPERNICUS/S2/20200810T001121_20200810T001115_T56KLB
@@ -670,7 +672,7 @@ s2Utils.s2_composite_display_and_export(
     //"COPERNICUS/S2/20200712T011731_20200712T011729_T53LPE",
     "COPERNICUS/S2/20200826T011729_20200826T011728_T53LPE"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
  
 
@@ -695,7 +697,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200909T005709_20200909T005710_T54LTH"
     //"COPERNICUS/S2/20200924T005711_20200924T005713_T54LTH"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 // ===============================================================
 //
@@ -800,7 +802,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200515T220921_20200515T220924_T01KCV",
     "COPERNICUS/S2/20200121T220909_20200121T220912_T01KCV"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
 
 
 // 06LWH French Polynesia, Palliser Islands, Kaukura Atoll
@@ -817,7 +819,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210901T200851_20210901T200854_T06LWH",
     "COPERNICUS/S2/20210911T200851_20210911T200854_T06LWH"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -828,7 +830,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200807T200901_20200807T200859_T06LWH",
     "COPERNICUS/S2/20210603T200851_20210603T200854_T06LWH"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
   
   
@@ -860,7 +862,7 @@ s2Utils.s2_composite_display_and_export(
 //COPERNICUS/S2/20210807T200859_20210807T200854_T06LUJ
 //COPERNICUS/S2/20210911T200851_20210911T200854_T06LUJ
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
   
   
@@ -880,7 +882,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20201120T232209_20201120T232209_T58PGR",
     "COPERNICUS/S2/20210713T232211_20210713T232211_T58PGR"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -890,7 +892,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20181201T232209_20181201T232203_T58PGR",
     "COPERNICUS/S2/20200628T232211_20200628T232213_T58PGR"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
   
  // 58PET Marshall Islands, Bikini Atoll
@@ -909,7 +911,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180222T233251_20180222T233252_T58PET",
     "COPERNICUS/S2/20210216T233301_20210216T233255_T58PET"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -920,7 +922,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210211T233259_20210211T233254_T58PET",
     "COPERNICUS/S2/20210820T233259_20210820T233254_T58PET"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
   
  
@@ -935,7 +937,7 @@ s2Utils.s2_composite_display_and_export(
     //okay
     "COPERNICUS/S2/20200911T013459_20200911T013455_T53NMJ" // sunglint on the edge
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -944,7 +946,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180420T013451_20180420T013454_T53NMJ",
     "COPERNICUS/S2/20180624T013449_20180624T013451_T53NMJ"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
 // 43NCE Maldives, Hulhumale
 // Searched 46 out of 46 images
@@ -961,7 +963,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200201T053711_20200201T053708_T43NCE",
     "COPERNICUS/S2/20210307T053721_20210307T053716_T43NCE"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -973,7 +975,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210501T053709_20210501T053712_T43NCE",
     "COPERNICUS/S2/20210620T051649_20210620T053110_T43NCE"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
   
  //56LKR PNG, Trobriand Islands
@@ -991,7 +993,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190705T001729_20190705T001730_T56LKR",
     "COPERNICUS/S2/20191207T001721_20191207T001719_T56LKR"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -1001,7 +1003,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20181008T001719_20181008T001717_T56LKR",
     "COPERNICUS/S2/20211027T001731_20211027T001726_T56LKR"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
   
 //56LLN PNG
@@ -1017,7 +1019,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200912T001731_20200912T001725_T56LLN",
     "COPERNICUS/S2/20210803T001729_20210803T001723_T56LLN"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -1027,7 +1029,7 @@ s2Utils.s2_composite_display_and_export(
     // Maybe
     "COPERNICUS/S2/20180521T001719_20180521T001719_T56LLN"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
   
 
 // 37PFT - Eritrea, Red Sea, Dahlak Marine National Park
@@ -1049,7 +1051,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20171205T075211_20171205T075207_T37PFT",
     "COPERNICUS/S2/20171225T075211_20171225T075206_T37PFT"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
   
 // 51PWN - Philippines, Visayan Sea, Bantayan Island
@@ -1073,7 +1075,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20201210T022321_20201210T022322_T51PWN",
     "COPERNICUS/S2/20210305T022329_20210305T022325_T51PWN"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 // 51MWT - Indonesia, Melilis Island
 // Very strong sunglint in this area and heavy clouds made
@@ -1114,7 +1116,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20170815T232119_20170815T232119_T58KCC",
     "COPERNICUS/S2/20180805T231851_20180805T231852_T58KCC"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 // Rachel bycroft image selection
@@ -1129,7 +1131,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180817T230859_20180817T231130_T58KFC",
     "COPERNICUS/S2/20210227T230911_20210227T230905_T58KFC"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -1140,7 +1142,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200811T230911_20200811T231049_T58KFC",
     "COPERNICUS/S2/20210528T230911_20210528T230906_T58KFC"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
 
 // Chesterfield Reefs, New Caledonia
 // CLOUDY_PIXEL_PERCENTAGE = 0.1
@@ -1157,7 +1159,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210107T233821_20210107T233816_T57KVU", //(3)
     
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 s2Utils.s2_composite_display_and_export(
   [
@@ -1171,7 +1173,7 @@ s2Utils.s2_composite_display_and_export(
     // Maybe
     "COPERNICUS/S2/20160114T233822_20160114T233823_T57KVU"
   ],
- false, true, REF2_OPTIONS);
+ false, false, REF2_OPTIONS);
 
 // Chesterfield Reefs, New Caledonia
 // CLOUDY_PIXEL_PERCENTAGE = 0.1
@@ -1189,7 +1191,7 @@ s2Utils.s2_composite_display_and_export(
     // OK
     //"COPERNICUS/S2/20160104T233822_20160104T234042_T57KVT"
   ],
- false, true, REF1_OPTIONS); 
+ false, false, REF1_OPTIONS); 
 
 
 
