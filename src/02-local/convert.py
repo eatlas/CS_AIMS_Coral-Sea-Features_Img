@@ -140,17 +140,23 @@ for srcRegionDir in srcRegionDirs:
 	print('=== Processing region '+region+' ('+str(regionCount)+' of '+str(numRegions)+') ===')
 	regionCount = regionCount+1
 	
-	# Make sure we are dealing with a directory containing images. If not
-	# then there is a director in the SRC_PATH not corresponding to the
-	# expected structure.
-	if not (os.path.isdir(srcRegionDir) and (len(glob.glob(os.path.join(srcRegionDir,"**/*.tif"))) > 0)):
-		print('Skipping region '+srcRegionDir)
-		continue
+	
 
 	# Search through all the files to be processed, downloaded from Google Earth Engine
 	# We don't permanently retain these files because they are large. We should therefore
 	# consider the files in the SRC_PATH to be a temporary holding area.
-	srcFiles = glob.glob(os.path.join(srcRegionDir,"**/*.tif"))
+	# Get the files in the subsubdirectories such as Global/S2_R1_DeepFalse/*.tif and 
+	# just in subdirectories Global/*.tif
+	srcFiles = glob.glob(os.path.join(srcRegionDir,"**/*.tif")) + glob.glob(os.path.join(srcRegionDir,"*.tif"))
+
+	
+	# Make sure we are dealing with a directory containing images. If not
+	# then there is a directory in the SRC_PATH not corresponding to the
+	# expected structure.
+	if not (os.path.isdir(srcRegionDir) and (len(srcFiles) > 0)):
+		print('Skipping region '+srcRegionDir)
+		print(srcFiles)
+		continue
 
 	fileCount = 1
 	numFiles = len(srcFiles)
@@ -202,6 +208,7 @@ for srcRegionDir in srcRegionDirs:
 		dest = os.path.join(outStylePath, outFileName)
 		#print("Dest: "+str(os.path.isfile(dest))+" "+dest)
 		# Test if the destination file already exists. If so skip over the conversion.
+		# Note: This returns false when the path is over 240 characters (not sure why it isn't 260).
 		if os.path.isfile(dest): 
 			print("Skipping "+fileName+" as output already exists "+dest)
 		else:

@@ -1,4 +1,4 @@
-# Big data files - not tracked in Git
+# Coral Sea Features Imagery - data files
 This folder contains all the large data files (any over 100k) that are not tracked in the 
 [CS_AIMS_Coral-Sea-Features_Img](https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Img) dataset Git repository. This includes the generated
 satellite imagery, preview maps, presentations, etc. These are available for download here.
