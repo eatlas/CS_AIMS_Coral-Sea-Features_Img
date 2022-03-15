@@ -17,8 +17,8 @@
 //
 // Find and replace: false, true, REF1_OPTIONS
 // With: false, true, REF1_OPTIONS
-// Find and replace: false, true, REF2_OPTIONS
-// With: false, true, REF2_OPTIONS
+// Find and replace: false, false, REF2_OPTIONS
+// With: false, false, REF2_OPTIONS
 //
 // Now set the is_display option of the scene of interest to true
 // i.e. true, false, REF1_OPTIONS
@@ -36,14 +36,17 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // are made from the best set of images available.
 
 var REF1_OPTIONS = {
-  colourGrades: ['DeepFalse','TrueColour','ReefTop','Shallow','Slope'],
-  exportScale: [10, 10, 10, 10, 30],
+  //colourGrades: ['DeepFalse','TrueColour','ReefTop','Shallow','Slope','DryReef', 'Depth5m', 'Depth10m'],
+  //exportScale: [10, 10, 10, 10, 30, 10, 10, 10],
+  colourGrades: ['DryReef', 'Depth5m', 'Depth10m'],
+  exportScale: [10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
   
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
 };
+
 
 // These options correspond to the secondary reference imagery.
 // This will be made from the next best set of images. The goal
@@ -118,7 +121,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210723T004709_20210723T004708_T54LZP",
     "COPERNICUS/S2/20200414T004711_20200414T004705_T54LZP"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
   
 // Maybe images
 //COPERNICUS/S2/20160505T004712_20160505T004711_T54LZP
@@ -156,7 +159,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20181016T002701_20181016T002704_T55LDE",
     "COPERNICUS/S2/20181105T002701_20181105T002703_T55LDE",
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -184,7 +187,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190827T002709_20190827T002712_T55LEC",
     "COPERNICUS/S2/20200304T002709_20200304T002705_T55LEC",
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -213,7 +216,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180814T002051_20180814T002054_T55LGC",
     "COPERNICUS/S2/20180928T002049_20180928T002048_T55LGC"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -245,7 +248,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200410T002049_20200410T002051_T55LHC",
     "COPERNICUS/S2/20200729T002059_20200729T002057_T55LHC"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -270,7 +273,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180728T002711_20180728T002708_T55KEB",
     "COPERNICUS/S2/20190703T002711_20190703T002712_T55KEB"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 // Maybe
 // COPERNICUS/S2/20160509T003042_20160509T003038_T55KEB
 // COPERNICUS/S2/20160916T002702_20160916T033357_T55KEB
@@ -317,7 +320,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180802T002709_20180802T002704_T55KFB",
     "COPERNICUS/S2/20190718T002719_20190718T002716_T55KFB"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -356,7 +359,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200922T002101_20200922T002059_T55KGB",
     "COPERNICUS/S2/20210614T002059_20210614T002055_T55KGB"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 // Maybe
 // COPERNICUS/S2/20160605T002112_20160605T002110_T55KGB
@@ -400,7 +403,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200818T002059_20200818T002058_T55KHB",
     "COPERNICUS/S2/20210614T002059_20210614T002055_T55KHB"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 // Maybe
 // COPERNICUS/S2/20170220T002101_20170220T002059_T55KHB
@@ -439,7 +442,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20181015T001109_20181015T001105_T56KLG",
     "COPERNICUS/S2/20180712T001111_20180712T001110_T56KLG"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -465,7 +468,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190910T001109_20190910T001110_T56KMG"
 
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -496,7 +499,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20191013T002059_20191013T002055_T55KFA",
     "COPERNICUS/S2/20200714T002101_20200714T002059_T55KFA"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -527,7 +530,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190903T002059_20190903T002057_T55KGA",
     "COPERNICUS/S2/20210729T002101_20210729T002058_T55KGA"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -557,7 +560,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180725T002101_20180725T002055_T55KHA",
     "COPERNICUS/S2/20210724T002059_20210724T002056_T55KHA"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 // Left Maybe
 // COPERNICUS/S2/20160516T002111_20160516T014440_T55KHA
@@ -608,7 +611,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180421T002059_20180421T002053_T56KKF",
     "COPERNICUS/S2/20190401T002101_20190401T002055_T56KKF"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 // Maybe right
 // COPERNICUS/S2/20171219T001059_20171219T001056_T56KKF
@@ -639,7 +642,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190930T001109_20190930T001109_T56KLF",
     "COPERNICUS/S2/20200820T001121_20200820T001115_T56KLF"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 // Maybe
 // COPERNICUS/S2/20170930T001059_20170930T001053_T56KLF
@@ -679,7 +682,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200502T001111_20200502T001112_T56KMF",
     "COPERNICUS/S2/20200815T001109_20200815T001112_T56KMF"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 // Maybe
 // COPERNICUS/S2/20180707T001109_20180707T001107_T56KMF
@@ -710,7 +713,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20151208T234812_20170605T053015_T56KRF",
     "COPERNICUS/S2/20160117T234812_20160117T235108_T56KRF"
   ],
-  false, true, REF2_OPTIONS);  
+  false, false, REF2_OPTIONS);  
 
 
 
@@ -736,7 +739,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180915T001059_20180915T001100_T56KME",
     "COPERNICUS/S2/20210616T001111_20210616T001109_T56KME"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -760,7 +763,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190920T001109_20190920T001108_T56KMD",
     "COPERNICUS/S2/20200427T001109_20200427T001104_T56KMD"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 
 
@@ -803,7 +806,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20170704T000221_20170704T000217_T56KNB",
     "COPERNICUS/S2/20170823T000221_20170823T000219_T56KNB"
   ],
-  false, true, REF2_OPTIONS); 
+  false, false, REF2_OPTIONS); 
 
 
 
@@ -832,7 +835,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160410T000216_20160410T012205_T56KPB",
     "COPERNICUS/S2/20160420T000219_20160420T012157_T56KPB"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 // Maybe
 // COPERNICUS/S2/20160530T000222_20160530T000223_T56KPB
 // COPERNICUS/S2/20160709T000221_20160709T012229_T56KPB
@@ -895,7 +898,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180714T000239_20180714T000238_T56KNA",
     "COPERNICUS/S2/20180813T000239_20180813T000234_T56KNA"
   ],
-  false, true, REF2_OPTIONS); 
+  false, false, REF2_OPTIONS); 
 
 
 
@@ -922,7 +925,7 @@ s2Utils.s2_composite_display_and_export(
     // maybe
     "COPERNICUS/S2/20200922T235251_20200922T235250_T56KQA"
   ],
-  false, true, REF2_OPTIONS); 
+  false, false, REF2_OPTIONS); 
 
 
 
@@ -952,7 +955,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200922T235251_20200922T235250_T56KQV",
     "COPERNICUS/S2/20210724T235249_20210724T235247_T56KQV"
   ],
-  false, true, REF2_OPTIONS); 
+  false, false, REF2_OPTIONS); 
   
 
 
@@ -987,7 +990,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20191203T003701_20191203T003703_T55LCJ",
     "COPERNICUS/S2/20210506T003701_20210506T003703_T55LCJ"
   ],
-  false, true, REF2_OPTIONS); 
+  false, false, REF2_OPTIONS); 
 
 
 // ======== Fraser Seamount - South =========
@@ -1014,7 +1017,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190908T235241_20190908T235244_T56KQU",
     "COPERNICUS/S2/20200823T235251_20200823T235250_T56KQU"
   ],
-  false, true, REF2_OPTIONS); 
+  false, false, REF2_OPTIONS); 
   
 // ======== U/N Sea mount - Central =========
 // Searched 6 out of 6 images
