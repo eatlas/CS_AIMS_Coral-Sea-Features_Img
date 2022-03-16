@@ -7,6 +7,9 @@
 //                 more images are available for selection.
 // Version: v1.1   Added styles Depth, Depth10m, Depth5m, DryReef. Also changed ReefTop 
 //                 to export as a shapefile instead of a raster.
+// Version: v1.1.1 Tweaking of the DryReef algorithm to improve the conversion to polygons.
+//                 Added Breaking stylings.
+//                 
 
 /**
 * @module s2Utils
@@ -180,7 +183,9 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
       composite, colourGrades[i], includeCloudmask);
     
     // If the style corresponds to a contour then convert and export as a shapefile
-    if (colourGrades[i] === 'ReefTop' || colourGrades[i] === 'Depth10m' || colourGrades[i] === 'Depth5m' || colourGrades[i] === 'DryReef') {
+    if (colourGrades[i] === 'ReefTop' || colourGrades[i] === 'Depth10m' || 
+      colourGrades[i] === 'Depth5m' || colourGrades[i] === 'DryReef' ||
+      colourGrades[i] === 'Breaking') {
       makeAndSaveShp(final_composite, displayName, exportName, exportFolder, exportScale[i], tilesGeometry, is_display, is_export);
     } else {
       
@@ -847,7 +852,7 @@ exports.removeSunGlint = function(image) {
   
   // Sun Glint Correction
   // Previously I had used the the near-infra red B8 channel for sun glint removal.
-  // I has a brightness response very similar to the visible channels, is the same
+  // It has a brightness response very similar to the visible channels, is the same
   // resolution, but doesn't penetrate the water much.
   //
   // Unfortunately in very shallow areas B8 slightly penetrates the water enough
@@ -939,6 +944,43 @@ exports.removeSunGlint = function(image) {
   // end up being black. Switching to B8 fixed this problem. Presumably
   // mangroves are much brighter on B8 than in B11.
   var sunglintCorr = rawSunGlint.where(b8.gt(LAND_THRES),LAND_ATMOS_OFFSET);
+  
+  // B5 sunglint correction. 
+  // We use B5 for generating the shallow image style and for estimating the
+  // DryReefs. Without applying any sunglint correction this process picks up
+  // sunglint and waves in B5 making the results noiser than ideal. 
+  
+  // B11 appears to be less sensitive to surface water spray then B5 and so breaking waves are 
+  // dimmer in B11. This is good as it means that B5-B11 doesn't result in B11 removing the
+  // breaking waves from B5. 
+  // The sensitivity of B11 and B5 to clouds is similar and so B5-B11 removes much of the clouds
+  // from the image. The edges of clouds are reasonably corrected and solid cloud areas turn black.
+
+  // Don't apply sunglint to the land areas. Breaking waves have a brightness of up to 1000,
+  // While mangroves have a brightness of as low as 730 and so we have an overlap that makes
+  // it impossible to separate land and water perfectly. We want to preference correct
+  // sunglint correction in water areas and so we must set it high enough so as to not
+  // interfer.
+  var B11 = image.select('B11');
+  var B5correction = B11;
+  var LOWER_THRES = 800;          // Cap the correction at this level (mangrove areas)
+  var HIGHER_THRES = 1000;        // Above this consider areas to be land
+  var ATMOS_CORRECTION = 600;     // Correction to apply to land areas
+  // Cap the correction for the cross over from ocean to land
+  B5correction = B5correction.where(B11.gt(LOWER_THRES),LOWER_THRES);
+  
+  // Above the the upper threshold we are confident that this part of the image is land
+  // and thus we should be applying a fixed atmospheric correction so that the brightness
+  // of the resulting image is consistent (i.e. there are no sudden jumps in brightness at
+  // the land and sea boundary)
+  B5correction = B5correction.where(B11.gt(HIGHER_THRES), ATMOS_CORRECTION);
+  
+  // The final B5 corrected image has a poor tonal inconsistancy for mangrove areas, with some
+  // areas of the mangroves appearing significantly darker than they should. In breaking
+  // waves on Hearld reef the threshold being slightly below the maximum breaking wave brightness
+  // doesn't result in much disturbance of the image and so these values seem like a 
+  // reasonable compromise.
+
 
   // Apply the sunglint and land atmospheric correction to the visible
   // channels.
@@ -963,7 +1005,8 @@ exports.removeSunGlint = function(image) {
     .addBands(image.select('B1').subtract(sunglintCorr.multiply(0.75)),['B1'], true)
     .addBands(image.select('B2').subtract(sunglintCorr.multiply(0.75)),['B2'], true)
     .addBands(image.select('B3').subtract(sunglintCorr.multiply(0.9)),['B3'], true)
-    .addBands(image.select('B4').subtract(sunglintCorr.multiply(1)),['B4'], true);
+    .addBands(image.select('B4').subtract(sunglintCorr.multiply(1)),['B4'], true)
+    .addBands(image.select('B5').subtract(B5correction),['B5'], true);
 
   return(sunGlintComposite);
 };
@@ -1343,7 +1386,22 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     compositeContrast = ee.Image.rgb(B3contrast, B2contrast, B1contrast);
 
   } else if (colourGradeStyle === 'DryReef') {
+    
+    // The B5 channel has a resolution of 20 m, which once turned to polygons results
+    // in 20 m steps in the polygons. Once polygon simplification is applied, to remove
+    // the raster stair case, it results in poor representation of features smaller than 
+    // 40 m in size. By applying a spatial filter we can interpolate B5 to 10 m resolution
+    // so that there is less loss in the polygon conversion process.
+    // This process is important because the DryReef areas are often long and thin (often 20 - 40 m
+    // in width).
+    filtered = scaled_img.select('B5').focal_mean(
+      {kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1}
+    );
 
+    // To help exclude noise generated by waves or sunglint we use a mask created from the
+    // green channel. B3 has good sunglint (and thus wave noise) removal, due to the tight
+    // time alignment with B8 channel. 
+    
     // This is intended to detect very shallow areas that are likely to become dry during
     // very low tides. These act as a proxy for locations that will have no significant
     // live coral (because of the exposure). We use B5 instead of B4 or the Depth estimate because
@@ -1351,7 +1409,26 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     // not to pick up deeper areas. A comparison showed that it was far more accurate than the
     // B3/B2 depth estimate. B5 does not have sunglint correction, however the threshold we are
     // using is above typical effects of sunglint.
-    compositeContrast = scaled_img.select('B5').gt(0.06);
+    compositeContrast = filtered.gt(0.026);
+
+  } else if (colourGradeStyle === 'Breaking') {
+    // Detect breaking waves. This is not a super reliable method as it will also
+    // detect land areas and is dependent on the selection of images in the analysis
+    
+    
+    // The B5 channel has a resolution of 20 m, which once turned to polygons results
+    // in 20 m steps in the polygons. Once polygon simplification is applied, to remove
+    // the raster stair case, it results in poor representation of features smaller than 
+    // 40 m in size. By applying a spatial filter we can interpolate B5 to 10 m resolution
+    // so that there is less loss in the polygon conversion process.
+    // This process is important because the DryReef areas are often long and thin (often 20 - 40 m
+    // in width)
+
+    filtered = scaled_img.select('B5')
+      .focal_max({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1});
+    // Breaking waves occur at values significantly brighter than 0.12, measuremennts
+    // Measurements 0.28, 0.38, 0.12, 0.54
+    compositeContrast = filtered.gt(0.1);
 
   } else if (colourGradeStyle === 'ReefTop') {
     //B4contrast = exports.contrastEnhance(scaled_img.select('B4'),0.02,0.021, 1);
