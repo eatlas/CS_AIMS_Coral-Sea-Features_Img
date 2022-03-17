@@ -9,6 +9,9 @@
 //                 to export as a shapefile instead of a raster.
 // Version: v1.1.1 Tweaking of the DryReef algorithm to improve the conversion to polygons.
 //                 Added Breaking stylings.
+// Version: v1.1.2 Adjusted polygon export to GeoJSON to minimise the number of export 
+//                 files as Google Drive struggles with the number generated when using
+//                 shapefiles.
 //                 
 
 /**
@@ -281,7 +284,7 @@ function makeAndSaveShp(img, layerName, fileName, exportFolder, scale, geometry,
       description: fileName,
       folder:exportFolder,
       fileNamePrefix: fileName,
-      fileFormat: 'SHP'
+      fileFormat: 'GeoJSON'
     });
   }
 }
