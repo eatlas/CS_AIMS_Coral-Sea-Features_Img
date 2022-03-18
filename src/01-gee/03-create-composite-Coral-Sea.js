@@ -38,8 +38,10 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 var REF1_OPTIONS = {
   //colourGrades: ['DeepFalse','TrueColour','Shallow','Slope','DryReef', 'Depth5m', 'Depth10m', 'Breaking'],
   //exportScale: [10, 10, 10, 30, 10, 10, 10, 10],
-  colourGrades: ['DryReef', 'Depth5m', 'Depth10m', 'Breaking', 'Land'],
-  exportScale: [5, 5, 5, 5, 5],
+  //colourGrades: ['DryReef', 'Depth5m', 'Depth10m', 'Breaking', 'Land'],
+  //exportScale: [5, 5, 5, 5, 5],
+  colourGrades: ['Land'],
+  exportScale: [ 5],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea3',
   
