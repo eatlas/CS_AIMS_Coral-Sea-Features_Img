@@ -234,7 +234,7 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
           fileNamePrefix: exportName,
           scale: exportScale[i],          // Native image resolution of Sentinel 2 is 10m.
           region: tilesGeometry,
-          maxPixels: 3e8                  // Raise the default limit of 1e8 to fit the export 
+          maxPixels: 6e8                  // Raise the default limit of 1e8 to fit the export 
                                           // of full sized Sentinel 2 images
         });
       }
@@ -273,7 +273,7 @@ function makeAndSaveShp(img, layerName, fileName, exportFolder, scale, geometry,
     geometryType: 'polygon',
     eightConnected: false,
     labelProperty: 'DIN',
-    maxPixels: 3e8
+    maxPixels: 6e8
   });
   
   if (is_display) {
