@@ -12,6 +12,10 @@
 // Version: v1.1.2 Adjusted polygon export to GeoJSON to minimise the number of export 
 //                 files as Google Drive struggles with the number generated when using
 //                 shapefiles.
+// Version: v1.2   Added Basic land layer. Added land masking to DryReef and Breaking
+//                 styles. Adjusted the cut off threshold for DryReef to be more representative
+//                 of reef tops that are dry or exposed at low tide. This was done by tweaking
+//                 based on the boundary extent on Green Island and South Warden Reef.
 //                 
 
 /**
@@ -1333,7 +1337,16 @@ exports.apply_cloud_shadow_mask = function(img) {
 exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMask) {
   var compositeContrast;
   var scaled_img = img.divide(1e4);
-
+  // Consider anything brighter than this as land. This threshold is chosen slightly higher than
+  // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
+  // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
+  // result in dark areas on land (such as on Magnetic Island) as appearing as water.
+  // Mask the land in reef layers that is less severe then the land mask. The aim here is to
+  // ensure that the reef feature overlaps with the land by a small amount to allow better
+  // cookie cutting the land out in later processing.
+  var B8LANDMASK_THRESHOLD = 1400; 
+  var B8LAND_THRESHOLD = 800; 
+  
   var B4contrast;
   var B3contrast;
   var B2contrast;
@@ -1343,6 +1356,7 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
   var filtered;
   var exportProjection;
   var projectedComposite;
+  var waterMask;
   if (colourGradeStyle === 'TrueColour') {
     B4contrast = exports.contrastEnhance(scaled_img.select('B4'),0.013,0.3, 2.2);
     B3contrast = exports.contrastEnhance(scaled_img.select('B3'),0.025,0.31, 2.2);
@@ -1410,13 +1424,23 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     // live coral (because of the exposure). We use B5 instead of B4 or the Depth estimate because
     // B5 penetrates into the water less than B4, (something like 3 - 5 m) and so is guaranteed 
     // not to pick up deeper areas. A comparison showed that it was far more accurate than the
-    // B3/B2 depth estimate. B5 does not have sunglint correction, however the threshold we are
-    // using is above typical effects of sunglint.
-    compositeContrast = filtered.gt(0.026);
+    // B3/B2 depth estimate. 
+    // 0.026 - This detects an area that is too large, picking up areas that clearly have 
+    //         live coral, i.e. they don't get exposed. Based on South Warden Reef (55LBE)
+    // 0.031 - This theshold was chosen so that the known exposed extent of Green Island (55KCB)
+    compositeContrast = filtered.gt(0.031);
+    
+    waterMask = img.select('B8').lt(B8LANDMASK_THRESHOLD);
+    
+    // Mask out any land areas because the depth estimates would 
+    compositeContrast = compositeContrast.updateMask(waterMask);
+    
 
   } else if (colourGradeStyle === 'Breaking') {
     // Detect breaking waves. This is not a super reliable method as it will also
-    // detect land areas and is dependent on the selection of images in the analysis
+    // detect land areas and is dependent on the selection of images in the analysis.
+    // It detect and shallow or dry area.
+    // It tends to provide patchy detection of breaking waves.
     
     
     // The B5 channel has a resolution of 20 m, which once turned to polygons results
@@ -1431,8 +1455,27 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
       .focal_max({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1});
     // Breaking waves occur at values significantly brighter than 0.12, measuremennts
     // Measurements 0.28, 0.38, 0.12, 0.54
-    compositeContrast = filtered.gt(0.1);
+    // A threshold of 0.1 detects very shallow reef tops (such as Hardy Reef), not just breaking waves. 
+    // Shallow reef tops
+    // Hardy reef: 0.146, 0.24
+    // South Warden Reef: 0.09, 0.105
+    compositeContrast = filtered.gt(0.16);
 
+    // Exclude land areas to help clean up the data a bit. 
+    waterMask = img.select('B8').lt(B8LANDMASK_THRESHOLD);
+    
+    // Mask out any land areas because the depth estimates would 
+    compositeContrast = compositeContrast.updateMask(waterMask);
+
+  }  else if (colourGradeStyle === 'Land') {
+    // Perform a basic mapping of land areas
+
+    filtered = img.select('B8')
+      .focal_max({kernel: ee.Kernel.circle({radius: 10, units: 'meters'}), iterations: 1});
+    
+    compositeContrast = filtered.gt(B8LAND_THRESHOLD);
+
+  // DEPRECATED
   } else if (colourGradeStyle === 'ReefTop') {
     //B4contrast = exports.contrastEnhance(scaled_img.select('B4'),0.02,0.021, 1);
     //var B5contrast = exports.contrastEnhance(scaled_img.select('B5'),0.02,0.05, 1);
@@ -1823,7 +1866,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
     // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
     // result in dark areas on land (such as on Magnetic Island) as appearing as water.
-    var B8LAND_THRESHOLD = 900; 
+    var B8LAND_THRESHOLD = 1400; 
     var waterMask = img.select('B8').lt(B8LAND_THRESHOLD);
     
     // Mask out any land areas because the depth estimates would 
