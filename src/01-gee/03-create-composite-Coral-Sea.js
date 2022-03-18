@@ -41,7 +41,7 @@ var REF1_OPTIONS = {
   colourGrades: ['DryReef', 'Depth5m', 'Depth10m', 'Breaking', 'Land'],
   exportScale: [5, 5, 5, 5, 5],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
-  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea3',
   
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
