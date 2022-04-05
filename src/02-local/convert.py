@@ -19,6 +19,8 @@
 import os
 import subprocess
 import glob
+from PIL import Image
+import math
 
 # Here we assume that the directory structure is that the SRC_PATH points to
 # the images downloaded from GEE organised into folders corresponding to
@@ -44,11 +46,20 @@ import glob
 #       - S2_R1_DeepFalse
 #         - *.tif
 #       ...
-SRC_PATH = '../../unprocessed-data'
+#SRC_PATH = '../../unprocessed-data'
+SRC_PATH = '../../big-files/lossless'
 OUT_PATH = '../../big-files/data'
+
+MAKE_RAW = False
+MAKE_PUBLIC = False
+MAKE_PREVIEW = False
+MAKE_GEOPNG = True
+MAKE_VIRTUAL = False
+
 
 OUT_RAW = '../../big-files/lossless/' # Lossless original data (with minor fix ups)
 OUT_PUBLIC = '../../big-files/lossy'	# Compressed version of the data suitable for sharing 
+OUT_GEOPNG = '../../big-files/geopng'
 OUT_PREVIEW = '../../big-files/preview'	# Path for preview images
 
 
@@ -70,7 +81,7 @@ styles = [
 	'S2_R1_TrueColour', 'S2_R2_TrueColour','L8_R1_TrueColour', 'L8_R2_TrueColour',
 	'S2_R1_Slope', 'S2_R2_Slope','L8_R1_Slope', 'L8_R2_Slope'
 	]
-	
+
 
 # Command line calls for each image type
 # -mask 1        Copy the binary mask from channel 1 (red?). This works because the nodata value in the image
@@ -95,14 +106,6 @@ JPG = 'gdal_translate -mask 1 -co TILED=YES -co JPEG_QUALITY=94 -co COMPRESS=JPE
 #                    the imagery doesn't represent true black (0).
 LZW = 'gdal_translate -co "COMPRESS=LZW" -co "TILED=YES" -a_nodata 0 '
 
-# Preview image
-# --config GDAL_PAM_ENABLED NO    Disable the creation of the aux.xml files so the preview folders aren't cluttered.
-# -outsize 50% 50%                Reduce the size of the imagery to 50% (about 5500 pixels) for smaller file sizes
-# -r average                      Use averaging in the resizing to remove aliasing.
-# -co QUALITY=80                  Improve the image quality slightly above the default of 75.
-# -co EXIF_THUMBNAIL=YES          Embed a 128x128 pixel thumbnail. Might make browsing the previews faster?
-PREVIEW = 'gdal_translate -of JPEG -r average -outsize 50% 50% --config GDAL_PAM_ENABLED NO -co QUALITY=80 -co EXIF_THUMBNAIL=YES '
-
 processing = [
 	JPG, JPG, JPG, JPG,	# DeepMarine
 	JPG, JPG, JPG, JPG,	# DeepFalse
@@ -111,6 +114,20 @@ processing = [
 	JPG, JPG, JPG, JPG,	# TrueColour
 	LZW, LZW, LZW, LZW	# Slope
 	]
+
+# Preview image
+# --config GDAL_PAM_ENABLED NO    Disable the creation of the aux.xml files so the preview folders aren't cluttered.
+# -outsize 50% 50%                Reduce the size of the imagery to 50% (about 5500 pixels) for smaller file sizes
+# -r average                      Use averaging in the resizing to remove aliasing.
+# -co QUALITY=80                  Improve the image quality slightly above the default of 75.
+# -co EXIF_THUMBNAIL=YES          Embed a 128x128 pixel thumbnail. Might make browsing the previews faster?
+PREVIEW = 'gdal_translate -of JPEG -r average -outsize 50% 50% --config GDAL_PAM_ENABLED NO -co QUALITY=80 -co EXIF_THUMBNAIL=YES '
+
+# Make imagery with a low enough resolution that we can edit it in Procreate on an iPad.
+#GEOPNG = 'gdal_translate -of JPEG -r average -outsize 50% 50% -co QUALITY=97 -co EXIF_THUMBNAIL=YES -co WORLDFILE=YES '
+GEOPNG = 'gdal_translate -of PNG -r average -outsize 50% 50% -co WORLDFILE=YES '
+
+
 	
 # While QGIS can render the JPG compressed GeoTiff correctly they don't work properly
 # with the GDAL virtual layers. The compressed JPGs also cause issues with GeoServer
@@ -190,76 +207,121 @@ for srcRegionDir in srcRegionDirs:
 		# Rename the files
 		outFileName = fileName.replace("_Imagery_","_Img_")
 		
-		# ------------- Lossless ----------------
-		# Generate the lossless version of the data. This can be used for subsequent reprocessing,
-		# but is large 200 - 300 MB per image.
-		
-		# Create an output directory for the region and style if it doesn't already exists
-		outStylePath = os.path.join(OUT_RAW, region, imgStyle)
-		#print("Out raw path: "+outStylePath)
-		if not os.path.exists(outStylePath):
-			os.makedirs(outStylePath)
-		
-		# Temp hack to rename old generated files
-		#origDest = os.path.join(outStylePath, fileName)
-		#newDest = os.path.join(outStylePath, outFileName)
-		
-		dest = os.path.join(outStylePath, outFileName)
-		#print("Dest: "+str(os.path.isfile(dest))+" "+dest)
-		# Test if the destination file already exists. If so skip over the conversion.
-		# Note: This returns false when the path is over 240 characters (not sure why it isn't 260).
-		if os.path.isfile(dest): 
-			print("Skipping "+fileName+" as output already exists "+dest)
-		else:
-			callStr = LZW+srcFile+' '+dest
-			print("Lossless system call: "+callStr)
-			subprocess.call(callStr)
-			subprocess.call('gdaladdo -r average '+dest)
-
-			#os.rename(origDest,newDest)
-		
-		# ------------- Compressed output ----------------
-		# Generate the lossy version of the data suitable for public delivery.
-		# This compresses large images using JPG compression shrinking them to 40 - 50 MB each
-		
-		# Get the GDAL processing for the style. Some images have LZW and some are JPG compressed.
-		gdalProcessing = processing[styleIndex]
-		
-		# Create an output directory for the region and style if it doesn't already exists
-		outStylePath = os.path.join(OUT_PUBLIC, region, imgStyle)
-		# print("Out public path: "+outStylePath)
-		if not os.path.exists(outStylePath):
-			os.makedirs(outStylePath)
-
-		dest = os.path.join(outStylePath, outFileName)
-		# Test if the destination file already exists. If so skip over the conversion.
-		if os.path.isfile(dest): 
-			print("Skipping "+fileName+" as output already exists "+dest)
-		else:
-			callStr = gdalProcessing+srcFile+' '+dest
-			print("Lossy system call: "+callStr)
-			subprocess.call(callStr)
-			subprocess.call('gdaladdo -r average '+dest)
+		if MAKE_RAW:
+			# ------------- Lossless ----------------
+			# Generate the lossless version of the data. This can be used for subsequent reprocessing,
+			# but is large 200 - 300 MB per image.
 			
-		# ------------- Preview images ----------------
-		# Generate JPEG preview images.
+			# Create an output directory for the region and style if it doesn't already exists
+			outStylePath = os.path.join(OUT_RAW, region, imgStyle)
+			#print("Out raw path: "+outStylePath)
+			if not os.path.exists(outStylePath):
+				os.makedirs(outStylePath)
+			
+			# Temp hack to rename old generated files
+			#origDest = os.path.join(outStylePath, fileName)
+			#newDest = os.path.join(outStylePath, outFileName)
+			
+			dest = os.path.join(outStylePath, outFileName)
+			#print("Dest: "+str(os.path.isfile(dest))+" "+dest)
+			# Test if the destination file already exists. If so skip over the conversion.
+			# Note: This returns false when the path is over 240 characters (not sure why it isn't 260).
+			if os.path.isfile(dest): 
+				print("Skipping "+fileName+" as output already exists "+dest)
+			else:
+				callStr = LZW+srcFile+' '+dest
+				print("Lossless system call: "+callStr)
+				subprocess.call(callStr)
+				subprocess.call('gdaladdo -r average '+dest)
+
+				#os.rename(origDest,newDest)
+		if MAKE_PUBLIC:
+			# ------------- Compressed output ----------------
+			# Generate the lossy version of the data suitable for public delivery.
+			# This compresses large images using JPG compression shrinking them to 40 - 50 MB each
+			
+			# Get the GDAL processing for the style. Some images have LZW and some are JPG compressed.
+			gdalProcessing = processing[styleIndex]
+			
+			# Create an output directory for the region and style if it doesn't already exists
+			outStylePath = os.path.join(OUT_PUBLIC, region, imgStyle)
+			# print("Out public path: "+outStylePath)
+			if not os.path.exists(outStylePath):
+				os.makedirs(outStylePath)
+
+			dest = os.path.join(outStylePath, outFileName)
+			# Test if the destination file already exists. If so skip over the conversion.
+			if os.path.isfile(dest): 
+				print("Skipping "+fileName+" as output already exists "+dest)
+			else:
+				callStr = gdalProcessing+srcFile+' '+dest
+				print("Lossy system call: "+callStr)
+				subprocess.call(callStr)
+				subprocess.call('gdaladdo -r average '+dest)
 		
-		# Create an output directory for the region and style if it doesn't already exists
-		outStylePath = os.path.join(OUT_PREVIEW, region, imgStyle)
-		#print("Out preview path: "+outStylePath)
-		if not os.path.exists(outStylePath):
-			os.makedirs(outStylePath)
-		
-		# Replace the .tif with .jpg in the filename
-		dest = os.path.join(outStylePath, outFileName.replace(".tif",".jpg"))
-		#print("Dest: "+str(os.path.isfile(dest))+" "+dest)
-		# Test if the destination file already exists. If so skip over the conversion.
-		if os.path.isfile(dest): 
-			print("Skipping "+fileName+" as output already exists "+dest)
-		else:
-			callStr = PREVIEW+srcFile+' '+dest
-			print("Preview system call: "+callStr)
-			subprocess.call(callStr)
+		if MAKE_PREVIEW:
+			# ------------- Preview images ----------------
+			# Generate JPEG preview images.
+			
+			# Create an output directory for the region and style if it doesn't already exists
+			outStylePath = os.path.join(OUT_PREVIEW, region, imgStyle)
+			#print("Out preview path: "+outStylePath)
+			if not os.path.exists(outStylePath):
+				os.makedirs(outStylePath)
+			
+			# Replace the .tif with .jpg in the filename
+			dest = os.path.join(outStylePath, outFileName.replace(".tif",".jpg"))
+			#print("Dest: "+str(os.path.isfile(dest))+" "+dest)
+			# Test if the destination file already exists. If so skip over the conversion.
+			if os.path.isfile(dest): 
+				print("Skipping "+fileName+" as output already exists "+dest)
+			else:
+				callStr = PREVIEW+srcFile+' '+dest
+				print("Preview system call: "+callStr)
+				subprocess.call(callStr)
+				
+		if MAKE_GEOPNG:
+			# ------------- Preview images ----------------
+			# Generate JPEG preview images.
+			
+			# Create an output directory for the region and style if it doesn't already exists
+			outStylePath = os.path.join(OUT_GEOPNG, region, imgStyle)
+			#print("Out preview path: "+outStylePath)
+			if not os.path.exists(outStylePath):
+				os.makedirs(outStylePath)
+			
+			# Replace the .tif with .jpg in the filename
+			dest = os.path.join(outStylePath, outFileName.replace(".tif",".png"))
+
+			# Test if the destination file already exists. If so skip over the conversion.
+			if os.path.isfile(dest): 
+				print("Skipping "+fileName+" as output already exists "+dest)
+			else:
+				# Get the image size so we can cut up the imagery into 4 parts per image 
+				# to limit the size of the images.
+				Image.MAX_IMAGE_PIXELS = None   # disables the warning
+				
+				img=Image.open(srcFile)
+				w,h=img.size    # w=Width and h=Height
+				xsize1 = math.floor(w/2)
+				xsize2 = w-xsize1
+				ysize1 = math.floor(h/2)
+				ysize2 = h - ysize1
+				dest = os.path.join(outStylePath, outFileName.replace(".tif","1.png"))
+				callStr = 'gdal_translate -of PNG -srcwin '+str(0)+' '+str(0)+' '+str(xsize1)+' '+str(ysize1)+' -co WORLDFILE=YES '+srcFile+' '+dest
+				subprocess.call(callStr)
+				
+				dest = os.path.join(outStylePath, outFileName.replace(".tif","2.png"))
+				callStr = 'gdal_translate -of PNG -srcwin '+str(xsize1)+' '+str(0)+' '+str(xsize2)+' '+str(ysize1)+' -co WORLDFILE=YES '+srcFile+' '+dest
+				subprocess.call(callStr)
+				
+				dest = os.path.join(outStylePath, outFileName.replace(".tif","3.png"))
+				callStr = 'gdal_translate -of PNG -srcwin '+str(0)+' '+str(ysize1)+' '+str(xsize1)+' '+str(ysize2)+' -co WORLDFILE=YES '+srcFile+' '+dest
+				subprocess.call(callStr)
+				
+				dest = os.path.join(outStylePath, outFileName.replace(".tif","4.png"))
+				callStr = 'gdal_translate -of PNG -srcwin '+str(xsize1)+' '+str(ysize1)+' '+str(xsize2)+' '+str(ysize2)+' -co WORLDFILE=YES '+srcFile+' '+dest
+				subprocess.call(callStr)
 			
 
 # Build GDAL Virtual Raster for each of the styles for the lossless version of the dataset.
@@ -277,28 +339,28 @@ for srcRegionDir in srcRegionDirs:
 # paths unreadable and probably not compatible across different platforms. 
 # If we use gdalbuildvrt directly here the paths are made relative and without the
 # conversion to 8.3 DOS names.
-
-outputPaths = [OUT_RAW]
-for outputPath in outputPaths:
-	outRegionDirs = glob.glob(os.path.join(outputPath,"*/"))
-	print("=================== Virtual Raster =====================")
-	print(outRegionDirs)
-	for outRegionDir in outRegionDirs:
-		# Look through all the directories that might have been created corresponding to 
-		# the image styles. We could have try to process all OUT_PATH folders, looking for
-		# any TIF files, however this way we won't accidentially attempt to create a virtual
-		# raster for folders created through some other process.
-		# Additionally if not all the styles have been downloaded from Google Earth Engine
-		# then there will be style directories that don't exist. We must handle this case.
-		for style in styles:
-			imgDir = os.path.join(outRegionDir,style)
-			# Only process if there is a directory for the style and it has some TIF files in it.
-			if os.path.isdir(imgDir) and (len(glob.glob(os.path.join(imgDir,"*.tif"))) > 0):
-				# Place the virtual raster in the directory with the tif images. This will
-				# help keep the relative paths clean.
-				print('==== Building Virtual Raster files '+imgDir+' =====')
-				cmdString = 'gdalbuildvrt '+style+'.vrt'+' *.tif'
-				print(cmdString)
-				subprocess.call(cmdString, cwd = imgDir)
-			else:
-				print("No files found for "+imgDir)
+if MAKE_VIRTUAL:
+	outputPaths = [OUT_RAW]
+	for outputPath in outputPaths:
+		outRegionDirs = glob.glob(os.path.join(outputPath,"*/"))
+		print("=================== Virtual Raster =====================")
+		print(outRegionDirs)
+		for outRegionDir in outRegionDirs:
+			# Look through all the directories that might have been created corresponding to 
+			# the image styles. We could have try to process all OUT_PATH folders, looking for
+			# any TIF files, however this way we won't accidentially attempt to create a virtual
+			# raster for folders created through some other process.
+			# Additionally if not all the styles have been downloaded from Google Earth Engine
+			# then there will be style directories that don't exist. We must handle this case.
+			for style in styles:
+				imgDir = os.path.join(outRegionDir,style)
+				# Only process if there is a directory for the style and it has some TIF files in it.
+				if os.path.isdir(imgDir) and (len(glob.glob(os.path.join(imgDir,"*.tif"))) > 0):
+					# Place the virtual raster in the directory with the tif images. This will
+					# help keep the relative paths clean.
+					print('==== Building Virtual Raster files '+imgDir+' =====')
+					cmdString = 'gdalbuildvrt '+style+'.vrt'+' *.tif'
+					print(cmdString)
+					subprocess.call(cmdString, cwd = imgDir)
+				else:
+					print("No files found for "+imgDir)

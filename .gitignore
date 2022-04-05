@@ -2,6 +2,7 @@
 *.vrt
 *.png
 *.jpg
+tmp/*
 repo-only/*
 !repo-only/README.md
 big-files/*
