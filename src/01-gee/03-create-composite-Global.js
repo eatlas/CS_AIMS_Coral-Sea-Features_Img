@@ -20,10 +20,10 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // to get the cleanest image.
 
 var REF1_OPTIONS = {
-  colourGrades: ['TrueColour','DeepFalse','ReefTop','Shallow','Slope'],
-  exportScale: [10, 10, 10, 10, 30],
+  colourGrades: ['DeepFalse','TrueColour','Shallow','Slope','DryReef', 'Depth5m', 'Depth10m'],
+  exportScale: [10, 10, 10, 30, 10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
-  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global3',
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
 };
@@ -426,10 +426,10 @@ s2Utils.s2_composite_display_and_export(
 		//"COPERNICUS/S2/20190718T002719_20190718T003157_T55KDU", //5 
 		//"COPERNICUS/S2/20200503T002709_20200503T002704_T55KDU", //5  // Fishing trawler tracks north of Magnetic Island
 		"COPERNICUS/S2/20200717T002711_20200717T002712_T55KDU", //3 
-		"COPERNICUS/S2/20200811T002709_20200811T002711_T55KDU", //3 
+		"COPERNICUS/S2/20200811T002709_20200811T002711_T55KDU" //3 
 		//"COPERNICUS/S2/20210513T002711_20210513T002707_T55KDU"  //4
 	],
-  true, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
   
@@ -746,7 +746,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20181022T004701_20181022T004703_T54LXP",
     "COPERNICUS/S2/20190510T004711_20190510T004710_T54LXP" 
   ], 
- false, true, REF1_OPTIONS);
+ false, false, true, REF1_OPTIONS);
   
 
 

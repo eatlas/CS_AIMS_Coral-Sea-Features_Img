@@ -5,6 +5,18 @@
 // Version: v1.0   initial release
 // Version: v1.0.1 Adjusted the small tile filter in createSelectSentinel2ImagesApp so that
 //                 more images are available for selection.
+// Version: v1.1   Added styles Depth, Depth10m, Depth5m, DryReef. Also changed ReefTop 
+//                 to export as a shapefile instead of a raster.
+// Version: v1.1.1 Tweaking of the DryReef algorithm to improve the conversion to polygons.
+//                 Added Breaking stylings.
+// Version: v1.1.2 Adjusted polygon export to GeoJSON to minimise the number of export 
+//                 files as Google Drive struggles with the number generated when using
+//                 shapefiles.
+// Version: v1.2   Added Basic land layer. Added land masking to DryReef and Breaking
+//                 styles. Adjusted the cut off threshold for DryReef to be more representative
+//                 of reef tops that are dry or exposed at low tide. This was done by tweaking
+//                 based on the boundary extent on Green Island and South Warden Reef.
+//                 
 
 /**
 * @module s2Utils
@@ -176,48 +188,110 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
 
     var final_composite = exports.bake_s2_colour_grading(
       composite, colourGrades[i], includeCloudmask);
-  
-    // Scale and convert the image to an 8 bit image to make the export
-    // file size considerably smaller.
-    // Reserve 0 for no_data so that the images can be converted to not
-    // have black borders. Scaling the data ensures that no valid data
-    // is 0.
-    var uint8_composite = final_composite.multiply(254).add(1).toUint8();
     
-    // Export the image, specifying scale and region.
-    // Only trigger the export when we want. The export process can take quite a while
-    // due to the queue time on the Earth Engine. The first export I did was
-    // 3 days on the queue.
-  
-    if (is_export) {
-      print("======= Exporting image "+exportName+" =======");
-      //var saLayer = ui.Map.Layer(tilesGeometry, {color: 'FF0000'}, 'Export Area');
-      //Map.layers().add(saLayer);
+    // If the style corresponds to a contour then convert and export as a shapefile
+    if (colourGrades[i] === 'ReefTop' || colourGrades[i] === 'Depth10m' || 
+      colourGrades[i] === 'Depth5m' || colourGrades[i] === 'DryReef' ||
+      colourGrades[i] === 'Breaking' || colourGrades[i] === 'Land') {
+      makeAndSaveShp(final_composite, displayName, exportName, exportFolder, exportScale[i], tilesGeometry, is_display, is_export);
+    } else {
       
+      // Keep as raster
+
+      var displayMin = 0;
+      var displayMax = 1;
     
-      Export.image.toDrive({
-        //image: final_composite,
-        image: uint8_composite,
-        description: exportName,
-        folder:exportFolder,
-        fileNamePrefix: exportName,
-        scale: exportScale[i],          // Native image resolution of Sentinel 2 is 10m.
-        region: tilesGeometry,
-        maxPixels: 3e8                  // Raise the default limit of 1e8 to fit the export 
-                                        // of full sized Sentinel 2 images
-      });
-    }
-    if (is_display) {
-      Map.addLayer(final_composite, {'min': 0, 'max': 1, 'gamma': 1},
-                      displayName, false, 1);
-      if (includeCloudmask) {
-        Map.addLayer(final_composite.select('cloudmask').selfMask(), {'palette': 'orange'},
-                     displayName+'_cloudmask', false, 0.5);
+      var export_composite;
+      if (colourGrades[i] === 'Depth') {
+        export_composite = final_composite;
+        displayMin = -25;
+        displayMax = 0;
+      } else {
+        // Scale and convert the image to an 8 bit image to make the export
+        // file size considerably smaller.
+        // Reserve 0 for no_data so that the images can be converted to not
+        // have black borders. Scaling the data ensures that no valid data
+        // is 0.
+        export_composite = final_composite.multiply(254).add(1).toUint8();
       }
-    } 
+      
+      // Export the image, specifying scale and region.
+      // Only trigger the export when we want. The export process can take quite a while
+      // due to the queue time on the Earth Engine. The first export I did was
+      // 3 days on the queue.
+    
+      if (is_export) {
+        print("======= Exporting image "+exportName+" =======");
+        //var saLayer = ui.Map.Layer(tilesGeometry, {color: 'FF0000'}, 'Export Area');
+        //Map.layers().add(saLayer);
+        
+      
+        Export.image.toDrive({
+          //image: final_composite,
+          image: export_composite,
+          description: exportName,
+          folder:exportFolder,
+          fileNamePrefix: exportName,
+          scale: exportScale[i],          // Native image resolution of Sentinel 2 is 10m.
+          region: tilesGeometry,
+          maxPixels: 6e8                  // Raise the default limit of 1e8 to fit the export 
+                                          // of full sized Sentinel 2 images
+        });
+      }
+      if (is_display) {
+        Map.addLayer(final_composite, {'min': displayMin, 'max': displayMax, 'gamma': 1},
+                        displayName, false, 1);
+        if (includeCloudmask) {
+          Map.addLayer(final_composite.select('cloudmask').selfMask(), {'palette': 'orange'},
+                       displayName+'_cloudmask', false, 0.5);
+        }
+      } 
+    }
   }
 };
 
+
+// Helper function that converts the provided image into a vector image and saves it
+// as a SHP file in Google Drive. Use 3 m resolution.
+// If the image is large then the vectorisation may fail or be very slow.
+// img - image to vectorise. Should be grey scale 0 - 1. A 0.5 threshold is applied
+// layerName - Display name to give to the vector layer.
+// fileName - Name to give in the export task
+// exportFolder - folder to save into on Google Drive
+// scale - scale to export the vector at. Recommend 3 for 3 m.
+// geometry - limit of the vectorisation.
+function makeAndSaveShp(img, layerName, fileName, exportFolder, scale, geometry, is_display, is_export) {
+  // Apply a threshold to the image
+  var imgContour = img.gt(0.5);
+  // Make the water area transparent
+  imgContour = imgContour.updateMask(imgContour.neq(0));
+  // Convert the image to vectors.
+  var vector = imgContour.reduceToVectors({
+    geometry: geometry,
+    crs: imgContour.projection(),
+    scale: scale,
+    geometryType: 'polygon',
+    eightConnected: false,
+    labelProperty: 'DIN',
+    maxPixels: 6e8
+  });
+  
+  if (is_display) {
+    // Make a display image for the vectors, add it to the map.
+    var display = ee.Image(0).updateMask(0).paint(vector, '000000', 2);
+    Map.addLayer(display, {palette: '000000'}, layerName, false);
+  }
+  if (is_export) {
+    // Export the FeatureCollection to a KML file.
+    Export.table.toDrive({
+      collection: vector,
+      description: fileName,
+      folder:exportFolder,
+      fileNamePrefix: fileName,
+      fileFormat: 'GeoJSON'
+    });
+  }
+}
 
 /**
  * This function returns an array of the unique set of Sentinel 2 tiles from
@@ -785,7 +859,7 @@ exports.removeSunGlint = function(image) {
   
   // Sun Glint Correction
   // Previously I had used the the near-infra red B8 channel for sun glint removal.
-  // I has a brightness response very similar to the visible channels, is the same
+  // It has a brightness response very similar to the visible channels, is the same
   // resolution, but doesn't penetrate the water much.
   //
   // Unfortunately in very shallow areas B8 slightly penetrates the water enough
@@ -877,6 +951,43 @@ exports.removeSunGlint = function(image) {
   // end up being black. Switching to B8 fixed this problem. Presumably
   // mangroves are much brighter on B8 than in B11.
   var sunglintCorr = rawSunGlint.where(b8.gt(LAND_THRES),LAND_ATMOS_OFFSET);
+  
+  // B5 sunglint correction. 
+  // We use B5 for generating the shallow image style and for estimating the
+  // DryReefs. Without applying any sunglint correction this process picks up
+  // sunglint and waves in B5 making the results noiser than ideal. 
+  
+  // B11 appears to be less sensitive to surface water spray then B5 and so breaking waves are 
+  // dimmer in B11. This is good as it means that B5-B11 doesn't result in B11 removing the
+  // breaking waves from B5. 
+  // The sensitivity of B11 and B5 to clouds is similar and so B5-B11 removes much of the clouds
+  // from the image. The edges of clouds are reasonably corrected and solid cloud areas turn black.
+
+  // Don't apply sunglint to the land areas. Breaking waves have a brightness of up to 1000,
+  // While mangroves have a brightness of as low as 730 and so we have an overlap that makes
+  // it impossible to separate land and water perfectly. We want to preference correct
+  // sunglint correction in water areas and so we must set it high enough so as to not
+  // interfer.
+  var B11 = image.select('B11');
+  var B5correction = B11;
+  var LOWER_THRES = 800;          // Cap the correction at this level (mangrove areas)
+  var HIGHER_THRES = 1000;        // Above this consider areas to be land
+  var ATMOS_CORRECTION = 600;     // Correction to apply to land areas
+  // Cap the correction for the cross over from ocean to land
+  B5correction = B5correction.where(B11.gt(LOWER_THRES),LOWER_THRES);
+  
+  // Above the the upper threshold we are confident that this part of the image is land
+  // and thus we should be applying a fixed atmospheric correction so that the brightness
+  // of the resulting image is consistent (i.e. there are no sudden jumps in brightness at
+  // the land and sea boundary)
+  B5correction = B5correction.where(B11.gt(HIGHER_THRES), ATMOS_CORRECTION);
+  
+  // The final B5 corrected image has a poor tonal inconsistancy for mangrove areas, with some
+  // areas of the mangroves appearing significantly darker than they should. In breaking
+  // waves on Hearld reef the threshold being slightly below the maximum breaking wave brightness
+  // doesn't result in much disturbance of the image and so these values seem like a 
+  // reasonable compromise.
+
 
   // Apply the sunglint and land atmospheric correction to the visible
   // channels.
@@ -901,7 +1012,8 @@ exports.removeSunGlint = function(image) {
     .addBands(image.select('B1').subtract(sunglintCorr.multiply(0.75)),['B1'], true)
     .addBands(image.select('B2').subtract(sunglintCorr.multiply(0.75)),['B2'], true)
     .addBands(image.select('B3').subtract(sunglintCorr.multiply(0.9)),['B3'], true)
-    .addBands(image.select('B4').subtract(sunglintCorr.multiply(1)),['B4'], true);
+    .addBands(image.select('B4').subtract(sunglintCorr.multiply(1)),['B4'], true)
+    .addBands(image.select('B5').subtract(B5correction),['B5'], true);
 
   return(sunGlintComposite);
 };
@@ -1225,7 +1337,16 @@ exports.apply_cloud_shadow_mask = function(img) {
 exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMask) {
   var compositeContrast;
   var scaled_img = img.divide(1e4);
-
+  // Consider anything brighter than this as land. This threshold is chosen slightly higher than
+  // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
+  // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
+  // result in dark areas on land (such as on Magnetic Island) as appearing as water.
+  // Mask the land in reef layers that is less severe then the land mask. The aim here is to
+  // ensure that the reef feature overlaps with the land by a small amount to allow better
+  // cookie cutting the land out in later processing.
+  var B8LANDMASK_THRESHOLD = 1400; 
+  var B8LAND_THRESHOLD = 800; 
+  
   var B4contrast;
   var B3contrast;
   var B2contrast;
@@ -1235,6 +1356,7 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
   var filtered;
   var exportProjection;
   var projectedComposite;
+  var waterMask;
   if (colourGradeStyle === 'TrueColour') {
     B4contrast = exports.contrastEnhance(scaled_img.select('B4'),0.013,0.3, 2.2);
     B3contrast = exports.contrastEnhance(scaled_img.select('B3'),0.025,0.31, 2.2);
@@ -1280,6 +1402,80 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     B1contrast = exports.contrastEnhance(scaled_img.select('B1'),0.1075,0.237, 2.7); 
     compositeContrast = ee.Image.rgb(B3contrast, B2contrast, B1contrast);
 
+  } else if (colourGradeStyle === 'DryReef') {
+    
+    // The B5 channel has a resolution of 20 m, which once turned to polygons results
+    // in 20 m steps in the polygons. Once polygon simplification is applied, to remove
+    // the raster stair case, it results in poor representation of features smaller than 
+    // 40 m in size. By applying a spatial filter we can interpolate B5 to 10 m resolution
+    // so that there is less loss in the polygon conversion process.
+    // This process is important because the DryReef areas are often long and thin (often 20 - 40 m
+    // in width).
+    filtered = scaled_img.select('B5').focal_mean(
+      {kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1}
+    );
+
+    // To help exclude noise generated by waves or sunglint we use a mask created from the
+    // green channel. B3 has good sunglint (and thus wave noise) removal, due to the tight
+    // time alignment with B8 channel. 
+    
+    // This is intended to detect very shallow areas that are likely to become dry during
+    // very low tides. These act as a proxy for locations that will have no significant
+    // live coral (because of the exposure). We use B5 instead of B4 or the Depth estimate because
+    // B5 penetrates into the water less than B4, (something like 3 - 5 m) and so is guaranteed 
+    // not to pick up deeper areas. A comparison showed that it was far more accurate than the
+    // B3/B2 depth estimate. 
+    // 0.026 - This detects an area that is too large, picking up areas that clearly have 
+    //         live coral, i.e. they don't get exposed. Based on South Warden Reef (55LBE)
+    // 0.031 - This theshold was chosen so that the known exposed extent of Green Island (55KCB)
+    compositeContrast = filtered.gt(0.031);
+    
+    waterMask = img.select('B8').lt(B8LANDMASK_THRESHOLD);
+    
+    // Mask out any land areas because the depth estimates would 
+    compositeContrast = compositeContrast.updateMask(waterMask);
+    
+
+  } else if (colourGradeStyle === 'Breaking') {
+    // Detect breaking waves. This is not a super reliable method as it will also
+    // detect land areas and is dependent on the selection of images in the analysis.
+    // It detect and shallow or dry area.
+    // It tends to provide patchy detection of breaking waves.
+    
+    
+    // The B5 channel has a resolution of 20 m, which once turned to polygons results
+    // in 20 m steps in the polygons. Once polygon simplification is applied, to remove
+    // the raster stair case, it results in poor representation of features smaller than 
+    // 40 m in size. By applying a spatial filter we can interpolate B5 to 10 m resolution
+    // so that there is less loss in the polygon conversion process.
+    // This process is important because the DryReef areas are often long and thin (often 20 - 40 m
+    // in width)
+
+    filtered = scaled_img.select('B5')
+      .focal_max({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1});
+    // Breaking waves occur at values significantly brighter than 0.12, measuremennts
+    // Measurements 0.28, 0.38, 0.12, 0.54
+    // A threshold of 0.1 detects very shallow reef tops (such as Hardy Reef), not just breaking waves. 
+    // Shallow reef tops
+    // Hardy reef: 0.146, 0.24
+    // South Warden Reef: 0.09, 0.105
+    compositeContrast = filtered.gt(0.16);
+
+    // Exclude land areas to help clean up the data a bit. 
+    waterMask = img.select('B8').lt(B8LANDMASK_THRESHOLD);
+    
+    // Mask out any land areas because the depth estimates would 
+    compositeContrast = compositeContrast.updateMask(waterMask);
+
+  }  else if (colourGradeStyle === 'Land') {
+    // Perform a basic mapping of land areas
+
+    filtered = img.select('B8')
+      .focal_max({kernel: ee.Kernel.circle({radius: 10, units: 'meters'}), iterations: 1});
+    
+    compositeContrast = filtered.gt(B8LAND_THRESHOLD);
+
+  // DEPRECATED
   } else if (colourGradeStyle === 'ReefTop') {
     //B4contrast = exports.contrastEnhance(scaled_img.select('B4'),0.02,0.021, 1);
     //var B5contrast = exports.contrastEnhance(scaled_img.select('B5'),0.02,0.05, 1);
@@ -1588,6 +1784,18 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
       exports.contrastEnhance(ee.Terrain.slope(B2contrast),0.006,0.05, 3)
     );
 
+  } else if (colourGradeStyle === 'Depth') {
+
+    compositeContrast = exports.estimateDepth(img, 20, 2);
+    
+  } else if (colourGradeStyle === 'Depth10m') {
+    
+    compositeContrast = exports.estimateDepth(img, 20, 2).gt(-10);
+    
+  } else if (colourGradeStyle === 'Depth5m') {
+    
+    compositeContrast = exports.estimateDepth(img, 10, 2).gt(-5);
+    
   } else {
     print("Error: unknown colourGradeStyle: "+colourGradeStyle);
   }
@@ -1601,7 +1809,86 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
 
 
 
+// Utility function for estimating the depth from the image. This assumes that the image
+// has had sunglint correction and brightness normalisation. If not the output values
+// will not be accurate. This method is only moderately accurate from 4 - 12 m of depth.
+// Its primary goal is to help with the determining the -5 and -10 m contour lines.
+// This algorithm performs better than simply performing the ln(B3), but is still
+// suseptible to dark substrates, particularly in shallow areas. These can introduce
+// errors of up to 5 m, this is compared with an error of about 8 m by just using the
+// B3 channel. 
+// @param {integer} filterRadius - Radius of the filter (m) to apply to the depth to reduce
+//                                spatial noise. Typically: 20. Should be multiples of the
+//                                native image pixel resolution.
+// @param {integer} filterIterations - Number of iterations of the filter to apply. Typically: 1-2
 
+exports.estimateDepth = function(img, filterRadius, filterIterations) {
+    // Result: This depth model seems to work quite well for depths between 5 - 12 m. In shallow areas
+    // dark seagrass is not compensated for very well.
+    // In shallow areas seagrass introduces a 4 - 6 m error in the depth estimate, appearing to
+    // be deeper than it is. This is based on the assumption that neighbouring sand areas are at a
+    // similar depth to the seagrass. 
+    
+    // Offset that corrects for the colour balance of the image. This also allows the depth
+    // estimate to be optimised for a particular depth. 
+    // If this is increased to say 250 the compensation for seagrass is slightly between for shallower
+    // areas (3 - 5 m), but still far from good. The downside is that in deep areas the seagrass gets
+    // over compensated so seagrass areas appear shallower than intended.
+    // An offset of 120 is chosen to optimise the dark substrate compensation from 10 - 15 m.
+    var B2_OFFSET = 150;
+    
+    
+    // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
+    // depths measured in metres. Changing this changes the slope of the relationship between
+    // the depth estimate and the real depth. 
+    // This scalar and depth offset were determined by sampling matching locations on Gallon Reef 
+    // and Quion Reef in northern GBR with the GBR30 dataset (which for these reef locations
+    // was itself estimately by satellite derived bathmetry and so should be only a rough calibration)
+    // 
+    var DEPTH_SCALAR = 135;
+    
+    // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
+    // Changing this modifies the intercept of the depth relationship. If the 
+    // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
+    // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
+    // the DEPTH_OFFSET needs to be adjusted by approx -1. 
+    var DEPTH_OFFSET = -136.3;
+    
+    // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
+    // It also doesn't work in turbid water. It is also slight non-linear with the depth
+    // estimate asympotically approach ~-15 m. As a result depths below -10 m are
+    // reported as shallower than reality.
+    var depthB3B2 = 
+      img.select('B3').log().divide(img.select('B2').subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
+      .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
+    
+    // Consider anything brighter than this as land. This threshold is chosen slightly higher than
+    // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
+    // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
+    // result in dark areas on land (such as on Magnetic Island) as appearing as water.
+    var B8LAND_THRESHOLD = 1400; 
+    var waterMask = img.select('B8').lt(B8LAND_THRESHOLD);
+    
+    // Mask out any land areas because the depth estimates would 
+    var depthWithLandMask = depthB3B2.updateMask(waterMask);
+    
+    
+    // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
+    var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
+    
+    // This slope of the depth estimate becomes very flat below -12 m, thus we need to remove this data from the
+    // result to limit the improper use of the data.
+    var MAX_DEPTH = -12;
+    
+    // Remove all areas where the depth estimate is likely to be poor.
+    // Smooth the edges of the mask by applying a dilate. This is equivalent to applying a buffer to the mask image, 
+    // helping to fill in neighbouring holes in the mask. This will expand the mask slightly.
+    var depthMask = filteredDepth.gt(MAX_DEPTH)
+      .focal_min({kernel: ee.Kernel.circle({radius: 10, units: 'meters'}), iterations: 1})  // (Erode) Remove single pixel elements
+      .focal_max({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1}); // (Dilate) Expand back out, plus a bit more to merge
+    var compositeContrast = filteredDepth.updateMask(depthMask);
+    return(compositeContrast);
+};
 
 
 
