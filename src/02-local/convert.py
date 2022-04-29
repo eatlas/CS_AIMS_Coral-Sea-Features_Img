@@ -293,33 +293,43 @@ for srcRegionDir in srcRegionDirs:
 			# Replace the .tif with .jpg in the filename
 			dest = os.path.join(outStylePath, outFileName.replace(".tif",".png"))
 
+
+			# Get the image size so we can cut up the imagery into 4 parts per image 
+			# to limit the size of the images.
+			Image.MAX_IMAGE_PIXELS = None   # disables the warning
+			
+			img=Image.open(srcFile)
+			w,h=img.size    # w=Width and h=Height
+			xsize1 = math.floor(w/2)
+			xsize2 = w-xsize1
+			ysize1 = math.floor(h/2)
+			ysize2 = h - ysize1
+			dest = os.path.join(outStylePath, outFileName.replace(".tif","1.png"))
 			# Test if the destination file already exists. If so skip over the conversion.
 			if os.path.isfile(dest): 
 				print("Skipping "+fileName+" as output already exists "+dest)
 			else:
-				# Get the image size so we can cut up the imagery into 4 parts per image 
-				# to limit the size of the images.
-				Image.MAX_IMAGE_PIXELS = None   # disables the warning
-				
-				img=Image.open(srcFile)
-				w,h=img.size    # w=Width and h=Height
-				xsize1 = math.floor(w/2)
-				xsize2 = w-xsize1
-				ysize1 = math.floor(h/2)
-				ysize2 = h - ysize1
-				dest = os.path.join(outStylePath, outFileName.replace(".tif","1.png"))
 				callStr = 'gdal_translate -of PNG -srcwin '+str(0)+' '+str(0)+' '+str(xsize1)+' '+str(ysize1)+' -co WORLDFILE=YES '+srcFile+' '+dest
 				subprocess.call(callStr)
 				
-				dest = os.path.join(outStylePath, outFileName.replace(".tif","2.png"))
+			dest = os.path.join(outStylePath, outFileName.replace(".tif","2.png"))
+			if os.path.isfile(dest): 
+				print("Skipping "+fileName+" as output already exists "+dest)
+			else:
 				callStr = 'gdal_translate -of PNG -srcwin '+str(xsize1)+' '+str(0)+' '+str(xsize2)+' '+str(ysize1)+' -co WORLDFILE=YES '+srcFile+' '+dest
 				subprocess.call(callStr)
-				
-				dest = os.path.join(outStylePath, outFileName.replace(".tif","3.png"))
+			
+			dest = os.path.join(outStylePath, outFileName.replace(".tif","3.png"))
+			if os.path.isfile(dest): 
+				print("Skipping "+fileName+" as output already exists "+dest)
+			else:
 				callStr = 'gdal_translate -of PNG -srcwin '+str(0)+' '+str(ysize1)+' '+str(xsize1)+' '+str(ysize2)+' -co WORLDFILE=YES '+srcFile+' '+dest
 				subprocess.call(callStr)
 				
-				dest = os.path.join(outStylePath, outFileName.replace(".tif","4.png"))
+			dest = os.path.join(outStylePath, outFileName.replace(".tif","4.png"))
+			if os.path.isfile(dest): 
+				print("Skipping "+fileName+" as output already exists "+dest)
+			else:
 				callStr = 'gdal_translate -of PNG -srcwin '+str(xsize1)+' '+str(ysize1)+' '+str(xsize2)+' '+str(ysize2)+' -co WORLDFILE=YES '+srcFile+' '+dest
 				subprocess.call(callStr)
 			
