@@ -6,13 +6,17 @@
 // This script regenerates all the Sentinel 2 satellite image composites
 // in the Coral Sea region.
 
-// This script generates a lot of export tasks (155) in the 
+// This script generates a lot of export tasks (>170) in the 
 // interactive GEE code editor as it regenerates all the imagery
 // in the Coral-Sea region.
 // To export all the images in one go you will need approximately
 // 30 GB free in your Google Drive.
 
-// If instead you just want to preview one of the composites in 
+// See https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Img/blob/master/src/01-gee/sentinel2/README.md
+// For javascript code that will automate the triggering of many
+// exports.
+
+// If you just want to preview one of the composites in 
 // the editor then you need to modify the code to stop the exports.
 //
 // Find and replace: false, true, REF1_OPTIONS
