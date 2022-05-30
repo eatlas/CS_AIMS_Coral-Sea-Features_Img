@@ -20,8 +20,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // to get the cleanest image.
 
 var REF1_OPTIONS = {
-  colourGrades: ['DeepFalse','TrueColour','Shallow','Slope','DryReef', 'Depth5m', 'Depth10m'],
-  exportScale: [10, 10, 10, 30, 10, 10, 10],
+  colourGrades: ['DeepFalse','TrueColour','Shallow','Depth5m', 'Depth10m'],
+  exportScale: [10, 10, 10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global3',
   applySunglintCorrection: true,
@@ -33,8 +33,8 @@ var REF1_OPTIONS = {
 // is to provide a second set of imagery to determine if spots
 // in the imagery are artefacts (from clouds) or real features.
 var REF2_OPTIONS = {
-  colourGrades: ['DeepFalse','Slope'],
-    exportScale: [10, 30],
+  colourGrades: ['DeepFalse'],
+    exportScale: [10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R2',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Global',
   applySunglintCorrection: true,
