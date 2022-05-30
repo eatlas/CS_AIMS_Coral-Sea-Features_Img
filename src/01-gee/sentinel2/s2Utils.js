@@ -16,6 +16,15 @@
 //                 styles. Adjusted the cut off threshold for DryReef to be more representative
 //                 of reef tops that are dry or exposed at low tide. This was done by tweaking
 //                 based on the boundary extent on Green Island and South Warden Reef.
+// Version: v1.2.1 Adjusted the land layer threshold to more be more accurate. It is still
+//                 imperfect because to get close to high water mark the threshold starts
+//                 to cut out dark land features. As such it is a noisy layer that would
+//                 require considerable manual clean up.
+// Version: v1.3.0 Changed the generation of the image composition. Previously some cays 
+//                 were being interpretted as clouds, resulting in permanent gaps in the 
+//                 composite images. The new approach layers a composite with no cloud 
+//                 masking underneath the cloud masked composite, resulting in gaps being
+//                 in filled.
 //                 
 
 /**
@@ -400,20 +409,56 @@ exports.s2_composite = function(imageIds, applySunglintCorrection, applyBrightne
   // lower threshold comes with a slight increase in image noise, which
   // is why we don't use it here.
   
-  // Don't apply a cloud mask if there is only a single image
-  var applyCloudMask = imageIds.length > 1;
-  if (applyCloudMask) {
-    composite = composite_collection.map(exports.add_s2_cloud_shadow_mask)
+  // Layering composites - Cloud masking
+  // One problem with the existing cloud masking is that there are some
+  // coral cays that are consistently detected as clouds. As a result they are cut 
+  // out from every images resulting in a final composite with holes where the
+  // coral cays are. I tried adjusting the detection threholds for clouds to reduce
+  // this problem. The trade off is if you raise the cloud detection threshold
+  // it will slightly reduce the chance of thinking a cay is a cloud, but will come
+  // with the trade off that more cloud will end up not being filtered out.
+  
+  // To get around this problem we create the composite twice. Once with cloud
+  // masking and one with no cloud masking. We layer the cloud masked layer over the top
+  // of the non cloud masked image. Any holes in the cloud masked image (due to a cay)
+  // will show the non-cloud masked image underneith. This should the cay. 
+  // Since we only make composites from images with a low cloud cover the cays
+  // should appear relatively noise free, even with no cloud masking.
+  
+  // All the bands to process  
+  var IMG_BANDS = ['B1','B2','B3','B4','B5','B6','B7','B8',
+        'B8A','B9','B10','B11','B12','QA10','QA20','QA60'];
+      
+  var compositeNoCloudMask = composite_collection
+      .reduce(ee.Reducer.percentile([50],["p50"]))
+      .rename(IMG_BANDS);
+  
+  // Only process with cloud mask if there is more than one image
+  if (imageIds.length > 1) {    
+    var compositeCloudMask = composite_collection.map(exports.add_s2_cloud_shadow_mask)
       .map(exports.apply_cloud_shadow_mask)
       .reduce(ee.Reducer.percentile([50],["p50"]))
-      .rename(['B1','B2','B3','B4','B5','B6','B7','B8',
-        'B8A','B9','B10','B11','B12','QA10','QA20','QA60','cloudmask']);
-  } else {
-
-    composite = composite_collection
-      .reduce(ee.Reducer.percentile([50],["p50"]))
-      .rename(['B1','B2','B3','B4','B5','B6','B7','B8',
-        'B8A','B9','B10','B11','B12','QA10','QA20','QA60']);
+      .rename(IMG_BANDS.concat(['cloudmask']));
+    
+    // Remove the cloudmask so that the bands match in the mosaic process
+    var cloudmask = compositeCloudMask.select('cloudmask');     // Extract and save for later
+    compositeCloudMask = compositeCloudMask.select(IMG_BANDS);  // Remove the cloud mask band
+    
+    // Layer the Cloud masked image over the composite with no cloud masking.
+    // The Cloud masked composite should be a better image than
+    // the no cloud masked composite everywhere except over coral cays (as they
+    // are sometimes interpretted as clouds and thus are holes in the image). 
+    // Layer the images so there are no holes.
+    // Last layer is on top
+    composite = ee.ImageCollection([compositeNoCloudMask, compositeCloudMask]).mosaic();
+    
+    // Add the cloud mask back into the image as a band
+    composite = composite.addBands(cloudmask);
+    
+    //composite = compositeCloudMask;
+  } else { 
+    // If there is only a single image then don't use cloud masking.
+    composite = compositeNoCloudMask;
   }
   
   // Correct for a bug in the reduce process. The reduce process
@@ -1339,13 +1384,44 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
   var scaled_img = img.divide(1e4);
   // Consider anything brighter than this as land. This threshold is chosen slightly higher than
   // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
-  // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
-  // result in dark areas on land (such as on Magnetic Island) as appearing as water.
-  // Mask the land in reef layers that is less severe then the land mask. The aim here is to
-  // ensure that the reef feature overlaps with the land by a small amount to allow better
-  // cookie cutting the land out in later processing.
-  var B8LANDMASK_THRESHOLD = 1400; 
-  var B8LAND_THRESHOLD = 800; 
+  // shallow. The aim here is to ensure that the reef feature overlaps with the land by a small amount 
+  // to allow better cookie cutting the land out in later processing. Unfortunately it is impossible
+  // to reach the high water mark using B8 since most of the imagery is at a mid tide level. 
+  // Setting the threshold high enough to get close to the high water mark results in lots of 
+  // land areas being considered as water because they are darker than the threshold.
+  var B8LANDMASK_THRESHOLD = 1800; 
+  
+  // This threshold was adjusted to best align with the Geoscience Australia Geodata Coast100k 2004
+  // dataset in locations along the Queensland coastline, and Sharkbay (WA).
+  // The optimal theshold was determined against multiple tiles around Australia by 
+  // adjusting the B8 threshold so that it best matched the coastline visible in the 
+  // Allen Coral Atlas satellite imagery.
+  // In most scenes it was difficult to get a high tide mark from the B8 imagery, as the 
+  // imagery is typically close to mean tide and so the high tide mark is not underwater and
+  // this part of the B8 gradient. 
+  // Some of the tiles were clearly a collection of lower tide images making the maximum
+  // tide mask using B8 more like a mean or slightly low tide. Raising the threshold higher
+  // simply resulted in lots of holes on the land area (dark patches on the land that
+  // are darker than the water threshold). 
+  // Threshold tested:
+  // 800 - This consistantly included shallow foreshore elements in the boundary making the
+  //       boundary closer to mean low tide. This detects breaking waves quite well.
+  // tile,  location,     8bit-value, original-value,   note 
+  // 49JGW, Sharkbay,     155 - 160,  1750,             This is still not high enough. Imagery is too low tide.
+  // 49KGR, Ningaloo,     155 - 160,  1750,             Sharp gradient. Still picks some breaking waves.
+  // 50KPC, Port Headland,140 - 145,  1330,             The port is very dark and the mangroves are just 
+  //                                                    detected at this threshold. 
+  // 53LPE, Groote Island,155 - 160,  1750,             This is still not high enough. There is significant
+  //                                                    cut out of the land at this level.
+  // 54LYM, GBR,          155 - 160,  1750,             Not high enough. Imagery too shallow. 
+  // 54LXP, Torres Strait,150 - 155,  1600,             Good fit.
+  // 55KCB, Cairns,       150 - 155,  1600,             Good fit.
+  // A threshold of 1600 provides a good match for some scenes. In other scenes this is
+  // not high enough. However the problem with these scenes is that the source imagery is not
+  // a high enough tide and thus B8 doesn't work very well. 
+  // Improving the land making will require careful selection of images that are high tide images.
+  // This can be an improvement for the future.
+  var B8LAND_THRESHOLD = 1600; 
   
   var B4contrast;
   var B3contrast;
@@ -1437,6 +1513,7 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     
 
   } else if (colourGradeStyle === 'Breaking') {
+    // The development of this style is incomplete. It currently has some holes in the land
     // Detect breaking waves. This is not a super reliable method as it will also
     // detect land areas and is dependent on the selection of images in the analysis.
     // It detect and shallow or dry area.
@@ -1468,7 +1545,8 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     compositeContrast = compositeContrast.updateMask(waterMask);
 
   }  else if (colourGradeStyle === 'Land') {
-    // Perform a basic mapping of land areas
+    // Perform a basic mapping of land areas.
+    
 
     filtered = img.select('B8')
       .focal_max({kernel: ee.Kernel.circle({radius: 10, units: 'meters'}), iterations: 1});
