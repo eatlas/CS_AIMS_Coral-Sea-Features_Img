@@ -8,6 +8,9 @@
 # Script environment - Windows
 # To run this Python script you will need GDAL installed and available in the same
 # environment as this script.
+# 
+# One possible setup is installing OSGeo4W, enabling GDAL install then 
+# running this script from OSGeo4W command window from C:\OSGeo4W\OSGeo4W.bat
 
 import os
 import subprocess
@@ -59,6 +62,10 @@ styles = [
 srcRegionDirs = glob.glob(os.path.join(SRC_PATH,"*/"))
 regionCount = 1
 numRegions = len(srcRegionDirs)
+
+if (numRegions == 0):
+	print("Found no images in "+SRC_PATH+". Expected geojson files in a folder for the region, such as 'Coral-Sea', 'Coral-Sea-water', or 'Global'")
+
 for srcRegionDir in srcRegionDirs:
 	# Get the name of the region so that we can include it in the output paths
 	# The path being processed is something like: 
