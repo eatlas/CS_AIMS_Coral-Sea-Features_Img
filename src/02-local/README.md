@@ -41,7 +41,7 @@ Run this script from an OSGeo4W command window to ensure all the paths are corre
 The default path for this is in C:\OSGeo4W64\OSGeo4W.bat but may also be C:\OSGeo4W\OSGeo4W.bat.
 In that command line window `cd` to the location of this script then run:
 ```
-python convert.py
+python 01-convert.py
 ```
 
 # Processing the vector layers
@@ -60,8 +60,16 @@ the `02-QGIS-model-smooth-polygons.model3` file. To do this processing:
 1. Open QGIS.
 2. Use `Processing/Graphical Modeler..`
 3. Select `Open Model` and choose the `02-QGIS-model-smooth-polygons.model3` file.
+4. Use the play button to run the model. 
+Input: `tmp\02-dissolve_CS_AIMS_Coral-Sea-Features_Img_S2_R1_Depth5m_Coral-Sea.shp` 
+Output `big-files\poly\Coral-Sea\CS_AIMS_Coral-Sea-Features_Img_S2_R1_Depth5m_Coral-Sea.shp`
+5. Repeat the process for Depth10m and for each of the regions.
 
-This 
+This processing consists of:
+1. Smoothing (0.5 offset, which is the maximum)
+2. Buffer of approximately 3 m (0.00003 deg)
+3. Dissolve to join any polygons that overlap from the buffer.
+4. Simplify with a maximum error of approximately 1 m (0.00001 deg).
 
 
 # Potential issues
