@@ -25,7 +25,8 @@
 //                 composite images. The new approach layers a composite with no cloud 
 //                 masking underneath the cloud masked composite, resulting in gaps being
 //                 in filled.
-//                 
+// Version: v1.3.1 Change the depth mapping so that land areas are marked as 1 m above sea
+//                 level rather than masked out. 
 
 /**
 * @module s2Utils
@@ -270,15 +271,29 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
 // scale - scale to export the vector at. Recommend 3 for 3 m.
 // geometry - limit of the vectorisation.
 function makeAndSaveShp(img, layerName, fileName, exportFolder, scale, geometry, is_display, is_export) {
+  
+  // Display a bilinear resampled image with 5m pixel spacing.
+  //var imgUpsampled = img.resample('bilinear').reproject({
+  //  crs: img.projection().crs(),
+  //  scale: 5
+  //});
+  
   // Apply a threshold to the image
-  var imgContour = img.gt(0.5);
+  //var imgContour = imgUpsampled.gt(0.5);
+  
+  // Indicate that bilinear resampling should be used rather than nearest neighbour if the 
+  // scale is set to upsample the image. Note: This doesn't do anything until the 
+  // reprojection is applied.
+  var imgUpsampled = img.resample('bilinear');
+  var imgContour = imgUpsampled.gt(0.5);
+  
   // Make the water area transparent
   imgContour = imgContour.updateMask(imgContour.neq(0));
   // Convert the image to vectors.
   var vector = imgContour.reduceToVectors({
     geometry: geometry,
     crs: imgContour.projection(),
-    scale: scale,
+    scale: 5,
     geometryType: 'polygon',
     eightConnected: false,
     labelProperty: 'DIN',
@@ -1887,14 +1902,23 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
 
 
 
-// Utility function for estimating the depth from the image. This assumes that the image
-// has had sunglint correction and brightness normalisation. If not the output values
-// will not be accurate. This method is only moderately accurate from 4 - 12 m of depth.
+// Utility function for estimating the depth from the image. Note: While this is
+// called depth it trends deeper regions has negative values. i.e. -10 m means
+// 10 m below the surface. 
+// 
+// This function assumes that the image has had sunglint correction and brightness normalisation
+// already applied to the image. If not the output values will not be accurate. 
+// 
+// This method is only moderately accurate from -4 - -12 m of depth.
 // Its primary goal is to help with the determining the -5 and -10 m contour lines.
 // This algorithm performs better than simply performing the ln(B3), but is still
 // suseptible to dark substrates, particularly in shallow areas. These can introduce
 // errors of up to 5 m, this is compared with an error of about 8 m by just using the
 // B3 channel. 
+//
+// Areas estimated as land, based on their brightness in the B8 channel have a depth
+// of 1. Depths below -12 m are masked off.
+
 // @param {integer} filterRadius - Radius of the filter (m) to apply to the depth to reduce
 //                                spatial noise. Typically: 20. Should be multiples of the
 //                                native image pixel resolution.
@@ -1945,14 +1969,21 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
     // result in dark areas on land (such as on Magnetic Island) as appearing as water.
     var B8LAND_THRESHOLD = 1400; 
-    var waterMask = img.select('B8').lt(B8LAND_THRESHOLD);
+    //var waterMask = img.select('B8').lt(B8LAND_THRESHOLD);
     
     // Mask out any land areas because the depth estimates would 
-    var depthWithLandMask = depthB3B2.updateMask(waterMask);
+    //var depthWithLandMask = depthB3B2.updateMask(waterMask);
     
+    // Set any areas that are most likely to be land to have a height of 1 m. 
+    // We can't know the height, hence the cap and we don't want to mask because
+    // we want to be able to create depth contours without holes for land areas
+    // because we are separately mapping the land using another process that
+    // has much more precision.
+    depthB3B2 = depthB3B2.where(img.select('B8').gt(B8LAND_THRESHOLD), ee.Image(1));
     
     // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
-    var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
+    //var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
+    var filteredDepth = depthB3B2.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
     
     // This slope of the depth estimate becomes very flat below -12 m, thus we need to remove this data from the
     // result to limit the improper use of the data.
