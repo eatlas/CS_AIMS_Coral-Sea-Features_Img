@@ -39,15 +39,13 @@ BROKEN_PATH = '../../tmp/broken'				# Move broken GeoJSON files to this folder
 
 # This script only saves to the TMP folder as it no longer completes the full processing.
 # The final processing is now completed in QGIS.
-# OUT_POLY = '../../big-files/poly'		# Published polygons files
+OUT_POLY = '../../big-files/poly'		# Published polygons files
 
 if not os.path.exists(OUT_RAW):
 	os.mkdir(OUT_RAW)
 	print("Making output directory"+OUT_RAW)
 	
-if not os.path.exists(OUT_POLY):
-	os.mkdir(OUT_POLY)
-	print("Making output directory"+OUT_POLY)
+
 	
 if not os.path.exists(TMP):
 	os.mkdir(TMP)
@@ -153,7 +151,7 @@ for srcRegionDir in srcRegionDirs:
 		# The need for this flag was discovered after getting the error:
 		# ERROR: Non-single layer mode incompatible with non-directory shapefile output
 		if os.path.isfile(shpPath01): 
-			print("Skipping "+shpPath01+" as output already exists")
+			print("Skipping "+shpPath01+" as merge output already exists")
 		else:
 			callStr = 'python '+OGR2OGR_PYTHON_PATH+'\\ogrmerge.py -o '+shpPath01+' -single '+os.path.join(srcRegionDir,"*"+style+"*."+IN_FORMAT)
 			subprocess.call(callStr, shell=True)
@@ -167,7 +165,7 @@ for srcRegionDir in srcRegionDirs:
 		
 		# https://stackoverflow.com/questions/47038407/dissolve-overlapping-polygons-with-gdal-ogr-while-keeping-non-connected-result
 		if os.path.isfile(shpPath02): 
-			print("Skipping "+shpPath02+" as output already exists")
+			print("Skipping "+shpPath02+" as dissolved output already exists")
 		else:
 			callStr = 'ogr2ogr -f "ESRI Shapefile" -explodecollections '+shpPath02+' '+shpPath01 + \
 				' -dialect sqlite -sql "select ST_union(Geometry) from ""'+stageName01+'"""'
@@ -189,6 +187,7 @@ for srcRegionDir in srcRegionDirs:
 		# Create an output directory for the region
 		SIMPLY = False;		# Don't apply simplification, use QGIS processing instead.
 		if (SIMPLY):
+		
 			outPath = os.path.join(OUT_POLY, region)
 			if not os.path.exists(outPath):
 				os.makedirs(outPath)
@@ -198,7 +197,7 @@ for srcRegionDir in srcRegionDirs:
 			
 			# https://stackoverflow.com/questions/47038407/dissolve-overlapping-polygons-with-gdal-ogr-while-keeping-non-connected-result
 			if os.path.isfile(shpPath03): 
-				print("Skipping "+shpPath03+" as output already exists")
+				print("Skipping "+shpPath03+" as simplified output already exists")
 			else:
 				callStr = 'ogr2ogr -f "ESRI Shapefile" -simplify 0.00007 '+shpPath03+' '+shpPath02
 				subprocess.call(callStr, shell=True)
