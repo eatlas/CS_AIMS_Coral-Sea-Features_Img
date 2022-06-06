@@ -25,9 +25,9 @@ var utils = {
         'well in clear waters. Bands: B1, B2, B3.',
       visParams: {
         bands: ['B3', 'B2', 'B1'],
-        gamma: [2.3, 2.3, 2.7],
-        min: [0.042, 0.0850, 0.115],
-        max: [0.25, 0.25, 0.26]
+        gamma: [1.19, 1.05, 1.10],
+        min: [0.02, 0.02, 0.02],
+        max: [0.24, 0.22, 0.22]
       }
     },
     'ReefTop': {
