@@ -25,8 +25,8 @@ var REF1_OPTIONS = {
     applyCloudMask: true
 };
 var REF2_OPTIONS = {
-    colourGrades: ['TrueColour', 'DeepMarine', 'DeepFalse', 'ReefTop', 'Slope'],
-    exportScale: [30, 30, 30, 30, 30],
+    colourGrades: ['TrueColour', 'DeepFalse'],
+    exportScale: [30, 30],
     exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_L8_R2',
     exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
     applySunGlintCorrection: true,
