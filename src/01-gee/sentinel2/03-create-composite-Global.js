@@ -727,7 +727,7 @@ s2Utils.s2_composite_display_and_export(
     // adding them makes the image worse.
     "COPERNICUS/S2/20151117T004742_20151117T004904_T54LYQ", // clear water
   ], 
-  true, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
   
   //  "COPERNICUS/S2/20181201T004701_20181201T004657_T54LYQ", // more turbid
   //  "COPERNICUS/S2/20190110T004701_20190110T004701_T54LYQ",
@@ -749,7 +749,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20181022T004701_20181022T004703_T54LXP",
     "COPERNICUS/S2/20190510T004711_20190510T004710_T54LXP" 
   ], 
- false, false, true, REF1_OPTIONS);
+ false, true, REF1_OPTIONS);
   
 
 
