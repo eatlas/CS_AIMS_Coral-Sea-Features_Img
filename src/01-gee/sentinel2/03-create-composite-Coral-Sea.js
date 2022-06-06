@@ -45,7 +45,7 @@ var REF1_OPTIONS = {
   //colourGrades: ['DeepFalse','TrueColour','Shallow','Depth5m', 'Depth10m'],
   //exportScale: [10, 10, 10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
-  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea3',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea4',
   
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
@@ -60,7 +60,7 @@ var REF2_OPTIONS = {
   colourGrades: [],
   //colourGrades: ['DeepFalse'],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R2',
-  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea4',
   //exportScale: [10],
   exportScale: [],
   applySunglintCorrection: true,
