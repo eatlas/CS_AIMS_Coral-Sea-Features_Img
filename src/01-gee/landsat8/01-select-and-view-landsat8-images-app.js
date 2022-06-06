@@ -26,7 +26,11 @@ app.createConstants = function () {
     'L8 Collection 2 Tier 1 TOA': {
       id: 'LANDSAT/LC08/C02/T1_TOA',
       processor: landsat8Utils
-    }
+    },
+    'L9 Collection 2 Tier 1 TOA': {
+    id: 'LANDSAT/LC09/C02/T1_TOA',
+    processor: landsat8Utils
+  }
   };
   app.START_DATE = '2013-01-01';
   app.END_DATE = new Date().toISOString().slice(0, 10);
