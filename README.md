@@ -16,19 +16,40 @@ The satellite imagery was processed in the original scenes of the satellites bei
 For Sentinel 2 this corresponds to 100 x 100 km scenes. For Landsat 8 this corresponds to 
 larger scenes.
 
-## Processing
+The image composites were processed into a number of different styles that each
+focus on a different task:
+- `DeepFalse` - False colour for best for viewing deep reef features (B2, B3, B4)
+- `Shallow` - False colour showing shallow (< 3 m) and dry areas (B5, B8, B11).
+- `TrueColour` - True colour imagery (B3, B4, B5)
+- `Depth5m` - Reef top features down to 5 m depth. No tidal compensation.
+- `Depth10m` - Reef top features down to 10 m depth. No tidal compensation.
+
+## Sentinel 2 image processing
 
 The satellite image composites were created using the following processing:
-1. The best images (lowest cloud, low sunglint, clear water) were selected from those available.
-2. These images were partitioned into two collections: the clearest of the images and the rest of the images.
-3. These two collections were then converted into two satellite composite images. 
-4. Each image was preprocessed, prior to being combined into a composite by:
+1. The Sentinel 2 tiles to be processed were selected using the 
+[map of Sentinel 2 tiles](https://maps.eatlas.org.au/index.html?intro=false&z=7&ll=146.90137,-19.07287&l0=ea_ref%3AWorld_ESA_Sentinel-2-tiling-grid_Poly,google_SATELLITE)
+to find the IDs of the locations of interest.
+2. The `src\01-gee\sentinel2\01-select-sentinel2-images.js` tool in Google Earth Engine was used
+to select the best images (lowest cloud, low sunglint, clear water) from those available. Typically
+a low cloud cover filter used (typically starting with 1%) to eliminate unsuitable images. This
+threshold was increased if not enough good images could be found.
+3. These images were partitioned into two collections: the clearest of the images and the rest of the images.
+These were recorded in `src\01-gee\sentinel2\03-create-composite-X.js`, where X corresponds to
+the region. In this dataset the tiles were split into regions:
+ - `Coral-Sea` - Images of Coral Sea reefs
+ - `Coral-Sea-water` - Open water images of the Coral Sea. Used to verify that there are no new
+ coral platforms.
+ - `Global` - Selected reefal areas around the world to verify the robustness of the
+ imaging techinques.
+4. These two collections were then converted into two satellite composite images. 
+5. Each image was preprocessed, prior to being combined into a composite by:
     1. Removing surface reflectance on the water based on estimates of the reflection using infrared bands.
     2. Clouds masking was applied to cut out the clouds and their shadows.
-5. A composite was then created using the available images in each collection. The composite was
+6. A composite was then created using the available images in each collection. The composite was
 created using a median of the images in the collection (i.e. at each location the matching pixel of each
 of the images in the collection was located and the final composite value was the median of those pixels).
-6. A composite of the images with and without cloud masking was created and layered together. This 
+7. A composite of the images with and without cloud masking was created and layered together. This 
 was to solve the problem that some coral cays were misinterpretted as clouds and thus would result in
 holes in the composite image. These holes are plugged with an underlying image composite created from
 the same set of images, just with no cloud masking applied. Since the composite image were created using
@@ -36,14 +57,14 @@ a median reducer, as long as the cays are covered in clouds less than 50% of the
 image would be cloud free. This works because the image collections were chosen to have very low cloud cover
 and coral cays are bright areas that are much less sensitive to brightness adjustments from the fringes of 
 clouds.
-7. The brightness of the image was normalised to ensure that the deep water areas of the image were
+8. The brightness of the image was normalised to ensure that the deep water areas of the image were
 consistent from one scene to the next. This was done by creating a mask of 'deep water' areas in the image.
 The difference between the average brightness of these masked areas and a reference image was calculated. 
 This adjustment was then applied to the whole image. This brightness adjustment helps ensure consistent
 brighness across all scenes and that when subsequent contrast enhancement is applied to the images then 
 no areas of the image become overly dark. Without this adjustment it was found that certain regions
 would consistently produce slightly darker imagery. This can be seen in the [original draft version of this dataset](https://eatlas.org.au/data/uuid/2932dc63-9c9b-465f-80bf-09073aacaf1c) where this adjustment was not made.
-8. Multiple image styles were then created from the composite image (DeepFalse, TrueColour, Shallow)
+9. Multiple image styles were then created from the composite image (DeepFalse, TrueColour, Shallow)
 based on selecting different bands to highlight various aspects of the imagery. In this process 
 contrast enhancement was applied.
 
