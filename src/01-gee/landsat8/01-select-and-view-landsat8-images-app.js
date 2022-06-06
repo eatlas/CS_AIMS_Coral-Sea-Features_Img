@@ -12,8 +12,8 @@
 
 // === README: Change the path to your local copy of the utils code ====
 // The path to the util code must be an absolute path including the username and repository:
-// 'users/__USERNAME__/__REPOSITORY__:l8Utils.js').utils;
-var landsat8Utils = require('users/__USERNAME__/__REPOSITORY__:l8Utils.js').utils;
+// 'users/__USERNAME__/__REPOSITORY__:src/01-gee/landsat8/l8Utils.js').utils;
+var landsat8Utils = require('users/__USERNAME__/__REPOSITORY__:src/01-gee/landsat8/l8Utils.js').utils;
 
 // The namespace for our application.  All the state is kept in here.
 var app = {};
