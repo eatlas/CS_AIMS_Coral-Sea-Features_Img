@@ -5,8 +5,8 @@
 
 // === README: Change the path to your local copy of the utils code ====
 // The path to the util code must be an absolute path including the username and repository:
-// 'users/__USERNAME__/__REPOSITORY__:l8Utils.js').utils;
-var landsat8Utils = require('users/__USERNAME__/__REPOSITORY__:l8Utils.js').utils;
+// 'users/__USERNAME__/__REPOSITORY__:src/01-gee/landsat8/l8Utils.js').utils;
+var landsat8Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-gee/landsat8/l8Utils.js').utils;
 
 // These are the options for the primary reference imagery.
 // The primary reference imagery should correspond to a composite
