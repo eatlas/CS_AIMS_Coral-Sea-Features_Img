@@ -18,6 +18,11 @@ larger scenes.
 
 The image composites were processed into a number of different colour styles that each
 focus on a different task:
+- `DeepFalse` - False colour for best for viewing deep reef features (B2, B3, B4)
+- `Shallow` - False colour showing shallow (< 3 m) and dry areas (B5, B8, B11).
+- `TrueColour` - True colour imagery (B3, B4, B5)
+- `Depth5m` - Reef top features down to 5 m depth. No tidal compensation.
+- `Depth10m` - Reef top features down to 10 m depth. No tidal compensation.
 
 ## Sentinel 2 image processing
 
