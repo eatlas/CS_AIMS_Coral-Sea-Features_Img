@@ -16,9 +16,20 @@ The satellite imagery was processed in the original scenes of the satellites bei
 For Sentinel 2 this corresponds to 100 x 100 km scenes. For Landsat 8 this corresponds to 
 larger scenes.
 
-## Processing
+The image composites were processed into a number of different colour styles that each
+focus on a different task:
+
+## Sentinel 2 image processing
 
 The satellite image composites were created using the following processing:
+1. The Sentinel 2 tiles to be processed were selected using the 
+[map of Sentinel 2 tiles](https://maps.eatlas.org.au/index.html?intro=false&z=7&ll=146.90137,-19.07287&l0=ea_ref%3AWorld_ESA_Sentinel-2-tiling-grid_Poly,google_SATELLITE)
+to find the IDs of the locations of interest.
+
+2. The `01-gee\sentinel2\01-select-sentinel2-images.js`
+tool in Google Earth Engine.
+
+
 1. The best images (lowest cloud, low sunglint, clear water) were selected from those available.
 2. These images were partitioned into two collections: the clearest of the images and the rest of the images.
 3. These two collections were then converted into two satellite composite images. 
