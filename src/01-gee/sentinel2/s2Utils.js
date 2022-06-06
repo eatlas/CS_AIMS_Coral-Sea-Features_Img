@@ -27,6 +27,9 @@
 //                 in filled.
 // Version: v1.3.1 Change the depth mapping so that land areas are marked as 1 m above sea
 //                 level rather than masked out. 
+// Version: v1.3.2 Fixed scaling code for polygon generation. Had attempted to export at
+//                 5 m resolution, but GEE just doesn't work (it runs out of memory), thus
+//                 10 m is the maximum resolution for Sentinel 2 imagery.
 
 /**
 * @module s2Utils
@@ -268,24 +271,14 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
 // layerName - Display name to give to the vector layer.
 // fileName - Name to give in the export task
 // exportFolder - folder to save into on Google Drive
-// scale - scale to export the vector at. Recommend 3 for 3 m.
+// scale - scale to export the vector at. 10 for 10 m. For Sentinel 2 images 
+//         the finest scale is 10 m before GEE runs out of memory and just stops working,
+//         often with no error message.
 // geometry - limit of the vectorisation.
 function makeAndSaveShp(img, layerName, fileName, exportFolder, scale, geometry, is_display, is_export) {
-  
-  // Display a bilinear resampled image with 5m pixel spacing.
-  //var imgUpsampled = img.resample('bilinear').reproject({
-  //  crs: img.projection().crs(),
-  //  scale: 5
-  //});
-  
+
   // Apply a threshold to the image
-  //var imgContour = imgUpsampled.gt(0.5);
-  
-  // Indicate that bilinear resampling should be used rather than nearest neighbour if the 
-  // scale is set to upsample the image. Note: This doesn't do anything until the 
-  // reprojection is applied.
-  var imgUpsampled = img.resample('bilinear');
-  var imgContour = imgUpsampled.gt(0.5);
+  var imgContour = img.gt(0.5);
   
   // Make the water area transparent
   imgContour = imgContour.updateMask(imgContour.neq(0));
@@ -293,7 +286,7 @@ function makeAndSaveShp(img, layerName, fileName, exportFolder, scale, geometry,
   var vector = imgContour.reduceToVectors({
     geometry: geometry,
     crs: imgContour.projection(),
-    scale: 5,
+    scale: scale,
     geometryType: 'polygon',
     eightConnected: false,
     labelProperty: 'DIN',
