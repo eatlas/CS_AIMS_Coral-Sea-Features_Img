@@ -103,10 +103,25 @@ They are merged together
 
 ## Landsat 8 image processing
 
-A simplier workflow was established for processing Landsat8 imagery. Less research was applied to
+A simpler workflow was established for processing Landsat8 imagery. Less research was applied to
 optimising the Landsat 8 imagery as its primary purpose was to act as backup imagery for when there
 was no good Sentinel 2 images and to provide an independent set of imagery for checking the 
 reef boundary mapping.
+
+The satellite image composites were created using the following processing:
+1. The `src\01-gee\landsat8\01-select-and-view-landsat8-images-app.js` tool in Google Earth Engine was used
+   to select the best images (lowest cloud, low sunglint, clear water) from those available. Typically,
+   a low cloud cover filter used (typically starting with 5%) to eliminate unsuitable images. This
+   threshold was increased if not enough good images could be found.
+2. The image IDs from the selected images were recorded in `src\01-gee\landsat8\02-create-landsat8-composite-Coral-Sea.js`.
+3. Before creating a composite, each image was preprocessed, prior to being combined into a composite by:
+    1. Removing surface reflectance on the water based on estimates of the reflection using the shortwave infrared band (B6).
+    2. Clouds masking was applied to cut out the clouds and their shadows.
+4. A composite was then created using the available images in each collection. The composite was
+   created using a median of the images in the collection (i.e. at each location the matching pixel of each
+   of the images in the collection was located and the final composite value was the median of those pixels).
+
+More details about the processing can be found in comments in the `01-gee/landsat8/l8Utils.js` script library.
 
 ## This repository contains: 
 1. Google Earth Engine javascript code that generates the satellite image composites and depth contours
