@@ -86,7 +86,7 @@ var landsat8CompositeDisplayAndExport = function (imageIds, isDisplay, isExport,
     throw "This only supports images from a single tile, found: " + String(tileId);
   }
 
-  var composite = landsat8Utils.createMosaicImage(imageIds, options.applySunGlintCorrection, options.applyCloudMask);
+  var composite = landsat8Utils.createCompositeImage(imageIds, options.applySunGlintCorrection, options.applyCloudMask);
 
   // Prepare images for each of the specified colourGrades
   for (var i = 0; i < colourGrades.length; i++) {

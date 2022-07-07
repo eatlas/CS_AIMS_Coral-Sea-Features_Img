@@ -30,9 +30,9 @@ app.createConstants = function () {
       processor: landsat8Utils
     },
     'L9 Collection 2 Tier 1 TOA': {
-    id: 'LANDSAT/LC09/C02/T1_TOA',
-    processor: landsat8Utils
-  }
+      id: 'LANDSAT/LC09/C02/T1_TOA',
+      processor: landsat8Utils
+    }
   };
   app.START_DATE = '2013-01-01';
   app.END_DATE = new Date().toISOString().slice(0, 10);
@@ -76,7 +76,7 @@ app.createConstants = function () {
 /** Initialises the app properties **/
 app.createProperties = function() {
   app.point = app.INITIAL_POINT;
-  app.mosaicImage = null;
+  app.compositeImage = null;
 
   // set app processor to processor from first collection
   app.processor = app.COLLECTION_IDS[Object.keys(app.COLLECTION_IDS)[0]].processor;
@@ -433,20 +433,20 @@ app.createHelpers = function () {
       });
     }
 
-    app.mosaicImage = app.processor.createMosaicImage(
+    app.compositeImage = app.processor.createCompositeImage(
       ids,
       app.vis.checkboxSunGlintCorrection.getValue(),
       app.vis.checkboxCloudMask.getValue()
     );
-    app.mosaicImage = app.processor.visualiseImage(app.mosaicImage, app.vis.select.getValue());
-    app.map.addLayer(app.mosaicImage, {}, 'Mosaic');
+    app.compositeImage = app.processor.visualiseImage(app.compositeImage, app.vis.select.getValue());
+    app.map.addLayer(app.compositeImage, {}, 'Mosaic');
   };
 
   /**
    * Export mosaic and save to Google drive
    */
   app.exportMosaic = function () {
-    if (app.mosaicImage) {
+    if (app.compositeImage) {
       var collectionId = app.COLLECTION_IDS[app.filters.collectionId.getValue()].id;
 
       var imageIdTrailer = "";
@@ -461,11 +461,11 @@ app.createHelpers = function () {
       var fileName = 'SatelliteComposite-Export-' + collectionId.replace(/\//g, "_") + "-" + imageIdTrailer;
       // Export the image to Drive.
       Export.image.toDrive({
-        image: app.mosaicImage,
+        image: app.compositeImage,
         description: fileName,
         folder: app.EXPORT_FOLDER,
         fileNamePrefix: fileName,
-        region: app.mosaicImage.geometry(),
+        region: app.compositeImage.geometry(),
         scale: 30,          // Native image resolution of Landsat 8 is 30m.
         maxPixels: 3e8     // Raise the default limit of 3e8 to fit the export
       });
