@@ -583,7 +583,72 @@ s2Utils.s2_composite_display_and_export(
 // COPERNICUS/S2/20180816T001059_20180816T001102_T56KLB" // Large amount of organics at edge of the shelf.
 // COPERNICUS/S2/20180821T001111_20180821T001108_T56KLB" // Excellent image. Large amount of organics at edge of the shelf.
 
+// Australia, GBR, North east Swains, Elusive Reef
+// 0.1% Cloud cover
+// 130 of 160 images
+// In this area there are significant tidal currents in the bottom right reefs
+// this limited the visibility in many of the images.
+// There is very limited (1) full scene images after 2017.
+s2Utils.s2_composite_display_and_export(
+  [
+    // Excellent
+    // "COPERNICUS/S2/20160609T000222_20160609T000222_T56KMB", // 3, whole image
+    "COPERNICUS/S2/20170515T000221_20170515T000221_T56KMB", // 2, whole image, some deeper features not visible
+    "COPERNICUS/S2/20170729T000219_20170729T000217_T56KMB", // 2, whole image
+    // "COPERNICUS/S2/20180808T000241_20180808T000240_T56KMB", // 2 only bottom
+    // "COPERNICUS/S2/20190619T000249_20190619T000248_T56KMB", // 2 only bottom
+    "COPERNICUS/S2/20190724T000251_20190724T000245_T56KMB", // 1 only bottom
+    // "COPERNICUS/S2/20190818T000249_20190818T000246_T56KMB", // 2 only bottom, some deeper features not visible
+    "COPERNICUS/S2/20190905T001111_20190905T001109_T56KMB", // 1 only left
+    "COPERNICUS/S2/20190917T000239_20190917T000239_T56KMB", // 1 only bottom, excellent clarity
+    "COPERNICUS/S2/20200716T001109_20200716T001110_T56KMB", // 1 only left
+    // "COPERNICUS/S2/20200726T001109_20200726T001111_T56KMB", // 2 only left
+    "COPERNICUS/S2/20201105T000251_20201105T000245_T56KMB", // 1 only bottom, good clarity
+    
+    // Good
+    "COPERNICUS/S2/20161106T000222_20161107T142839_T56KMB", // 1, whole image
+    // "COPERNICUS/S2/20180821T001111_20180821T001108_T56KMB", // 2 only left, nutrient intrusion
+    "COPERNICUS/S2/20190213T235651_20190213T235654_T56KMB", // 1, clouds over Elusive reef, but whole image
+    "COPERNICUS/S2/20190727T001111_20190727T001114_T56KMB", // 1 only left
+    "COPERNICUS/S2/20190922T000241_20190922T000240_T56KMB", // 1 only bottom, good clarity
+    "COPERNICUS/S2/20200812T000249_20200812T000243_T56KMB", // 1 only bottom
+    "COPERNICUS/S2/20200815T001109_20200815T001112_T56KMB", // 1 only left
 
+    // OK
+    // "COPERNICUS/S2/20160927T000212_20160927T000213_T56KMB", // 2, quite a few scattered clouds
+    // "COPERNICUS/S2/20170719T000219_20170719T000218_T56KMB", // 2, whole image, Some clouds in top right
+    "COPERNICUS/S2/20171012T000241_20171012T000239_T56KMB", // 1, Only bottom
+    "COPERNICUS/S2/20171211T000241_20171211T000235_T56KMB", // 1, Only bottom
+    //"COPERNICUS/S2/20190808T000249_20190808T000247_T56KMB", // 2, only bottom
+],
+  false, false, REF1_OPTIONS);
+
+// Shows turbid plumes on the right edge. This would make for an interesting example
+// to show region tidal flows.
+// COPERNICUS/S2/20171206T000209_20171206T000206_T56KMB
+
+
+
+// 56KMA - Australia, GBR, South east Swains, Horseshoe, Hackle
+// CLOUDY_PIXEL_PERCENTAGE = 0.1
+// 46 of 46 Images
+s2Utils.s2_composite_display_and_export(
+  [
+    // Excellent
+    //"COPERNICUS/S2/20170729T000219_20170729T000217_T56KMA", // (2) Removed due to lower water clarity
+    "COPERNICUS/S2/20170813T000221_20170813T000219_T56KMA", // (3)
+    //"COPERNICUS/S2/20180808T000241_20180808T000240_T56KMA", // (2)
+    //"COPERNICUS/S2/20190724T000251_20190724T000245_T56KMA", // (2)
+    "COPERNICUS/S2/20190917T000239_20190917T000239_T56KMA", // (3)
+    "COPERNICUS/S2/20190922T000241_20190922T000240_T56KMA", // (4.5)
+    //"COPERNICUS/S2/20210718T000239_20210718T000242_T56KMA", // (2)
+    //"COPERNICUS/S2/20211115T000239_20211115T000239_T56KMA", // (2)
+    // Good
+    "COPERNICUS/S2/20171226T000209_20171226T000206_T56KMA", // (4)
+    "COPERNICUS/S2/20190213T235651_20190213T235654_T56KMA", // (2.5)
+    "COPERNICUS/S2/20201105T000251_20201105T000245_T56KMA" // (3)
+  ],
+  false, false, REF1_OPTIONS);
 
 // ===============================================================
 //
