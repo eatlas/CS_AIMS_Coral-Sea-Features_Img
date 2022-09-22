@@ -12,17 +12,18 @@
 // To export all the images in one go you will need approximately
 // 30 GB free in your Google Drive.
 
-// See https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Img/blob/master/src/01-gee/sentinel2/README.md
-// For javascript code that will automate the triggering of many
+// See https://github.com/eatlas/CS_AIMS_Coral-Sea-Features_Img#exporting-many-images-from-google-earth-engine
+// for javascript code that will automate the triggering of many
 // exports.
 
-// If you just want to preview one of the composites in 
-// the editor then you need to modify the code to stop the exports.
+// If you just want to preview one of the composites in the editor then 
+// you probably want to disable the the exports. This can be done using the find
+// and replace.
 //
 // Find and replace: false, true, REF1_OPTIONS
-// With: false, true, REF1_OPTIONS
+// With: false, false, REF1_OPTIONS
 // Find and replace: false, true, REF2_OPTIONS
-// With: false, true, REF2_OPTIONS
+// With: false, false, REF2_OPTIONS
 //
 // Now set the is_display option of the scene of interest to true
 // i.e. true, false, REF1_OPTIONS
@@ -45,7 +46,7 @@ var REF1_OPTIONS = {
   //colourGrades: ['DeepFalse','TrueColour','Shallow','Depth5m', 'Depth10m'],
   //exportScale: [10, 10, 10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
-  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea4',
+  exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
   
   applySunglintCorrection: true,
   applyBrightnessAdjustment: true
