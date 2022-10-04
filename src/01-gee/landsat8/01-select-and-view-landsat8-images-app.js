@@ -306,7 +306,7 @@ app.createHelpers = function () {
     var first = ee.Image(images.first());
     images = images.filterBounds(first.geometry().centroid());
 
-    images = app.processor.filterCloudCover(images, app.MAX_CLOUD_COVER);
+    images = app.processor.filterCloudCover(images, parseInt(app.filters.maxCloudCover.getValue()));
 
     app.thumbnails.thumbnailGrid.clear();
     images
