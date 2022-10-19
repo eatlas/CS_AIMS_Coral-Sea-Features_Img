@@ -18,7 +18,7 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
  
 // Date range to iterate through the Sentinel 2 imagery.
 var START_DATE = '2015-01-01';
-var END_DATE = '2022-1-20';
+var END_DATE = '2022-10-20';
 
 // Maximum cloud cover to include the image. Setting a low value removes
 // images that have lots of clouds. 
@@ -30,7 +30,7 @@ var END_DATE = '2022-1-20';
 // starting value.
 // - For remote areas where there are very few images this can be raised up 
 // to 100 (%) to allow previewing of all available imagery.
-var CLOUDY_PIXEL_PERCENTAGE = 0.1;
+var CLOUDY_PIXEL_PERCENTAGE = 100;
 
 // Sentinel 2 tiling grid to review the images for.
 // Use the map link below to find the tileID for the area of interest.
@@ -83,7 +83,7 @@ var tileID;
 //tileID = '56KPC';     // Calder Bank, Coral Sea - South
 //tileID = '56KNB';     // Saumarez Reefs (North) (Coral Sea, Australia) - South
 //tileID = '56KPB';     // (V0) Frederick Reef (Coral Sea, Australia) - South
-//tileID = '56KQB';     // Kenn Reefs (Coral Sea) - South
+tileID = '56KQB';     // Kenn Reefs (Coral Sea) - South
 //tileID = '56KNA';     // Saumarez Reefs (South) (Coral Sea) - South
 //tileID = '56KQA';     // Wreck Reefs (Coral Sea) - South
 //tileID = '56KQV';     // Cato Reef (Coral Sea) - South
@@ -121,7 +121,7 @@ var tileID;
 //tileID = '56NLP';   // Federated States of Micronesia (0 images available)
 //tileID = '55PHK';   // Federated States of Micronesia (0 images available)
 //tileID = '56PLQ';   // Federated States of Micronesia (0 images available)
-tileID = '56PMQ';   // Federated States of Micronesia (0 images available)
+//tileID = '56PMQ';   // Federated States of Micronesia (0 images available)
 
 // Near surface drowned continental areas
 //tileID = '41LMJ';   // Saya de Malha Banks (1 image, not much vis)
@@ -191,7 +191,7 @@ tileID = '56PMQ';   // Federated States of Micronesia (0 images available)
 //tileID = '37PFT';       // Eritrea, Red Sea, Dahlak Marine National Park
 
 // Western Australia - Pilbra
-tileID = '50KQD';   // Australia, Western Australia, North East of Port Headland
+//tileID = '50KQD';   // Australia, Western Australia, North East of Port Headland
 //tileID = '50KPD';   // Australia, Western Australia, North of Port Headland
 //tileID = '50KPC';   // Australia, Western Australia, Port Headland
 
