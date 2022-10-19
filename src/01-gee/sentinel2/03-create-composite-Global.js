@@ -621,7 +621,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20171211T000241_20171211T000235_T56KMB", // 1, Only bottom
     //"COPERNICUS/S2/20190808T000249_20190808T000247_T56KMB", // 2, only bottom
 ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // Shows turbid plumes on the right edge. This would make for an interesting example
 // to show region tidal flows.
@@ -648,7 +648,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190213T235651_20190213T235654_T56KMA", // (2.5)
     "COPERNICUS/S2/20201105T000251_20201105T000245_T56KMA" // (3)
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // ===============================================================
 //
@@ -739,7 +739,7 @@ s2Utils.s2_composite_display_and_export(
     //"COPERNICUS/S2/20200712T011731_20200712T011729_T53LPE",
     "COPERNICUS/S2/20200826T011729_20200826T011728_T53LPE"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
  
 
@@ -764,7 +764,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200909T005709_20200909T005710_T54LTH"
     //"COPERNICUS/S2/20200924T005711_20200924T005713_T54LTH"
   ],
- false, true, REF1_OPTIONS);
+ false, false, REF1_OPTIONS);
   
 // ===============================================================
 //
