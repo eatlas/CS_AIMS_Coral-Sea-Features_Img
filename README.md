@@ -1,6 +1,6 @@
 # Coral Sea Features Satellite imagery (Sentinel 2 and Landsat 8) 2015 – 2021 (AIMS)
 
-Eric Lawrey – 4 June 2022
+Eric Lawrey – 4 September 2022
 
 Australian Institute of Marine Science
 
@@ -8,9 +8,8 @@ Australian Institute of Marine Science
 
 This repository contains all the scripts used to create the imagery used in the 
 development of the Coral Sea Features dataset. This dataset contains cloud free 
-satellite image composites of the Coral Sea and select reef areas around the Globe.
-The purpose of the Coral Sea imagery was to map the boundary reef features, while the global 
-imagery was used to develop training examples of reef mapping.
+satellite image composites of the Coral Sea. The purpose of the Coral Sea imagery 
+was to map the boundary reef features.
 
 The satellite imagery was processed in the original scenes of the satellites being processed.
 For Sentinel 2 this corresponds to 100 x 100 km scenes. For Landsat 8 this corresponds to 
@@ -127,10 +126,6 @@ imagery was produced to check for any as yet unknown coral reefs in the Coral Se
 imagery will be of little interest otherwise, and so was separated out to shrink the
 size of the more useful `Coral Sea` imagery. This imagery was only processed using the `DeepFalse`
 to save on space.
-- `Global`: This imagery corresponds to selected reef areas around Australia and the 
-rest of the world. These were done to allow us to test how well the image processing algorithms work 
-across the globe and to allow validation of the approach used for reef boundary mapping with a
-diverse set of reefs.
 
 ## Dataset metadata and lineage
 More information about this dataset can be found on the 

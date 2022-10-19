@@ -1,13 +1,17 @@
-# What does this script do?
+# What do the scripts do?
 This script converts the GeoTiff images downloaded from the Google Earth Engine (GEE) into
-a format that is more suitable for web delivery. The images produced by the GEE are in 
-GeoTiff 8 bit per channel format with LZW compression, with the data scaled from 1 - 255 and
-0 reserved for transparent borders of the image. Unfortunately GEE does not set the NODATA
-value of the GeoTiff metadata and so unmodified the images have black borders. This script
-sets the NODATA of the images to 0, applies internal tiling and adds internal pyrimid overview
-images. 
+a format that is more suitable for web delivery and fast manipulation and use in a desktop 
+GIS. 
+The images produced by the GEE are in GeoTiff 8 bit per channel format with LZW compression, 
+with the data scaled from 1 - 255 and 0 reserved for transparent borders of the image. 
+Unfortunately GEE does not support setting the NODATA value of the GeoTiff metadata and so 
+unmodified the images have black borders. 
 
-The tiling organises the file layout so that groups of pixels (256x256) are located in
+The `01-convert.py` script sets the NODATA of the images to 0, applies internal tiling and 
+adds internal pyrimid overview images. It also organises the images into folders corresponding
+to satellite type and image style combinations. 
+
+The internal tiling organises the file layout so that groups of pixels (256x256) are located in
 tiles together on disk. The default format for GeoTiff files saves the files in rows of pixels.
 This makes extracting data in the middle of a large image difficult. Reading multiple rows of
 pixels requires skipping through the file. This makes the file reading slower. This script
@@ -19,15 +23,26 @@ data saved in the image. This means that if a user of the data needs to view a p
 image it doesn't need to read and subsample the whole image. It simply pulls the closest lower
 resolution version of the image to generate the preview image. This makes the performance faster.
 
+This script also creates virtual layer files that represent all the images of a given style into a
+single GDAL layer that can be loaded in one go into QGIS and manipulated as though it were
+a single moasic.
+
+The `01-mergePolygonStyles.py` merges the 5m and 10m GeoJSON polygon files into one shapefile
+per depth and region (Global, Coral-Sea). This needs to then by followed up with processing in
+QGIS using the `02-QGIS-model-smooth-polygons.model3` model to smooth and simplify the vector
+data. See section (#Processing the vector layers) for more detail.
+
 # Where to place downloaded images for processing
-This script reads the images from `unprocessed-data` folder.
-It treats subfolders as regions (such as `Coral-Sea` and `Global`). The filing of images into these
-regional folders is retained in the final generated folder (`data`). 
+These scripts read the images from `unprocessed-data` folder. They then process them into the
+`big-files` folders, for images, and the `tmp` folder for the depth contours (for subsequent
+manual processing in QGIS).
+
+It treats subfolders as regions (such as `unprocessed-data\Coral-Sea` and `unprocessed-data\Global`). 
+The filing of images into these regional folders is retained in the final generated folder (`big-files\lossless\Coral-Sea`). 
 
 
 # Setup
-
-To run this Python script you will need GDAL installed. The easiest way on Windows is to 
+To run these Python scripts you will need GDAL installed. The easiest way on Windows is to 
 install GDAL via OSGeo4W (https://www.osgeo.org/projects/osgeo4w/). This package allows
 multiple GIS tools to be installed. For this script you will need GDAL and Python. Many of
 the GDAL commands are written in Python and so we will run this script in the same Python
@@ -43,6 +58,9 @@ In that command line window `cd` to the location of this script then run:
 ```
 python 01-convert.py
 ```
+This script skips processing files if the output files already exist. This speeds up reprocessing
+with additional files. This does mean that if you need to modify an output with a changed input
+then you need to first delete the outputs.
 
 # Processing the vector layers
 This script merges all the vector files in a given region for a given style. i.e. it merges
@@ -67,7 +85,7 @@ Output `big-files\poly\Coral-Sea\CS_AIMS_Coral-Sea-Features_Img_S2_R1_Depth5m_Co
 
 This processing consists of:
 1. Smoothing (0.5 offset, which is the maximum)
-2. Buffer of approximately 3 m (0.00003 deg)
+2. Buffer of approximately 3 m (0.00003 deg). This is to help connect floating edge pixels.
 3. Dissolve to join any polygons that overlap from the buffer.
 4. Simplify with a maximum error of approximately 1 m (0.00001 deg).
 
