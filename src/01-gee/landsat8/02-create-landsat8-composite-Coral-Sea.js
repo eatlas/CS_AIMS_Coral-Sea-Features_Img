@@ -347,3 +347,66 @@ landsat8CompositeDisplayAndExport(
     ],
     false, true, REF1_OPTIONS);
 
+// ===============================================================
+//
+//                      Southern PNG
+//
+// ===============================================================
+
+// ===============================================================
+// ======== Louisiade Archipelago (PNG )=========
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_091068_20200123",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_091068_20150821"
+    ],
+    false, true, REF1_OPTIONS);
+    
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_092068_20150812",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_092068_20180108"
+    ],
+    false, true, REF1_OPTIONS);
+    
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20151023",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20200223",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20171129",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20201223"
+    ],
+    false, true, REF1_OPTIONS);
+    
+// ===============================================================
+// ======== PNG coast =========
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094067_20181006",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094067_20160509"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_095067_20180215",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_095067_20220125"
+    ],
+    false, true, REF1_OPTIONS);
+    
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096066_20191124"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20150325",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20211019",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20140322"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_084082_20211210"
+    ],
+    false, true, REF1_OPTIONS);
