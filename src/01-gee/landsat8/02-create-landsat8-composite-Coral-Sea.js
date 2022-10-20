@@ -180,7 +180,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094071_20170613",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094071_20140707"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Diane Bank (Coral Sea - Central) =========
@@ -195,7 +195,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_093071_20181015",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093071_20201020"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -211,7 +211,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_093072_20180812",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093072_20180828"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Flinders Reefs, Flora Reef, and south Holmes Reefs (Coral Sea - Central) =========
@@ -225,7 +225,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20141011"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Marion Reef (Coral Sea - Central) =========
@@ -239,7 +239,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_091073_20140818",
         "LANDSAT/LC08/C02/T1_TOA/LC08_091073_20160706"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -255,7 +255,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_090075_20160528",
         "LANDSAT/LC08/C02/T1_TOA/LC08_090075_20200811"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -267,7 +267,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_089074_20170524",
         "LANDSAT/LC08/C02/T1_TOA/LC08_089074_20180815"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -284,7 +284,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_089075_20180916",
         "LANDSAT/LC08/C02/T1_TOA/LC08_089075_20150604"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Wreck Reefs and Hutchison Rock (Coral Sea - South )=========
@@ -300,7 +300,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_088076_20210325",
         "LANDSAT/LC08/C02/T1_TOA/LC08_088076_20190811"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Bampton Reefs - northern part (Coral Sea - Far East )=========
@@ -314,7 +314,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_087073_20130819",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087073_20170814"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -333,7 +333,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20151113",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20170814"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Plateau des Bellona (Coral Sea - Far East )=========
@@ -347,5 +347,68 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_086075_20140916",
         "LANDSAT/LC08/C02/T1_TOA/LC08_086075_20150802"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
+// ===============================================================
+//
+//                      Southern PNG
+//
+// ===============================================================
+
+// ===============================================================
+// ======== Louisiade Archipelago (PNG )=========
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_091068_20200123",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_091068_20150821"
+    ],
+    false, true, REF1_OPTIONS);
+    
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_092068_20150812",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_092068_20180108"
+    ],
+    false, true, REF1_OPTIONS);
+    
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20151023",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20200223",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20171129",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20201223"
+    ],
+    false, true, REF1_OPTIONS);
+    
+// ===============================================================
+// ======== PNG coast =========
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094067_20181006",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094067_20160509"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_095067_20180215",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_095067_20220125"
+    ],
+    false, true, REF1_OPTIONS);
+    
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096066_20191124"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20150325",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20211019",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20140322"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_084082_20211210"
+    ],
+    false, true, REF1_OPTIONS);
