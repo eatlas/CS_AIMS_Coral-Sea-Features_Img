@@ -78,7 +78,8 @@ styles = [
 	'S2_R1_ReefTop', 'S2_R2_ReefTop','L8_R1_ReefTop', 'L8_R2_ReefTop',
 	'S2_R1_Shallow', 'S2_R2_Shallow','L8_R1_Shallow', 'L8_R2_Shallow',
 	'S2_R1_TrueColour', 'S2_R2_TrueColour','L8_R1_TrueColour', 'L8_R2_TrueColour',
-	'S2_R1_Slope', 'S2_R2_Slope','L8_R1_Slope', 'L8_R2_Slope'
+	'S2_R1_Slope', 'S2_R2_Slope','L8_R1_Slope', 'L8_R2_Slope',
+	'S2_R3_DeepFalse'
 	]
 
 # =======================================
