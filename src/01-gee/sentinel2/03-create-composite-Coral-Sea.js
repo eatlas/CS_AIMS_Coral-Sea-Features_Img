@@ -765,7 +765,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20151128T234812_20170509T143613_T56KQE",
     "COPERNICUS/S2/20160416T235041_20160417T061750_T56KQE"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
   
 s2Utils.s2_composite_display_and_export(
   [
@@ -773,7 +773,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160107T234812_20160107T234811_T56KQE", // Feature visible, surrounded by clouds
     "COPERNICUS/S2/20160216T234812_20160216T234917_T56KQE" // Feature visible, surrounded by clouds
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 // ======== Marion Reef (Coral Sea, Australia) Northern section ===
 // 60 out of 60 images searched
