@@ -40,17 +40,17 @@ import math
 #         - *.tif
 #       ...
 SRC_PATH = '../../unprocessed-data'
-#SRC_PATH = '../../big-files/lossless'   # Use this path if you need to reprocess 
+SRC_PATH = '../../big-files/lossless'   # Use this path if you need to reprocess 
 										# existing data
 OUT_PATH = '../../big-files/data'
 
-MAKE_LOSSLESS = True			# Lossless GeoTiff format with overviews and tiling
+MAKE_LOSSLESS = False			# Lossless GeoTiff format with overviews and tiling
 MAKE_LOSSY = False			# Lossy version of dataset (This is not used because we found that
 							# the chroma compression in JPEG was unsuitable for digitisation, and
 							# the masking of the borders didn't work correctly).
 MAKE_PREVIEW = True		# JPEG preview image, suitable for browsing on the web`
 MAKE_GEOPNG = False			# Quartered PNG images with worldfiles for viewing on iPad
-MAKE_VIRTUAL = True		# Virtual raster (GDAL) that makes all the lossless images appear
+MAKE_VIRTUAL = False		# Virtual raster (GDAL) that makes all the lossless images appear
 							# as a single image mosaic when loaded into QGIS.
 
 
@@ -73,9 +73,7 @@ if not os.path.exists(OUT_LOSSY) and MAKE_LOSSY:
 # We use a predefined list of Satellite, quality and style combinations
 # to limit the amount of parsing that is needed in this script.
 styles = [
-	'S2_R1_DeepMarine','S2_R2_DeepMarine','L8_R1_DeepMarine','L8_R2_DeepMarine',
 	'S2_R1_DeepFalse', 'S2_R2_DeepFalse','L8_R1_DeepFalse', 'L8_R2_DeepFalse',
-	'S2_R1_ReefTop', 'S2_R2_ReefTop','L8_R1_ReefTop', 'L8_R2_ReefTop',
 	'S2_R1_Shallow', 'S2_R2_Shallow','L8_R1_Shallow', 'L8_R2_Shallow',
 	'S2_R1_TrueColour', 'S2_R2_TrueColour','L8_R1_TrueColour', 'L8_R2_TrueColour',
 	'S2_R1_Slope', 'S2_R2_Slope','L8_R1_Slope', 'L8_R2_Slope',
@@ -388,3 +386,4 @@ if MAKE_VIRTUAL:
 					subprocess.call(cmdString, cwd = imgDir)
 				else:
 					print("No files found for "+imgDir)
+					
