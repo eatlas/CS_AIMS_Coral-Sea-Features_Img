@@ -11,7 +11,7 @@
 // === README: ====
 // If you modify your copy of s2Utils.js you must change this path, changing
 // the username. GEE only allows absolute paths.
-var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-gee/s2Utils.js');
+var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-gee/sentinel2/s2Utils.js');
 
 // This is the list of images to look through. Think of this list as
 // as a temporary list of images that you are working on that you wish
@@ -25,7 +25,13 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // images from a single Sentinel 2 tile.
 var IMAGE_IDS = 
   [
-    "COPERNICUS/S2/20190905T001111_20190905T001109_T56KLF"
+    "COPERNICUS/S2/20160923T235242_20160923T235240_T56KQU",
+    "COPERNICUS/S2/20170908T235241_20170908T235243_T56KQU",
+    "COPERNICUS/S2/20180829T235239_20180829T235235_T56KQU",
+    "COPERNICUS/S2/20190506T235259_20190506T235253_T56KQU",
+    "COPERNICUS/S2/20190918T235241_20190918T235244_T56KQU",
+    "COPERNICUS/S2/20210724T235249_20210724T235247_T56KQU",
+    "COPERNICUS/S2/20210828T235251_20210828T235246_T56KQU"
   ];
 
 s2Utils.viewSelectedSentinel2ImagesApp(IMAGE_IDS);
