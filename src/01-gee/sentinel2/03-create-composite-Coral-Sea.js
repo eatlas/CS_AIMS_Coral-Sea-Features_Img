@@ -755,7 +755,25 @@ s2Utils.s2_composite_display_and_export(
   false, false, REF2_OPTIONS);  
 
 
-
+// ======== U/N Sea mount - Central (below Mellish Reef) =========
+// Feature is 29 m depth on marine chart. Very difficult to 
+// see in the imagery
+// Searched 27 out of 27 images
+s2Utils.s2_composite_display_and_export(
+  [
+    // Good
+    "COPERNICUS/S2/20151128T234812_20170509T143613_T56KQE",
+    "COPERNICUS/S2/20160416T235041_20160417T061750_T56KQE"
+  ],
+  false, false, REF1_OPTIONS);
+  
+s2Utils.s2_composite_display_and_export(
+  [
+    // Cloudy, by clear over the reef feature
+    "COPERNICUS/S2/20160107T234812_20160107T234811_T56KQE", // Feature visible, surrounded by clouds
+    "COPERNICUS/S2/20160216T234812_20160216T234917_T56KQE" // Feature visible, surrounded by clouds
+  ],
+  false, false, REF2_OPTIONS);
 
 // ======== Marion Reef (Coral Sea, Australia) Northern section ===
 // 60 out of 60 images searched
