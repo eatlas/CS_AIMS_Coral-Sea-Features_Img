@@ -147,7 +147,7 @@ landsat8CompositeDisplayAndExport(
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20180909",
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20210731"
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 
 // OK and Maybe images
 landsat8CompositeDisplayAndExport(
@@ -362,14 +362,14 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_091068_20200123",
         "LANDSAT/LC08/C02/T1_TOA/LC08_091068_20150821"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     
 landsat8CompositeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_092068_20150812",
         "LANDSAT/LC08/C02/T1_TOA/LC08_092068_20180108"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     
 landsat8CompositeDisplayAndExport(
     [
@@ -378,7 +378,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20171129",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093068_20201223"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     
 // ===============================================================
 // ======== PNG coast =========
@@ -387,14 +387,39 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094067_20181006",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094067_20160509"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     landsat8CompositeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_095067_20180215",
         "LANDSAT/LC08/C02/T1_TOA/LC08_095067_20220125"
     ],
-    false, true, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096066_20191124"
+    ],
+    false, false, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20150325",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20211019",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20140322"
+    ],
+    false, false, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_084082_20211210"
+    ],
+    false, false, REF1_OPTIONS);
+    
+    
+    
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_095067_20180215"
+    ],
+    false, true, REF1_OPTIONS);
     landsat8CompositeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_096066_20191124"
@@ -402,13 +427,31 @@ landsat8CompositeDisplayAndExport(
     false, true, REF1_OPTIONS);
     landsat8CompositeDisplayAndExport(
     [
-        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20150325",
-        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20211019",
-        "LANDSAT/LC08/C02/T1_TOA/LC08_097066_20140322"
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094066_20150811",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094066_20130821"
     ],
     false, true, REF1_OPTIONS);
     landsat8CompositeDisplayAndExport(
     [
-        "LANDSAT/LC08/C02/T1_TOA/LC08_084082_20211210"
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093066_20200223",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093066_20140326"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_092066_20191229",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_092066_20200302"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_092067_20180225",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_092067_20150812"
+    ],
+    false, true, REF1_OPTIONS);
+    landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093067_20190511",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_093067_20200223"
     ],
     false, true, REF1_OPTIONS);
