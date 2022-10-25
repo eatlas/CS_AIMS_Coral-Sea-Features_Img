@@ -127,19 +127,19 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200822T004711_20200822T004712_T55LBK",
     "COPERNICUS/S2/20210802T004709_20210802T004707_T55LBK"
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 
 s2Utils.s2_composite_display_and_export(
   [
     "COPERNICUS/S2/20200216T003659_20200216T003700_T55LBK", // Right Very low clouds Good visibility
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
   
 s2Utils.s2_composite_display_and_export(
   [
     "COPERNICUS/S2/20190115T004709_20190115T004705_T55LBK", // Scattered clouds. Good platform visibility
   ],
-  false, true, REF3_OPTIONS);
+  false, false, REF3_OPTIONS);
 
   
 // ======== Ashmore Reef (Coral Sea) - Far North =========
@@ -773,7 +773,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160107T234812_20160107T234811_T56KQE", // Feature visible, surrounded by clouds
     "COPERNICUS/S2/20160216T234812_20160216T234917_T56KQE" // Feature visible, surrounded by clouds
   ],
-  false, false, REF2_OPTIONS);
+  false, true, REF2_OPTIONS);
 
 // ======== Marion Reef (Coral Sea, Australia) Northern section ===
 // 60 out of 60 images searched
