@@ -83,7 +83,7 @@ var tileID;
 //tileID = '56KPC';     // Calder Bank, Coral Sea - South
 //tileID = '56KNB';     // Saumarez Reefs (North) (Coral Sea, Australia) - South
 //tileID = '56KPB';     // (V0) Frederick Reef (Coral Sea, Australia) - South
-tileID = '56KQB';     // Kenn Reefs (Coral Sea) - South
+//tileID = '56KQB';     // Kenn Reefs (Coral Sea) - South
 //tileID = '56KNA';     // Saumarez Reefs (South) (Coral Sea) - South
 //tileID = '56KQA';     // Wreck Reefs (Coral Sea) - South
 //tileID = '56KQV';     // Cato Reef (Coral Sea) - South
@@ -92,7 +92,7 @@ tileID = '56KQB';     // Kenn Reefs (Coral Sea) - South
 
 // Sea mounts that probably don't have reefs.
 //tileID = '56KQU';     // Fraser Seamount - South
-//tileID = '56KQE';     // U/N Sea mount - Central AUS04634 - 29 m feature in marine chart 
+tileID = '56KQE';     // U/N Sea mount - Central AUS04634 - 29 m feature in marine chart 
                       // Only partial image scenes. 16 images, but none with clear
                       // view over reef area.
 //tileID = '57KTS';   // Selfridge Rock (https://web.archive.org/web/20130305015208/http://www.shom.fr/fileadmin/data-www/01-LE_SHOM/02-ACTUALITES/01-LES_COMMUNIQUES/fig_2_-_Sandy_Island.png)
