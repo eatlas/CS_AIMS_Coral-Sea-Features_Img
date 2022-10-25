@@ -661,12 +661,3 @@ s2Utils.s2_composite_display_and_export(
 //    "COPERNICUS/S2/20190908T235241_20190908T235244_T56KQU",
 //    "COPERNICUS/S2/20200823T235251_20200823T235250_T56KQU"
   
-// ======== U/N Sea mount - Central =========
-// Searched 6 out of 6 images
-s2Utils.s2_composite_display_and_export(
-  [
-    // Good
-    "COPERNICUS/S2/20151128T234812_20170509T143613_T56KQE",
-    "COPERNICUS/S2/20160416T235041_20160417T061750_T56KQE"
-  ],
-  false, false, OPEN_WATER_OPTIONS);
