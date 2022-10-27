@@ -69,34 +69,34 @@ var utils = {
   },
 
   /**
-   * Create an image mosaic from an array of image IDs.
+   * Create an image composite from an array of image IDs.
    *
    * @param imageIds
    * @param correctSunGlint
    * @param maskClouds
    * @return {ee.Image.rgb}
    */
-  createMosaicImage: function (imageIds, correctSunGlint, maskClouds) {
-    var mosaicImageCollection = ee.ImageCollection(imageIds);
+  createCompositeImage: function (imageIds, correctSunGlint, maskClouds) {
+    var compositeImageCollection = ee.ImageCollection(imageIds);
 
     if (correctSunGlint) {
-      mosaicImageCollection = mosaicImageCollection.map(this.removeSunGlint);
+      compositeImageCollection = compositeImageCollection.map(this.removeSunGlint);
     }
 
     if (maskClouds) {
-      mosaicImageCollection = mosaicImageCollection.map(this.maskClouds);
+      compositeImageCollection = compositeImageCollection.map(this.maskClouds);
     }
 
-    var mosaicImage = mosaicImageCollection.median();
+    var compositeImage = compositeImageCollection.median();
 
     // https://github.com/eatlas/CS_AIMS_Sentinel-2-marine_V1/blob/85ab3ec7a27a2f9979bd23946fc6ea4b16bc98d6/src/02-gee-scripts/utils.js#L367
     // Correct for a bug in the reduce process. The reduce process does not generate an image with the correct geometry.
     // Instead, the composite generated as a geometry set to the whole world. This can result in subsequent processing
     // to fail or be very inefficient. We work around this by clipping the output to the dissolved geometry of the
     // input collection of images.
-    mosaicImage = mosaicImage.clip(mosaicImageCollection.geometry().dissolve());
+    compositeImage = compositeImage.clip(compositeImageCollection.geometry().dissolve());
 
-    return mosaicImage;
+    return compositeImage;
   },
 
   /**
