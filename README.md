@@ -81,11 +81,14 @@ contrast enhancement was applied.
 More details about the processing can be found in the extensive comments in the `01-gee/sentinel2/s2Utils.js`
 script library.
 
+## Depth contours
+
 In addition to the imagery, depth contours (5 m and 10 m) were estimated using Satellite Derived Bathymetry. 
-The intention of these contours was for the 5 m contour was to develop a more quantitative measure of the
-reef top. The GBR features dataset has a matching 'Dry Reefs' dataset that has no documented definition.
+The intention of these contours was to establish a more quantitative measure of reef top. The GBRMPA GBR features 
+dataset has a matching 'Dry Reefs' dataset that has no documented definition.
 Matching these features to bathymetry indicates that they correspond to approximately the 5 m depth
-contour and thus don't represent areas that dry out. We therefore use an estimate of the 5 m contour
+contour. A 5 m depth means that these areas don't really represent areas that dry out, but instead represent
+the shallow tops of reefs. To create a similar product for the Coral Sea we therefore use an estimate of the 5 m contour
 as a replacement for the 'Dry Reefs' in the Coral Sea. A 10 m contour was also developed to provide
 an addtional represention of the 3D structure of the reef.
 
@@ -100,7 +103,7 @@ up to 5 m. In addition to this the depth data is affected by clouds and in some 
 (in particular Kenn Reef) there are significant clouds (due to the limited available imagery) resulting
 in lots of false depth contours. The depth data from this dataset is RAW and unfiltered or clipped.
 
-They parameters needed to calibrate the band ratio depth estimate were based the limited number depth measurements 
+The parameters needed to calibrate the band ratio depth estimate were based the limited number depth measurements 
 in marine charts in Shark Bay in WA for depths between 0 - 15 m. This area was chosen due to its clear
 water, gentle slopes (minimising any positional errors), and the extensive seagrass meadows that allowed us
 to establish the affect of dark substrates on the depth estimates. The method used is only moderately accurate 
@@ -111,7 +114,9 @@ B3 channel. This algorithm was found to be less effective at shallow depths (0 -
 and so contours at 5 and 10 m were extracted. 
 
 These bathymetry polygons are raw and do contain false detections due to anomalies in the images such as clouds. 
-They are merged together 
+They are intended to be post processed and cleaned up.
+
+Further details of the depth mapping can be found in the code.
 
 ## Landsat 8 image processing
 
