@@ -13,9 +13,8 @@ was to map the boundary reef features.
 
 ![Preview map of imagery in this dataset](media/Preview-coverage-map.jpeg)
 
-The satellite imagery was processed in the original scenes of the satellites being processed.
-For Sentinel 2 this corresponds to 100 x 100 km scenes. For Landsat 8 this corresponds to 
-larger scenes.
+- [Dataset metadata](https://eatlas.org.au/data/uuid/df5a5b47-ad4c-431e-be49-af52f64aafce)
+- [Dataset data download](https://nextcloud.eatlas.org.au/apps/sharealias/a/cs-aims-coral-sea-features-img)
 
 The Sentinel 2 imagery composites were processed into a number of different styles that each
 focus on a different task:
