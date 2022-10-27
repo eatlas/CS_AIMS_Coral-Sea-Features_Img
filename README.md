@@ -1,6 +1,6 @@
 # Coral Sea Features Satellite imagery (Sentinel 2 and Landsat 8) 2015 – 2021 (AIMS)
 
-Eric Lawrey – 4 September 2022
+Eric Lawrey – 27 October 2022
 
 Australian Institute of Marine Science
 
@@ -17,13 +17,25 @@ The satellite imagery was processed in the original scenes of the satellites bei
 For Sentinel 2 this corresponds to 100 x 100 km scenes. For Landsat 8 this corresponds to 
 larger scenes.
 
-The image composites were processed into a number of different styles that each
+The Sentinel 2 imagery composites were processed into a number of different styles that each
 focus on a different task:
 - `DeepFalse` - False colour for best for viewing deep reef features (B2, B3, B4)
 - `Shallow` - False colour showing shallow (< 3 m) and dry areas (B5, B8, B11).
 - `TrueColour` - True colour imagery (B3, B4, B5)
 - `Depth5m` - Reef top features down to 5 m depth. No tidal compensation.
 - `Depth10m` - Reef top features down to 10 m depth. No tidal compensation.
+
+The Sentinel 2 imagery was split into two groups:
+- `Coral Sea`: Scenes with Coral Sea reefs. All stylings were generated.
+- `Coral Sea Waters`: Scenes with no Coral Sea reefs (although there are some GBR reefs in 
+some of these images). Only `DeepFalse` styling was generated.
+
+Landsat 8 imagery was only processed to render `DeepFalse` styling.
+
+Sentinel 3 imagery was only used when there was no better imagery available or additional
+checks were required on the existance of a feature. This imagery was processed using
+EO Browser. See [](src/01-eobrowser/sentinel2/Coral-sea-processing.txt) for more details
+about Sentinel 3 processing.
 
 ## Sentinel 2 image processing
 
@@ -41,8 +53,6 @@ the region. In this dataset the tiles were split into regions:
  - `Coral-Sea` - Images of Coral Sea reefs
  - `Coral-Sea-water` - Open water images of the Coral Sea. Used to verify that there are no new
  coral platforms.
- - `Global` - Selected reefal areas around the world to verify the robustness of the
- imaging techinques.
 4. These two collections were then converted into two satellite composite images. 
 5. Each image was preprocessed, prior to being combined into a composite by:
     1. Removing surface reflectance on the water based on estimates of the reflection using infrared bands.
@@ -80,14 +90,16 @@ contour and thus don't represent areas that dry out. We therefore use an estimat
 as a replacement for the 'Dry Reefs' in the Coral Sea. A 10 m contour was also developed to provide
 an addtional represention of the 3D structure of the reef.
 
-There was no high resolution bathymetry available for any of the Coral Sea reefs and so the satellite
+There was no high resolution shallow bathymetry available for any of the Coral Sea reefs and so the satellite
 derived bathymetry was estimated using depth measurements available in other regions. The algorithm
 developed used standard green / blue band ratio, which is moderately accurate from 4 - 12 m, however
 it is influenced by water colour (no too much of a problem in the Coral Sea due to the clear water), 
 and substrate brightness, neither of these factors were fully compensated for in the algorthm.
 
 As such the depth contours should not be considered as high accuracy and may contain depth errors 
-up to 5 m.
+up to 5 m. In addition to this the depth data is affected by clouds and in some Sentinel 2 scenes 
+(in particular Kenn Reef) there are significant clouds (due to the limited available imagery) resulting
+in lots of false depth contours. The depth data from this dataset is RAW and unfiltered or clipped.
 
 They parameters needed to calibrate the band ratio depth estimate were based the limited number depth measurements 
 in marine charts in Shark Bay in WA for depths between 0 - 15 m. This area was chosen due to its clear
@@ -104,7 +116,7 @@ They are merged together
 
 ## Landsat 8 image processing
 
-A simpler workflow was established for processing Landsat8 imagery. Less research was applied to
+A simplier workflow was established for processing Landsat8 imagery. Less research was applied to
 optimising the Landsat 8 imagery as its primary purpose was to act as backup imagery for when there
 was no good Sentinel 2 images and to provide an independent set of imagery for checking the 
 reef boundary mapping.
