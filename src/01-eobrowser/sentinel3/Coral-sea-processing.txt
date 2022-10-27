@@ -1,0 +1,49 @@
+For areas outside the Australian EEZ where Landsat 8 and Sentinel 2 imagery were not available, Sentinel 3 was processed through Sentinel Hub to collect imagery of specific reef features. These were then used to draw rough boundaries.
+
+All images were exported with the following settings:
+
+Downloaded with Analytical
+Image format: TIFF (16 bit)
+Image resolution: High (1956 x 987 px)
+Coordinate system: WGS 84
+Clip extra bands: True
+Layers: Custom
+
+# Coral Sea Australia
+
+## Selfridge Bank
+This bank is highlighted on the marine charts, but was just outside the range of available Landsat and Sentinel 2 imagery. This feature is just on the edge of the Australian EEZ. This feature is at the edge of visibility, at a depth of 44 m on the marine chart. All days from 2022-03-07 through to 2022-09-20 were reviewed to find the clearest imagery. This feature was confirmed in 4 images and the best 3 images were downloaded. 
+
+Image dates: 2022-03-07,2022-04-13, 2022-07-11
+https://apps.sentinel-hub.com/eo-browser/?zoom=11&lat=-20.89346&lng=157.13367&themeId=DEFAULT-THEME&visualizationUrl=https%3A%2F%2Fservices.sentinel-hub.com%2Fogc%2Fwms%2F82f84fab-9b1c-4322-beeb-207b0f05afef&evalscript=Ly9WRVJTSU9OPTMgKGF1dG8tY29udmVydGVkIGZyb20gMSkKCmxldCBtaW5WYWwgPSAwLjA7CmxldCBtYXhWYWwgPSAxOwoKbGV0IHZpeiA9IG5ldyBIaWdobGlnaHRDb21wcmVzc1Zpc3VhbGl6ZXIobWluVmFsLCBtYXhWYWwpOwoKZnVuY3Rpb24gZXZhbHVhdGVQaXhlbChzYW1wbGVzKSB7ICAgIAogICAgdmFyIGIzID0gKHNhbXBsZXMuQjAzKjUtc2FtcGxlcy5CMTQqNi43LTAuMykqMC45OwogICAgdmFyIGI0ID0gKHNhbXBsZXMuQjA0KjYtc2FtcGxlcy5CMTQqOC42LTAuMykqMC45NTsKICAgIHZhciBiNSA9IChzYW1wbGVzLkIwNSo2LXNhbXBsZXMuQjE0KjktMC4yKSowLjk7CiAgICB2YXIgdmFsdWVzID0gW2I1LGI0LGIzLCBzYW1wbGVzLmRhdGFNYXNrXTsKICAgICAgICByZXR1cm4gdml6LnByb2Nlc3NMaXN0KHZhbHVlcyk7Cn0KCmZ1bmN0aW9uIHNldHVwKCkgewogIHJldHVybiB7CiAgICBpbnB1dDogW3sKICAgICAgYmFuZHM6IFsiQjAzIiwgIkIwNCIsICJCMDUiLCAiQjA2IiwgIkIwNyIsICJCMDkiLCAiQjE0IiwgImRhdGFNYXNrIl0KICAgIH1dLAogICAgb3V0cHV0OiB7IGJhbmRzOiA0IH0KICB9Cn0%3D&datasetId=S3OLCI&fromTime=2022-03-07T00%3A00%3A00.000Z&toTime=2022-03-07T23%3A59%3A59.999Z&demSource3D=%22MAPZEN%22#custom-script
+
+## Obstn Rep(1962)
+This is an observation at 18 m, near Kenn Reefs at 156.36, -21.634. The dotted boundary on the marine chart indicates that it is not a confirmed feature by AHO. No feature was found in the imagery, however we should note that Sentinel 3 has a 300 m resolution and so small features could be missed.
+Image dates: 2022-09-23, 2022-09-17
+
+https://apps.sentinel-hub.com/eo-browser/?zoom=10&lat=-21.67019&lng=156.3533&themeId=DEFAULT-THEME&visualizationUrl=https%3A%2F%2Fservices.sentinel-hub.com%2Fogc%2Fwms%2F82f84fab-9b1c-4322-beeb-207b0f05afef&evalscript=Ly9WRVJTSU9OPTMgKGF1dG8tY29udmVydGVkIGZyb20gMSkKCmxldCBtaW5WYWwgPSAwLjA7CmxldCBtYXhWYWwgPSAxOwoKbGV0IHZpeiA9IG5ldyBIaWdobGlnaHRDb21wcmVzc1Zpc3VhbGl6ZXIobWluVmFsLCBtYXhWYWwpOwoKZnVuY3Rpb24gZXZhbHVhdGVQaXhlbChzYW1wbGVzKSB7ICAgIAogICAgdmFyIGIzID0gKHNhbXBsZXMuQjAzKjUtc2FtcGxlcy5CMTQqNi43LTAuMykqMC45OwogICAgdmFyIGI0ID0gKHNhbXBsZXMuQjA0KjYtc2FtcGxlcy5CMTQqOC42LTAuMykqMC45NTsKICAgIHZhciBiNSA9IChzYW1wbGVzLkIwNSo2LXNhbXBsZXMuQjE0KjktMC4yKSowLjk7CiAgICB2YXIgdmFsdWVzID0gW2I1LGI0LGIzLCBzYW1wbGVzLmRhdGFNYXNrXTsKICAgICAgICByZXR1cm4gdml6LnByb2Nlc3NMaXN0KHZhbHVlcyk7Cn0KCmZ1bmN0aW9uIHNldHVwKCkgewogIHJldHVybiB7CiAgICBpbnB1dDogW3sKICAgICAgYmFuZHM6IFsiQjAzIiwgIkIwNCIsICJCMDUiLCAiQjA2IiwgIkIwNyIsICJCMDkiLCAiQjE0IiwgImRhdGFNYXNrIl0KICAgIH1dLAogICAgb3V0cHV0OiB7IGJhbmRzOiA0IH0KICB9Cn0%3D&datasetId=S3OLCI&fromTime=2022-09-23T00%3A00%3A00.000Z&toTime=2022-09-23T23%3A59%3A59.999Z&demSource3D=%22MAPZEN%22#custom-script
+
+# New Caledonia
+
+There are lots of large reefs systems in the Coral Sea on the New Caledonia side. For these reefs we have partial coverage with Sentinel 2 and Landsat. The low resolution Sentinel 3 imagery was collected to ensure this area had complete coverage.
+
+The following is the basic script for the processing of the Sentinel 3 imagery:
+
+## Kelso and Capel Banks
+These banks are on the southern edge of the Coral Sea near the Tasman Sea. These features are poorly represented in most maps.
+
+Kelso Bank: 2022-09-24, 2022-05-16
+Capel Bank: 2022-04-19, 2022-04-18
+
+https://apps.sentinel-hub.com/eo-browser/?zoom=9&lat=-24.48965&lng=159.53796&themeId=DEFAULT-THEME&visualizationUrl=https%3A%2F%2Fservices.sentinel-hub.com%2Fogc%2Fwms%2F82f84fab-9b1c-4322-beeb-207b0f05afef&evalscript=Ly9WRVJTSU9OPTMgKGF1dG8tY29udmVydGVkIGZyb20gMSkKCi8vIEEgc2ltcGxpZmllZCBzY3JpcHQgd2l0aCBoaWdobGlnaHQgY29tcHJlc3Npb24gYmFzZWQgb246Ci8vIFNlbnRpbmVsLTMgZGF0YSBWaXN1YWxpemF0aW9uIFYxLjAuMAovLyBUd2l0dGVyOiBQaWVycmUgTWFya3VzZSAoQHBpZXJyZV9tYXJrdXNlKQovLyBXZWJzaXRlOiBodHRwczovL3BpZXJyZS1tYXJrdXNlLm5ldC8KLy8gQ0MgQlkgNC4wIEludGVybmF0aW9uYWwgLSBodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnkvNC4wLwoKbGV0IG1pblZhbCA9IDAuMDsKbGV0IG1heFZhbCA9IDE7CgpsZXQgdml6ID0gbmV3IEhpZ2hsaWdodENvbXByZXNzVmlzdWFsaXplcihtaW5WYWwsIG1heFZhbCk7CgpmdW5jdGlvbiBldmFsdWF0ZVBpeGVsKHNhbXBsZXMpIHsgICAgCiAgICAvL3ZhciB2YWx1ZXMgPSBbMS41ICogc2FtcGxlcy5CMDcgKyAyLjEgKiBzYW1wbGVzLkIwOSAtIDAuMTUgKiBzYW1wbGVzLkIxNCwgMS42NSAqIHNhbXBsZXMuQjA1ICsgMi4xICogc2FtcGxlcy5CMDYgLSAwLjMgKiBzYW1wbGVzLkIxNCwgMy45ICogc2FtcGxlcy5CMDQgLSBzYW1wbGVzLkIxNCAqIDAuOSwgc2FtcGxlcy5kYXRhTWFza107CiAgICB2YXIgYjMgPSAoc2FtcGxlcy5CMDMqNS1zYW1wbGVzLkIxNCo2LjctMC4zKSowLjk7CiAgICB2YXIgYjQgPSAoc2FtcGxlcy5CMDQqNi1zYW1wbGVzLkIxNCo4LjYtMC4zKSowLjk1OwogICAgdmFyIGIyID0gKHNhbXBsZXMuQjAyKjUtc2FtcGxlcy5CMTQqNi4zLTAuNCkqMS4xOwogICAgdmFyIGI1ID0gKHNhbXBsZXMuQjA1KjYtc2FtcGxlcy5CMTQqOS0wLjIpKjAuOTsKICAgIHZhciB2YWx1ZXMgPSBbYjUsYjQsYjMsIHNhbXBsZXMuZGF0YU1hc2tdOwogICAgICAgIHJldHVybiB2aXoucHJvY2Vzc0xpc3QodmFsdWVzKTsKfQoKZnVuY3Rpb24gc2V0dXAoKSB7CiAgcmV0dXJuIHsKICAgIGlucHV0OiBbewogICAgICBiYW5kczogWyJCMDEiLCJCMDIiLCJCMDMiLCAiQjA0IiwgIkIwNSIsICJCMDYiLCAiQjA3IiwgIkIwOSIsICJCMTQiLCAiZGF0YU1hc2siXQogICAgfV0sCiAgICBvdXRwdXQ6IHsgYmFuZHM6IDQgfQogIH0KfQ%3D%3D&datasetId=S3OLCI&fromTime=2022-04-19T00%3A00%3A00.000Z&toTime=2022-04-19T23%3A59%3A59.999Z&demSource3D=%22MAPZEN%22#custom-script
+
+# Lansdowne Bank
+
+These features are between Chesterfield Reefs and New Caledonia mainland. They are poorly represented in most maps.
+
+
+2022-09-24, 2022-04-19
+
+https://apps.sentinel-hub.com/eo-browser/?zoom=9&lat=-20.5698&lng=161.11313&themeId=DEFAULT-THEME&visualizationUrl=https%3A%2F%2Fservices.sentinel-hub.com%2Fogc%2Fwms%2F82f84fab-9b1c-4322-beeb-207b0f05afef&evalscript=Ly9WRVJTSU9OPTMgKGF1dG8tY29udmVydGVkIGZyb20gMSkKCmxldCBtaW5WYWwgPSAwLjA7CmxldCBtYXhWYWwgPSAxOwoKbGV0IHZpeiA9IG5ldyBIaWdobGlnaHRDb21wcmVzc1Zpc3VhbGl6ZXIobWluVmFsLCBtYXhWYWwpOwoKZnVuY3Rpb24gZXZhbHVhdGVQaXhlbChzYW1wbGVzKSB7ICAgIAogICAgdmFyIGIzID0gKHNhbXBsZXMuQjAzKjUtc2FtcGxlcy5CMTQqNi43LTAuMykqMC45OwogICAgdmFyIGI0ID0gKHNhbXBsZXMuQjA0KjYtc2FtcGxlcy5CMTQqOC42LTAuMykqMC45NTsKICAgIHZhciBiNSA9IChzYW1wbGVzLkIwNSo2LXNhbXBsZXMuQjE0KjktMC4yKSowLjk7CiAgICB2YXIgdmFsdWVzID0gW2I1LGI0LGIzLCBzYW1wbGVzLmRhdGFNYXNrXTsKICAgICAgICByZXR1cm4gdml6LnByb2Nlc3NMaXN0KHZhbHVlcyk7Cn0KCmZ1bmN0aW9uIHNldHVwKCkgewogIHJldHVybiB7CiAgICBpbnB1dDogW3sKICAgICAgYmFuZHM6IFsiQjAzIiwgIkIwNCIsICJCMDUiLCAiQjA2IiwgIkIwNyIsICJCMDkiLCAiQjE0IiwgImRhdGFNYXNrIl0KICAgIH1dLAogICAgb3V0cHV0OiB7IGJhbmRzOiA0IH0KICB9Cn0%3D&datasetId=S3OLCI&fromTime=2022-09-24T00%3A00%3A00.000Z&toTime=2022-09-24T23%3A59%3A59.999Z&demSource3D=%22MAPZEN%22#custom-script
+
+

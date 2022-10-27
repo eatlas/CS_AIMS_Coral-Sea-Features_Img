@@ -39,12 +39,11 @@ import math
 #       - S2_R1_DeepFalse
 #         - *.tif
 #       ...
-SRC_PATH = '../../unprocessed-data'
-SRC_PATH = '../../big-files/lossless'   # Use this path if you need to reprocess 
+SRC_PATH = '../../unprocessed/'
+#SRC_PATH = '../../big-files/lossless'   # Use this path if you need to reprocess 
 										# existing data
-OUT_PATH = '../../big-files/data'
 
-MAKE_LOSSLESS = False			# Lossless GeoTiff format with overviews and tiling
+MAKE_LOSSLESS = True			# Lossless GeoTiff format with overviews and tiling
 MAKE_LOSSY = False			# Lossy version of dataset (This is not used because we found that
 							# the chroma compression in JPEG was unsuitable for digitisation, and
 							# the masking of the borders didn't work correctly).
@@ -369,7 +368,7 @@ if MAKE_VIRTUAL:
 		print(outRegionDirs)
 		for outRegionDir in outRegionDirs:
 			# Look through all the directories that might have been created corresponding to 
-			# the image styles. We could have try to process all OUT_PATH folders, looking for
+			# the image styles. We could have try to process all output folders, looking for
 			# any TIF files, however this way we won't accidentially attempt to create a virtual
 			# raster for folders created through some other process.
 			# Additionally if not all the styles have been downloaded from Google Earth Engine
