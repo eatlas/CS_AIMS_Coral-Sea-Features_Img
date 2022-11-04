@@ -8,8 +8,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 var REF1_OPTIONS = {
   //colourGrades: ['DeepFalse','TrueColour','Depth5m', 'Depth10m'],
   //exportScale: [10, 10, 10, 10],
-  colourGrades: ['DeepFalse'],
-  exportScale: [10],
+  colourGrades: ['Depth10m'],
+  exportScale: [20],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/GBR',
   
@@ -31,7 +31,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210729T002101_20210729T002058_T55KFU",
     "COPERNICUS/S2/20210922T002049_20210922T002052_T55KFU"
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
   
  // 55KEV - Australia, GBR, Davies, Grub, Chicken
@@ -68,7 +68,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180827T002711_20180827T002706_T55KCB", // Right
     "COPERNICUS/S2/20200715T003709_20200715T003706_T55KCB" // Left
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
 //Excellent but lower water clarity
 //COPERNICUS/S2/20170718T003029_20170718T003032_T55KCB // Right
 //COPERNICUS/S2/20200819T003711_20200819T003710_T55KCB // Left
