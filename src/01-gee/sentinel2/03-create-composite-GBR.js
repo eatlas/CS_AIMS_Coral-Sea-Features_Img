@@ -68,7 +68,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180827T002711_20180827T002706_T55KCB", // Right
     "COPERNICUS/S2/20200715T003709_20200715T003706_T55KCB" // Left
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 //Excellent but lower water clarity
 //COPERNICUS/S2/20170718T003029_20170718T003032_T55KCB // Right
 //COPERNICUS/S2/20200819T003711_20200819T003710_T55KCB // Left
@@ -94,7 +94,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160830T003952_20160830T003955_T55LCD",
     "COPERNICUS/S2/20180810T003701_20180810T003704_T55LCD"
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
   
   
 // Australia, GBR, East of top of Cape York
