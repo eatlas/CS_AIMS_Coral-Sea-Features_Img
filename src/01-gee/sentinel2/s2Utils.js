@@ -30,7 +30,13 @@
 // Version: v1.3.2 Fixed scaling code for polygon generation. Had attempted to export at
 //                 5 m resolution, but GEE just doesn't work (it runs out of memory), thus
 //                 10 m is the maximum resolution for Sentinel 2 imagery.
-
+// Version: v1.3.2.1 Improved the calibration of the Satellite Derived Bathymetry. The SBD was
+//                 calibrated against the GA GBR30 2020 dataset at 5 m and 10 m. The original
+//                 contours from v1.4.0 were compares with the GBR30 dataset. The GBR30 dataset
+//                 was iteratively adjusted to match the generated contours to get an estimate
+//                 of actual depths indicated by the previous depth contours. We looked at 5
+//                 scenes across the GBR and found the original 10 m and 5 m depth contours came out at
+//                 8.6 m and 4.06 m respectively. This was then used to adjust the slope and offset.
 /**
 * @module s2Utils
 * 
