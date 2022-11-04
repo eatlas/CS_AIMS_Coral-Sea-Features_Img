@@ -1936,18 +1936,26 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
     // depths measured in metres. Changing this changes the slope of the relationship between
     // the depth estimate and the real depth. 
-    // This scalar and depth offset were determined by sampling matching locations on Gallon Reef 
-    // and Quion Reef in northern GBR with the GBR30 dataset (which for these reef locations
-    // was itself estimately by satellite derived bathmetry and so should be only a rough calibration)
+    // This scalar and depth offset were determined by mapping the 5 and 10 m depth contours
+    // generated from the satellite imagery and the GBR30 2020 dataset for the following scenes:
+    // 55KFU, 55LCD, 55KCB, 55KGU, 56KKC. The tuning focused on matching areas where there 
+    // were gentle gradients crossing the 5 m and 10 m contours as these areas are most sentive
+    // to slight bias differences (i.e. the coutour moves quickly over a large distance for small
+    // changes in bathymetry. The difference between the 5 m and 10 m contours was used to 
+    // calculate the slope and offset. The resulting alignment was a close match with contours
+    // matching to within approximately +- 1 m. 
+    // The GBR30 bathymetry dataset is normalised to approximately MSL and for reef tops was
+    // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
+    // from SDB will be copied into this dataset.
     // 
-    var DEPTH_SCALAR = 135;
+    var DEPTH_SCALAR = 145.1;
     
     // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
     // Changing this modifies the intercept of the depth relationship. If the 
     // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
     // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
     // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-    var DEPTH_OFFSET = -136.3;
+    var DEPTH_OFFSET = -145.85;
     
     // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
     // It also doesn't work in turbid water. It is also slight non-linear with the depth
