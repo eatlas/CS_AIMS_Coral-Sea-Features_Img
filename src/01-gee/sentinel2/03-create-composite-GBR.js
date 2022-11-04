@@ -31,7 +31,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210729T002101_20210729T002058_T55KFU",
     "COPERNICUS/S2/20210922T002049_20210922T002052_T55KFU"
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
   
   
  // 55KEV - Australia, GBR, Davies, Grub, Chicken
