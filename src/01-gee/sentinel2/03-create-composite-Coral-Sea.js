@@ -127,7 +127,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200822T004711_20200822T004712_T55LBK",
     "COPERNICUS/S2/20210802T004709_20210802T004707_T55LBK"
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
 
 s2Utils.s2_composite_display_and_export(
   [
@@ -765,7 +765,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20151128T234812_20170509T143613_T56KQE",
     "COPERNICUS/S2/20160416T235041_20160417T061750_T56KQE"
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
 s2Utils.s2_composite_display_and_export(
   [
