@@ -13,7 +13,7 @@ var REF1_OPTIONS = {
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/GBR',
   
-  sunglintCorrectionLevel: 1,
+  applySunglintCorrection: true,
   applyBrightnessAdjustment: true
 };
 
