@@ -32,11 +32,22 @@
 //                 10 m is the maximum resolution for Sentinel 2 imagery.
 // Version: v1.3.2.1 Improved the calibration of the Satellite Derived Bathymetry. The SBD was
 //                 calibrated against the GA GBR30 2020 dataset at 5 m and 10 m. The original
-//                 contours from v1.4.0 were compares with the GBR30 dataset. The GBR30 dataset
+//                 contours from v1.4.0 were compared with the GBR30 dataset. The GBR30 dataset
 //                 was iteratively adjusted to match the generated contours to get an estimate
 //                 of actual depths indicated by the previous depth contours. We looked at 5
 //                 scenes across the GBR and found the original 10 m and 5 m depth contours came out at
 //                 8.6 m and 4.06 m respectively. This was then used to adjust the slope and offset.
+//                 After adjusting we reviewed the bathymetry contours with 3 additional scenes
+//                 on the GBR (56KLV, 55KEV, 54LYN). 
+//                 Test Scene 5m         10m
+//                 56KLV      4.4 - 5.6  8.2 - 8.6    (Low number of suitable areas for checking)
+//                 55KEV      4.2 - 6.2  8.4 - 12.4   (Seemed to be a gradient across the image)
+//                 54LYN      4.5 - 4.7  9.7 - 10.3 
+//                 The range indicates the acceptable matches between GBR30 and the contours.
+//                 Overall the test scenes verified that the bathymetry provided a result that 
+//                 is accurate to within +-1 m for 5 m contour and +-2m for 10 m contour. There
+//                 is probably a slight negative bias for the 5 m contour, but it was difficult 
+//                 to accurately determine because of spatial variability.
 /**
 * @module s2Utils
 * 
