@@ -1905,6 +1905,7 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     compositeContrast = exports.estimateDepth(img, 10, 2).gt(-5);
     
   } else if (colourGradeStyle === 'Depth20m') {
+    print("Depth20m");
     // This algorithm is optimised for estimating the 20 m contour in sandy areas in
     // clear water. It is intended to help map the backs of reefs. It might be OK in
     // other areas, but it has not been checked.
@@ -1917,7 +1918,6 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
       // so we apply a small 
       .focal_median({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
       .focal_mean({kernel: ee.Kernel.gaussian({radius: 3})});
-    
     
   } else {
     print("Error: unknown colourGradeStyle: "+colourGradeStyle);
