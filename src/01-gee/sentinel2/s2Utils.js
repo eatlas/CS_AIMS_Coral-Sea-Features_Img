@@ -236,6 +236,10 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
         export_composite = final_composite;
         displayMin = -25;
         displayMax = 0;
+      } else if (colourGrades[i] === 'Depth20m') {
+        export_composite = final_composite;
+        displayMin = 0;
+        displayMax = 10000;
       } else {
         // Scale and convert the image to an 8 bit image to make the export
         // file size considerably smaller.
