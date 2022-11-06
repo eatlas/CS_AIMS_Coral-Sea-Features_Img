@@ -240,7 +240,7 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
         export_composite = final_composite;
         print(final_composite);
         displayMin = 0;
-        displayMax = 10000;
+        displayMax = 0.1;
       } else {
         // Scale and convert the image to an 8 bit image to make the export
         // file size considerably smaller.
