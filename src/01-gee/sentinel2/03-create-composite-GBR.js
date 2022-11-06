@@ -96,7 +96,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160830T003952_20160830T003955_T55LCD",
     "COPERNICUS/S2/20180810T003701_20180810T003704_T55LCD"
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
   
 // Australia, GBR, East of top of Cape York
@@ -120,7 +120,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190821T001119_20190821T001114_T56KLV",
     "COPERNICUS/S2/20200716T001109_20200716T001110_T56KLV"
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
   
 //55KGU Australia, GBR, Hardy Reef, Block Reef
 // Searched 89 out of 89 images
