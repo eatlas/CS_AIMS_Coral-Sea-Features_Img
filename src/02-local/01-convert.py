@@ -39,7 +39,7 @@ import math
 #       - S2_R1_DeepFalse
 #         - *.tif
 #       ...
-SRC_PATH = '../../unprocessed/'
+SRC_PATH = '../../unprocessed-data/'
 #SRC_PATH = '../../big-files/lossless'   # Use this path if you need to reprocess 
 										# existing data
 
@@ -159,6 +159,10 @@ PREVIEW = 'gdal_translate -of JPEG -r average -outsize 50% 50% --config GDAL_PAM
 srcRegionDirs = glob.glob(os.path.join(SRC_PATH,"*/"))
 regionCount = 1
 numRegions = len(srcRegionDirs)
+if (numRegions == 0):
+	print("No regions found in "+SRC_PATH)
+	exit
+	
 for srcRegionDir in srcRegionDirs:
 	# Get the name of the region so that we can include it in the output paths
 	# The path being processed is something like: 
@@ -343,7 +347,7 @@ for srcRegionDir in srcRegionDirs:
 			else:
 				callStr = 'gdal_translate -of PNG -srcwin '+str(xsize1)+' '+str(ysize1)+' '+str(xsize2)+' '+str(ysize2)+' -co WORLDFILE=YES '+srcFile+' '+dest
 				subprocess.call(callStr)
-			
+		
 
 # Build GDAL Virtual Raster for each of the styles for the lossless version of the dataset.
 # We don't do this for the lossy version because the virtual raster format does not work
