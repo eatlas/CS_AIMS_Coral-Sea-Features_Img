@@ -20,8 +20,8 @@
 // you probably want to disable the the exports. This can be done using the find
 // and replace.
 //
-// Find and replace: false, false, REF1_OPTIONS
-// With: false, false, REF1_OPTIONS
+// Find and replace: false, true, REF1_OPTIONS
+// With: false, true, REF1_OPTIONS
 // Find and replace: false, false, REF2_OPTIONS
 // With: false, false, REF2_OPTIONS
 //
@@ -41,10 +41,14 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // are made from the best set of images available.
 
 var REF1_OPTIONS = {
-  colourGrades: ['DeepFalse','Shallow', 'TrueColour'],
-  exportScale: [10, 10, 10],
+  //colourGrades: ['DeepFalse','Shallow', 'TrueColour'],
+  //exportScale: [10, 10, 10],
   //colourGrades: ['DeepFalse','TrueColour','Shallow','Depth5m', 'Depth10m'],
   //exportScale: [10, 10, 10, 10, 10],
+  //colourGrades: ['Depth5m', 'Depth10m'],
+  //exportScale: [10, 10],
+  colourGrades: ['Depth20m'],
+  exportScale: [10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
   
@@ -133,13 +137,13 @@ s2Utils.s2_composite_display_and_export(
   [
     "COPERNICUS/S2/20200216T003659_20200216T003700_T55LBK", // Right Very low clouds Good visibility
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
   
 s2Utils.s2_composite_display_and_export(
   [
     "COPERNICUS/S2/20190115T004709_20190115T004705_T55LBK", // Scattered clouds. Good platform visibility
   ],
-  false, true, REF3_OPTIONS);
+  false, false, REF3_OPTIONS);
 
   
 // ======== Ashmore Reef (Coral Sea) - Far North =========
@@ -152,7 +156,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160823T004902_20160823T004856_T54LZP",
     "COPERNICUS/S2/20210603T004709_20210603T004707_T54LZP"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // OK images
 s2Utils.s2_composite_display_and_export(
@@ -182,7 +186,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210319T002709_20210319T002706_T55LDE",
     "COPERNICUS/S2/20201005T002711_20201005T002713_T55LDE"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 //left as is - RB
 // Maybe images
@@ -213,7 +217,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210722T002711_20210722T002711_T55LEC",
     "COPERNICUS/S2/20170613T003031_20170613T003033_T55LEC"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // Maybe images
@@ -239,7 +243,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200729T002059_20200729T002057_T55LGC",
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55LGC"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // left as is - RB
 // Maybe images
@@ -272,7 +276,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55LHC",
     "COPERNICUS/S2/20190720T002101_20190720T002100_T55LHC"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 //left as is - RB
 // Maybe images
@@ -301,7 +305,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190906T002709_20190906T002709_T55KEB",
     "COPERNICUS/S2/20180812T002659_20180812T002702_T55KEB"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // 4 good images
@@ -341,7 +345,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190812T002711_20190812T002711_T55KFB",
     "COPERNICUS/S2/20190827T002709_20190827T002712_T55KFB"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // Left as is - RB
 // 6 OK right images, 5 Maybe left images
@@ -377,7 +381,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200818T002059_20200818T002058_T55KGB",
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55KGB"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // 14 Good
@@ -424,7 +428,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180426T002101_20180426T002056_T55KHB",
     "COPERNICUS/S2/20180829T002049_20180829T002045_T55KHB"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // 3 good 8 OK images
@@ -468,7 +472,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210721T001109_20210721T001111_T56KLG",
     "COPERNICUS/S2/20190910T001109_20190910T001110_T56KLG"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // okay images
 s2Utils.s2_composite_display_and_export(
@@ -496,7 +500,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180602T001111_20180602T001110_T56KMG",
     "COPERNICUS/S2/20190702T001119_20190702T001117_T56KMG"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // 3 Maybe images
@@ -526,7 +530,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55KFA",
     "COPERNICUS/S2/20210515T002059_20210515T002053_T55KFA"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // Good images
@@ -556,7 +560,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210306T002059_20210306T002053_T55KGA",
     "COPERNICUS/S2/20210515T002059_20210515T002053_T55KGA"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // good images
@@ -585,7 +589,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200818T002059_20200818T002058_T55KHA",
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55KHA"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 
@@ -626,7 +630,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200729T002059_20200729T002057_T56KKF",
     "COPERNICUS/S2/20170809T002111_20170809T002107_T56KKF"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // Maybe images
@@ -670,7 +674,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180811T001111_20180811T001108_T56KLF",
     "COPERNICUS/S2/20201019T001111_20201019T001114_T56KLF" // Sunglint in corner
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 s2Utils.s2_composite_display_and_export(
   [
@@ -709,7 +713,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190702T001119_20190702T001117_T56KMF",
     "COPERNICUS/S2/20200731T001121_20200731T001115_T56KMF"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // OK images
@@ -742,7 +746,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160406T234954_20160407T043438_T56KRF",
     "COPERNICUS/S2/20160416T235041_20160417T061750_T56KRF"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // Maybe images
@@ -755,7 +759,25 @@ s2Utils.s2_composite_display_and_export(
   false, false, REF2_OPTIONS);  
 
 
-
+// ======== U/N Sea mount - Central (below Mellish Reef) =========
+// Feature is 29 m depth on marine chart. Very difficult to 
+// see in the imagery
+// Searched 27 out of 27 images
+s2Utils.s2_composite_display_and_export(
+  [
+    // Good
+    "COPERNICUS/S2/20151128T234812_20170509T143613_T56KQE",
+    "COPERNICUS/S2/20160416T235041_20160417T061750_T56KQE"
+  ],
+  false, true, REF1_OPTIONS);
+  
+s2Utils.s2_composite_display_and_export(
+  [
+    // Cloudy, by clear over the reef feature
+    "COPERNICUS/S2/20160107T234812_20160107T234811_T56KQE", // Feature visible, surrounded by clouds
+    "COPERNICUS/S2/20160216T234812_20160216T234917_T56KQE" // Feature visible, surrounded by clouds
+  ],
+  false, false, REF2_OPTIONS);
 
 // ======== Marion Reef (Coral Sea, Australia) Northern section ===
 // 60 out of 60 images searched
@@ -767,7 +789,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210721T001109_20210721T001111_T56KME",
     "COPERNICUS/S2/20210726T001111_20210726T001112_T56KME"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // 2 good, 3 OK images
 s2Utils.s2_composite_display_and_export(
@@ -791,7 +813,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190905T001111_20190905T001109_T56KMD",
     "COPERNICUS/S2/20210726T001111_20210726T001112_T56KMD"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // 2 goog, 3 OK images
 s2Utils.s2_composite_display_and_export(
@@ -817,7 +839,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20170902T000111_20170902T000107_T56KPC",
     "COPERNICUS/S2/20170907T000119_20170907T000114_T56KPC"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 
@@ -833,7 +855,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20170515T000221_20170515T000221_T56KNB",
     "COPERNICUS/S2/20170729T000219_20170729T000217_T56KNB"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // OK images
@@ -861,7 +883,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160927T000212_20160927T000213_T56KPB",
     "COPERNICUS/S2/20170525T000221_20170525T000220_T56KPB"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // Frederick Reef (Coral Sea, Australia)
 // OK images
@@ -903,7 +925,7 @@ s2Utils.s2_composite_display_and_export(
   [
     "COPERNICUS/S2/20190220T234701_20190220T234701_T56KQB"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 
@@ -922,7 +944,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210827T000239_20210827T000238_T56KNA",
     "COPERNICUS/S2/20210213T000241_20210213T000239_T56KNA"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -952,7 +974,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20191018T235251_20191018T235248_T56KQA",
     "COPERNICUS/S2/20200714T235251_20200714T235249_T56KQA"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -980,7 +1002,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200823T235251_20200823T235250_T56KQV",
     "COPERNICUS/S2/20210828T235251_20210828T235246_T56KQV"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(
@@ -1019,7 +1041,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200216T003659_20200216T003700_T55LCJ",
     "COPERNICUS/S2/20200913T003709_20200913T003707_T55LCJ"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 s2Utils.s2_composite_display_and_export(

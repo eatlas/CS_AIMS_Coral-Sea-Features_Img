@@ -30,7 +30,33 @@
 // Version: v1.3.2 Fixed scaling code for polygon generation. Had attempted to export at
 //                 5 m resolution, but GEE just doesn't work (it runs out of memory), thus
 //                 10 m is the maximum resolution for Sentinel 2 imagery.
-
+// Version: v1.3.2.1 Improved the calibration of the Satellite Derived Bathymetry. The SBD was
+//                 calibrated against the GA GBR30 2020 dataset at 5 m and 10 m. The original
+//                 contours from v1.4.0 were compared with the GBR30 dataset. The GBR30 dataset
+//                 was iteratively adjusted to match the generated contours to get an estimate
+//                 of actual depths indicated by the previous depth contours. We looked at 5
+//                 scenes across the GBR and found the original 10 m and 5 m depth contours came out at
+//                 8.6 m and 4.06 m respectively. This was then used to adjust the slope and offset.
+//                 After adjusting we reviewed the bathymetry contours with 3 additional scenes
+//                 on the GBR (56KLV, 55KEV, 54LYN). 
+//                 Test Scene 5m         10m
+//                 56KLV      4.4 - 5.6  8.2 - 8.6    (Low number of suitable areas for checking)
+//                 55KEV      4.2 - 6.2  8.4 - 12.4   (Seemed to be a gradient across the image)
+//                 54LYN      4.5 - 4.7  9.7 - 10.3 
+//                 The range indicates the acceptable matches between GBR30 and the contours.
+//                 Overall the test scenes verified that the bathymetry provided a result that 
+//                 is accurate to within +-1 m for 5 m contour and +-2m for 10 m contour. There
+//                 is probably a slight negative bias for the 5 m contour, but it was difficult 
+//                 to accurately determine because of spatial variability.
+// Version v1.3.2.2 Added a 20 m depth contour product based on the green channel (B3). This was
+//                 calibrated against GA GBR30 2020 bathymetry composites in six Sentinel 2 scenes 
+//                 (55KEV, 55KCB, 55KFU, 55LCD, 56KLV, 55KGU). The threshold to best match the 20 m
+//                 contour was determined for each scene. Variations in this threshold were found
+//                 depending on the water clarity. In more turbid waters scattered light raises 
+//                 the brightness of the water resulting in a higher threshold for the same depth.
+//                 For this reason the final threshold was chosen to match those scenes with clearer
+//                 water as this would better match the Coral Sea. The difference in the thresholds
+//                 results in approxiately 3 m difference between scenes.
 /**
 * @module s2Utils
 * 
@@ -204,6 +230,7 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
     
     // If the style corresponds to a contour then convert and export as a shapefile
     if (colourGrades[i] === 'ReefTop' || colourGrades[i] === 'Depth10m' || 
+      colourGrades[i] === 'Depth20m' ||
       colourGrades[i] === 'Depth5m' || colourGrades[i] === 'DryReef' ||
       colourGrades[i] === 'Breaking' || colourGrades[i] === 'Land') {
       makeAndSaveShp(final_composite, displayName, exportName, exportFolder, exportScale[i], tilesGeometry, is_display, is_export);
@@ -219,6 +246,11 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
         export_composite = final_composite;
         displayMin = -25;
         displayMax = 0;
+      // Used for tuning the threshold
+      //} else if (colourGrades[i] === 'Depth20m') {
+        //export_composite = final_composite;
+        //displayMin = 0.0405;
+        //displayMax = 0.0415;
       } else {
         // Scale and convert the image to an 8 bit image to make the export
         // file size considerably smaller.
@@ -1882,6 +1914,33 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     
     compositeContrast = exports.estimateDepth(img, 10, 2).gt(-5);
     
+  } else if (colourGradeStyle === 'Depth20m') {
+    // This algorithm is optimised for estimating the 20 m contour in sandy areas in
+    // clear water. It is intended to help map the backs of reefs. It might be OK in
+    // other areas, but it has not been checked.
+    
+    // Select the green channel and apply a spatial filter to reduce the noise in the
+    // contour. 
+    // The threshold associated with -20 m was calibrated by comparing rendered masked
+    // with the GA GBR30 Bathymetry 2020 dataset. The threshold was adjusted for multiple
+    // scenes until the best match was found. Inshore areas were ignored.
+    // Scene Threshold Reef/notes
+    // 55KEV 0.042     Big Broadhurst reef
+    // 55KCB 0.046     Arlington reef - This scene has higher turbidity, raising the brightness of B3
+    // 55KFU 0.041     Dingo Reef
+    // 55LCD 0.043     Lizard island / Ribbon No 10 - Higher turbidy region raising threshold
+    // 56KLV 0.040     Heron Island
+    // 55KGU 0.041     Hardy Reef
+    // As a point of reference rendering 55KCB with a threshold of 0.041 results in a 
+    // contour of ~-23 m indicating that the error for small offset errors is reasonable low.
+    compositeContrast = scaled_img.select('B3')
+      // Median filter removes noise but retain edges better than gaussian filter.
+      // At the final threshold the median filter can result in small anomalies and
+      // so we apply a small 
+      .focal_median({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1})
+      .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1})
+      .gt(0.041);
+
   } else {
     print("Error: unknown colourGradeStyle: "+colourGradeStyle);
   }
@@ -1936,18 +1995,26 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
     // depths measured in metres. Changing this changes the slope of the relationship between
     // the depth estimate and the real depth. 
-    // This scalar and depth offset were determined by sampling matching locations on Gallon Reef 
-    // and Quion Reef in northern GBR with the GBR30 dataset (which for these reef locations
-    // was itself estimately by satellite derived bathmetry and so should be only a rough calibration)
+    // This scalar and depth offset were determined by mapping the 5 and 10 m depth contours
+    // generated from the satellite imagery and the GBR30 2020 dataset for the following scenes:
+    // 55KFU, 55LCD, 55KCB, 55KGU, 56KKC. The tuning focused on matching areas where there 
+    // were gentle gradients crossing the 5 m and 10 m contours as these areas are most sentive
+    // to slight bias differences (i.e. the coutour moves quickly over a large distance for small
+    // changes in bathymetry. The difference between the 5 m and 10 m contours was used to 
+    // calculate the slope and offset. The resulting alignment was a close match with contours
+    // matching to within approximately +- 1 m. 
+    // The GBR30 bathymetry dataset is normalised to approximately MSL and for reef tops was
+    // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
+    // from SDB will be copied into this dataset.
     // 
-    var DEPTH_SCALAR = 135;
+    var DEPTH_SCALAR = 145.1;
     
     // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
     // Changing this modifies the intercept of the depth relationship. If the 
     // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
     // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
     // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-    var DEPTH_OFFSET = -136.3;
+    var DEPTH_OFFSET = -145.85;
     
     // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
     // It also doesn't work in turbid water. It is also slight non-linear with the depth
