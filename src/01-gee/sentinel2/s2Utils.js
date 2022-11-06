@@ -1911,13 +1911,26 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     
     // Select the green channel and apply a spatial filter to reduce the noise in the
     // contour. 
+    // The threshold associated with -20 m was calibrated by comparing rendered masked
+    // with the GA GBR30 Bathymetry 2020 dataset. The threshold was adjusted for multiple
+    // scenes until the best match was found. Inshore areas were ignored.
+    // Scene Threshold Reef/notes
+    // 55KEV 0.042     Big Broadhurst reef
+    // 55KCB 0.046     Arlington reef - This scene has higher turbidity, raising the brightness of B3
+    // 55KFU 0.041     Dingo Reef
+    // 55LCD 0.043     Lizard island / Ribbon No 10 - Higher turbidy region raising threshold
+    // 56KLV 0.040     Heron Island
+    // 55KGU 0.041     Hardy Reef
+    // As a point of reference rendering 55KCB with a threshold of 0.041 results in a 
+    // contour of ~-23 m indicating that the error for small offset errors is reasonable low.
     compositeContrast = scaled_img.select('B3')
       // Median filter removes noise but retain edges better than gaussian filter.
       // At the final threshold the median filter can result in small anomalies and
       // so we apply a small 
       .focal_median({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
-      .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1});
-    
+      .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1})
+      .gt(0.041);
+
   } else {
     print("Error: unknown colourGradeStyle: "+colourGradeStyle);
   }
