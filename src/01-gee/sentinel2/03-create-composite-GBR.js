@@ -134,7 +134,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200714T002101_20200714T002059_T55KGU", // -0.35 - -0.13 m
     "COPERNICUS/S2/20200813T002101_20200813T002100_T55KGU"  // 0.2 - 0.6 m
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
 //false, true, Australia, GBR, Cockatoo Reef, Hopley comparison
 // Searched 71 out of 71 images
