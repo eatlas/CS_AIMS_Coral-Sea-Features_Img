@@ -49,7 +49,7 @@ s2Utils.s2_composite_display_and_export(
     //"COPERNICUS/S2/20200821T002709_20200821T002711_T55KEV", // (1) Low Water Quality, bit excellent view of plumes around reefs.
     "COPERNICUS/S2/20210915T002709_20210915T002703_T55KEV"  // (3)
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
   
   
 s2Utils.s2_composite_display_and_export(
@@ -64,7 +64,7 @@ s2Utils.s2_composite_display_and_export(
     //"COPERNICUS/S2/20200821T002709_20200821T002711_T55KEV", // (1) Low Water Quality, bit excellent view of plumes around reefs.
     //"COPERNICUS/S2/20210915T002709_20210915T002703_T55KEV"  // (3)
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 
 // Australia, Cairns, GBR, Green Island, Arlington, Hopley comparison
 // For comparision with Hopley D, et. al., (2007), 
