@@ -49,22 +49,9 @@ s2Utils.s2_composite_display_and_export(
     //"COPERNICUS/S2/20200821T002709_20200821T002711_T55KEV", // (1) Low Water Quality, bit excellent view of plumes around reefs.
     "COPERNICUS/S2/20210915T002709_20210915T002703_T55KEV"  // (3)
   ],
-  true, false, REF1_OPTIONS);
-  
-  
-s2Utils.s2_composite_display_and_export(
-  [
-    // Excellent (Water clarity index 1 - low visibility, 5 - excellent)
-    //"COPERNICUS/S2/20160708T003035_20160708T015011_T55KEV", // (2) - Removed due to lower WQ
-    //"COPERNICUS/S2/20190812T002711_20190812T002711_T55KEV", // (4)
-    //"COPERNICUS/S2/20190822T002711_20190822T002710_T55KEV", // (4)
-    "COPERNICUS/S2/20190906T002709_20190906T002709_T55KEV", // (5) Can see the midshelf sea floor. Great view of weird ring contours
-    //"COPERNICUS/S2/20200727T002711_20200727T002713_T55KEV", // (3)
-    //"COPERNICUS/S2/20200816T002711_20200816T002713_T55KEV", // (3)
-    //"COPERNICUS/S2/20200821T002709_20200821T002711_T55KEV", // (1) Low Water Quality, bit excellent view of plumes around reefs.
-    //"COPERNICUS/S2/20210915T002709_20210915T002703_T55KEV"  // (3)
-  ],
   false, false, REF1_OPTIONS);
+  
+  
 
 // Australia, Cairns, GBR, Green Island, Arlington, Hopley comparison
 // For comparision with Hopley D, et. al., (2007), 
@@ -83,7 +70,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180827T002711_20180827T002706_T55KCB", // Right
     "COPERNICUS/S2/20200715T003709_20200715T003706_T55KCB" // Left
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
 //Excellent but lower water clarity
 //COPERNICUS/S2/20170718T003029_20170718T003032_T55KCB // Right
 //COPERNICUS/S2/20200819T003711_20200819T003710_T55KCB // Left
