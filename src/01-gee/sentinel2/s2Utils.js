@@ -238,7 +238,6 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
         displayMax = 0;
       } else if (colourGrades[i] === 'Depth20m') {
         export_composite = final_composite;
-        print(final_composite);
         displayMin = 0;
         displayMax = 0.1;
       } else {
