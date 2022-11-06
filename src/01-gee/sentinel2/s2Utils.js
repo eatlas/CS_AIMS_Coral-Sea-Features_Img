@@ -221,6 +221,7 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
     
     // If the style corresponds to a contour then convert and export as a shapefile
     if (colourGrades[i] === 'ReefTop' || colourGrades[i] === 'Depth10m' || 
+      colourGrades[i] === 'Depth20m' ||
       colourGrades[i] === 'Depth5m' || colourGrades[i] === 'DryReef' ||
       colourGrades[i] === 'Breaking' || colourGrades[i] === 'Land') {
       makeAndSaveShp(final_composite, displayName, exportName, exportFolder, exportScale[i], tilesGeometry, is_display, is_export);
@@ -236,10 +237,11 @@ exports.s2_composite_display_and_export = function(imageIds, is_display, is_expo
         export_composite = final_composite;
         displayMin = -25;
         displayMax = 0;
-      } else if (colourGrades[i] === 'Depth20m') {
-        export_composite = final_composite;
-        displayMin = 0.0405;
-        displayMax = 0.0415;
+      // Used for tuning the threshold
+      //} else if (colourGrades[i] === 'Depth20m') {
+        //export_composite = final_composite;
+        //displayMin = 0.0405;
+        //displayMax = 0.0415;
       } else {
         // Scale and convert the image to an 8 bit image to make the export
         // file size considerably smaller.
