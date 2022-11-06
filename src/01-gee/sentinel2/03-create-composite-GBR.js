@@ -6,8 +6,10 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 
 // Primary imagery
 var REF1_OPTIONS = {
-  colourGrades: ['DeepFalse','TrueColour','Depth5m', 'Depth10m'],
-  exportScale: [10, 10, 10, 10],
+  colourGrades: ['Depth20m'],
+  exportScale: [20],
+  //colourGrades: ['DeepFalse','TrueColour','Depth5m', 'Depth10m'],
+  //exportScale: [10, 10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/GBR',
   
@@ -29,7 +31,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210729T002101_20210729T002058_T55KFU",
     "COPERNICUS/S2/20210922T002049_20210922T002052_T55KFU"
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
   
  // 55KEV - Australia, GBR, Davies, Grub, Chicken
@@ -47,7 +49,7 @@ s2Utils.s2_composite_display_and_export(
     //"COPERNICUS/S2/20200821T002709_20200821T002711_T55KEV", // (1) Low Water Quality, bit excellent view of plumes around reefs.
     "COPERNICUS/S2/20210915T002709_20210915T002703_T55KEV"  // (3)
   ],
-  false, true, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
 
 // Australia, Cairns, GBR, Green Island, Arlington, Hopley comparison
 // For comparision with Hopley D, et. al., (2007), 
@@ -66,7 +68,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180827T002711_20180827T002706_T55KCB", // Right
     "COPERNICUS/S2/20200715T003709_20200715T003706_T55KCB" // Left
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 //Excellent but lower water clarity
 //COPERNICUS/S2/20170718T003029_20170718T003032_T55KCB // Right
 //COPERNICUS/S2/20200819T003711_20200819T003710_T55KCB // Left
@@ -92,7 +94,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20160830T003952_20160830T003955_T55LCD",
     "COPERNICUS/S2/20180810T003701_20180810T003704_T55LCD"
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
   
 // Australia, GBR, East of top of Cape York
@@ -104,7 +106,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190907T004711_20190907T004705_T54LYN", // Clear water, some scattered clouds
     "COPERNICUS/S2/20190917T004711_20190917T004705_T54LYN" // Moderate water clarity, some scattered clouds 
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
 
 // Northern Cap bunkers
@@ -116,7 +118,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190821T001119_20190821T001114_T56KLV",
     "COPERNICUS/S2/20200716T001109_20200716T001110_T56KLV"
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
 //55KGU Australia, GBR, Hardy Reef, Block Reef
 // Searched 89 out of 89 images
@@ -130,7 +132,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200714T002101_20200714T002059_T55KGU", // -0.35 - -0.13 m
     "COPERNICUS/S2/20200813T002101_20200813T002100_T55KGU"  // 0.2 - 0.6 m
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
   
 //false, true, Australia, GBR, Cockatoo Reef, Hopley comparison
 // Searched 71 out of 71 images
@@ -154,4 +156,4 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210721T001109_20210721T001111_T56KKC", // -0.64 - 0.18 
     "COPERNICUS/S2/20210726T001111_20210726T001112_T56KKC"  // -0.43 - 0.03
   ],
-  false, true, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
