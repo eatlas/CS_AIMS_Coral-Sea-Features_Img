@@ -1915,8 +1915,8 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
       // Median filter removes noise but retain edges better than gaussian filter.
       // At the final threshold the median filter can result in small anomalies and
       // so we apply a small 
-      .focal_median({kernel: ee.Kernel.circle({radius: 10, units: 'meters'}), iterations: 1})
-      .focal_mean({kernel: ee.Kernel.gaussian({radius: 10, units: 'meters'}), iterations: 1});
+      //.focal_median({kernel: ee.Kernel.circle({radius: 10, units: 'meters'}), iterations: 1})
+      //.focal_mean({kernel: ee.Kernel.gaussian({radius: 10, units: 'meters'}), iterations: 1});
     
   } else {
     print("Error: unknown colourGradeStyle: "+colourGradeStyle);
