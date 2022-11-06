@@ -1917,7 +1917,7 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
       // At the final threshold the median filter can result in small anomalies and
       // so we apply a small 
       .focal_median({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
-      .focal_mean({kernel: ee.Kernel.gaussian({radius: 10, units: 'meters'})});
+      .focal_mean({kernel: ee.Kernel.gaussian({radius: 10, units: 'meters'}), iterations: 1});
     
   } else {
     print("Error: unknown colourGradeStyle: "+colourGradeStyle);
