@@ -48,6 +48,15 @@
 //                 is accurate to within +-1 m for 5 m contour and +-2m for 10 m contour. There
 //                 is probably a slight negative bias for the 5 m contour, but it was difficult 
 //                 to accurately determine because of spatial variability.
+// Version v1.3.2.2 Added a 20 m depth contour product based on the green channel (B3). This was
+//                 calibrated against GA GBR30 2020 bathymetry composites in six Sentinel 2 scenes 
+//                 (55KEV, 55KCB, 55KFU, 55LCD, 56KLV, 55KGU). The threshold to best match the 20 m
+//                 contour was determined for each scene. Variations in this threshold were found
+//                 depending on the water clarity. In more turbid waters scattered light raises 
+//                 the brightness of the water resulting in a higher threshold for the same depth.
+//                 For this reason the final threshold was chosen to match those scenes with clearer
+//                 water as this would better match the Coral Sea. The difference in the thresholds
+//                 results in approxiately 3 m difference between scenes.
 /**
 * @module s2Utils
 * 
