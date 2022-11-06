@@ -31,7 +31,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20210729T002101_20210729T002058_T55KFU",
     "COPERNICUS/S2/20210922T002049_20210922T002052_T55KFU"
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
   
   
  // 55KEV - Australia, GBR, Davies, Grub, Chicken
@@ -70,7 +70,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20180827T002711_20180827T002706_T55KCB", // Right
     "COPERNICUS/S2/20200715T003709_20200715T003706_T55KCB" // Left
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 //Excellent but lower water clarity
 //COPERNICUS/S2/20170718T003029_20170718T003032_T55KCB // Right
 //COPERNICUS/S2/20200819T003711_20200819T003710_T55KCB // Left
