@@ -336,3 +336,15 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20170814"
     ],
     false, false, REF1_OPTIONS);
+
+
+// ===============================================================
+// Sharkbay
+landsat8CompositeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150627",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130621",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150814",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130824"
+    ],
+    false, false, REF1_OPTIONS);
