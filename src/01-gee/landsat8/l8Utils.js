@@ -261,11 +261,12 @@ var utils = {
   visualiseImage: function (image, selectedVisOption) {
     var resultImage, redBand, greenBand, blueBand;
     var visParams = this.VIS_OPTIONS[selectedVisOption].visParams;
-
+    var apply8bitScaling = true;
     switch (selectedVisOption) {
       case "Depth":
-        estimateDepth(image, 30, 1)
-        resultImage = ee.Image.rgb(redBand, greenBand, blueBand);
+        resultImage = estimateDepth(image, 30, 1);
+        apply8bitScaling = false;
+        break;
       case "ReefTop":
         var smootherKernel = ee.Kernel.circle({radius: 10, units: 'meters'});
         var filteredRedBand = image.select(visParams.bands[0]).focal_mean({kernel: smootherKernel, iterations: 4});
@@ -342,7 +343,11 @@ var utils = {
     // Scale and convert the image to an 8 bit image to make the export file size considerably smaller.
     // Reserve 0 for no_data so that the images can be converted to not have black borders. Scaling the data ensures
     // that no valid data is 0.
-    return resultImage.multiply(254).add(1).toUint8();
+    if (apply8bitscaling) {
+      return resultImage.multiply(254).add(1).toUint8();
+    } else {
+      return resultImage;
+    }
   },
 
   /**
