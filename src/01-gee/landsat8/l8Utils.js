@@ -216,7 +216,7 @@ var utils = {
       var depthB3B2 = 
         img.select('B3').log().divide(img.select('B2').subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
         .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
-      return(img.select('B3'));
+      return(img.select('B2'));
       // Consider anything brighter than this as land. This threshold is chosen slightly higher than
       // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
       // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
