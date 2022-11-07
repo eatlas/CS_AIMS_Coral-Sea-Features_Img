@@ -178,11 +178,10 @@ var utils = {
       
       // Offset that corrects for the colour balance of the image. This also allows the depth
       // estimate to be optimised for a particular depth. 
-      // If this is increased to say 250 the compensation for seagrass is slightly between for shallower
-      // areas (3 - 5 m), but still far from good. The downside is that in deep areas the seagrass gets
-      // over compensated so seagrass areas appear shallower than intended.
-      // An offset of 120 is chosen to optimise the dark substrate compensation from 10 - 15 m.
-      var B2_OFFSET = 0;
+      // A value of 250 results in seagrass areas getting over compensated for and appearing
+      // to shallow. 
+      // A value of 0 looks pretty good.
+      var B2_OFFSET = -250;
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
