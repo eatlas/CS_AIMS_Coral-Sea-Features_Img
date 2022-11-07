@@ -134,7 +134,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20141011"
     ],
-    true, false, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Marion Reef (Coral Sea - Central) =========
@@ -254,4 +254,4 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150814",
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130824"
     ],
-    false, false, REF1_OPTIONS);
+    true, false, REF1_OPTIONS);
