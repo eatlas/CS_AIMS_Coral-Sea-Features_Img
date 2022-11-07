@@ -226,7 +226,7 @@ var utils = {
       // B_SCALAR Effect
       // 10,100       Binary threshold (Extremely large ranges of values, not useful)
       // 1000         Values at the edge of the masking lead to large values
-      var B_SCALAR = 100;
+      var B_SCALAR = 1;
       
       // This depth estimation is still suseptible to dark substrates at shallow depths (< 5m).
       // It also doesn't work in turbid water. It is also slight non-linear with the depth
