@@ -234,35 +234,12 @@ var utils = {
         img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').multiply(B_SCALAR).subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
         .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
 
-      // Consider anything brighter than this as land. 
-      //var B8LAND_THRESHOLD = 100; 
-      //var waterMask = img.select('B8').lt(B8LAND_THRESHOLD);
-      
-      // Mask out any land areas because the depth estimates would 
-      //var depthWithLandMask = depthB3B2.updateMask(waterMask);
-      
-      // Set any areas that are most likely to be land to have a height of 1 m. 
-      // We can't know the height, hence the cap and we don't want to mask because
-      // we want to be able to create depth contours without holes for land areas
-      // because we are separately mapping the land using another process that
-      // has much more precision.
-      //depthB3B2 = depthB3B2.where(img.select('B6').multiply(B_SCALAR).gt(B8LAND_THRESHOLD), ee.Image(1));
       
       // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
       //var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
       var filteredDepth = depthB3B2.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
       
-      // This slope of the depth estimate becomes very flat below -12 m, thus we need to remove this data from the
-      // result to limit the improper use of the data.
-      var MAX_DEPTH = -12;
-      
-      // Remove all areas where the depth estimate is likely to be poor.
-      // Smooth the edges of the mask by applying a dilate. This is equivalent to applying a buffer to the mask image, 
-      // helping to fill in neighbouring holes in the mask. This will expand the mask slightly.
-      var depthMask = filteredDepth.gt(MAX_DEPTH)
-        .focal_min({kernel: ee.Kernel.circle({radius: 10, units: 'meters'}), iterations: 1})  // (Erode) Remove single pixel elements
-        .focal_max({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1}); // (Dilate) Expand back out, plus a bit more to merge
-      var compositeContrast = filteredDepth;//.updateMask(depthMask);
+      var compositeContrast = filteredDepth;
       return(compositeContrast);
   },
 
