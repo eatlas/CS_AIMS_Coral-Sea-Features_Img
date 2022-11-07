@@ -264,6 +264,7 @@ var utils = {
     var apply8bitScaling = true;
     switch (selectedVisOption) {
       case "Depth":
+        print(image);
         resultImage = this.estimateDepth(image, 30, 1);
         apply8bitScaling = false;
         break;
@@ -346,7 +347,7 @@ var utils = {
     if (apply8bitScaling) {
       return resultImage.multiply(254).add(1).toUint8();
     } else {
-      print(resultImage);
+      
       return resultImage;
     }
   },
