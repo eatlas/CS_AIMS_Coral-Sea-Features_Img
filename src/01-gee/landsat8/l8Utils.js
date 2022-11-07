@@ -182,7 +182,7 @@ var utils = {
       // areas (3 - 5 m), but still far from good. The downside is that in deep areas the seagrass gets
       // over compensated so seagrass areas appear shallower than intended.
       // An offset of 120 is chosen to optimise the dark substrate compensation from 10 - 15 m.
-      var B2_OFFSET = 0;
+      var B2_OFFSET = 250;
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
