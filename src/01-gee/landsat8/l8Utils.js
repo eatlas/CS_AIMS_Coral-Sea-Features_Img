@@ -249,7 +249,7 @@ var utils = {
       // we want to be able to create depth contours without holes for land areas
       // because we are separately mapping the land using another process that
       // has much more precision.
-      depthB3B2 = depthB3B2.where(img.select('B6').multiply(B_SCALAR).gt(B8LAND_THRESHOLD), ee.Image(1));
+      //depthB3B2 = depthB3B2.where(img.select('B6').multiply(B_SCALAR).gt(B8LAND_THRESHOLD), ee.Image(1));
       
       // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
       //var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
