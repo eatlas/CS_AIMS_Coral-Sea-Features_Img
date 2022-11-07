@@ -182,7 +182,7 @@ var utils = {
       // areas (3 - 5 m), but still far from good. The downside is that in deep areas the seagrass gets
       // over compensated so seagrass areas appear shallower than intended.
       // An offset of 120 is chosen to optimise the dark substrate compensation from 10 - 15 m.
-      var B2_OFFSET = 0;
+      var B2_OFFSET = -300/10000;
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
@@ -209,12 +209,20 @@ var utils = {
       // the DEPTH_OFFSET needs to be adjusted by approx -1. 
       var DEPTH_OFFSET = -145.85;
       
-      // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
+      // The ratio of the ln depends on the normalisation of the image. i.e. the log ratio 
+      // of an image with brightness values from 0 - 10000, results in a substantially different
+      // linearisation than one normalised to 0 - 1. This is because ln(11000)/ln(10000) is
+      // not the same as ln(1.1)/ln(1.0). Changing this scalar effectively shifts the nonlinearity
+      // caused by the ln. 
+      var B_SCALAR = 10000;
+      
+      // This depth estimation is still suseptible to dark substrates at shallow depths (< 5m).
       // It also doesn't work in turbid water. It is also slight non-linear with the depth
       // estimate asympotically approach ~-15 m. As a result depths below -10 m are
       // reported as shallower than reality.
+      
       var depthB3B2 = 
-        img.select('B3').multiply(1).log().divide(img.select('B2').multiply(1).subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
+        img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').multiply(B_SCALAR).subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
         .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
       //return(img.select('B2'));
       // Consider anything brighter than this as land. This threshold is chosen slightly higher than
