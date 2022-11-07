@@ -214,6 +214,9 @@ var utils = {
       // linearisation than one normalised to 0 - 1. This is because ln(11000)/ln(10000) is
       // not the same as ln(1.1)/ln(1.0). Changing this scalar effectively shifts the nonlinearity
       // caused by the ln. 
+      // Lowering this value from shifts and can invert the depth relationship. 
+      // We fix this value at 10000 because this is what we used with Sentinel 2 with non modified
+      // images. In this case the input image is 0 - 1 and so we need to scale it up to 0 - 10000.
       var B_SCALAR = 10000;
       
       // This depth estimation is still suseptible to dark substrates at shallow depths (< 5m).
