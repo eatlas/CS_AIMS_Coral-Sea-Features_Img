@@ -180,8 +180,15 @@ var utils = {
       // estimate to be optimised for a particular depth. 
       // A value of 250 results in seagrass areas getting over compensated for and appearing
       // to shallow. 
-      // A value of 0 looks pretty good.
-      var B2_OFFSET = 100;
+      // A value of 0 looks pretty good, although deeper seagrass (~10-15 m) gets over compensated
+      // for a bit.
+      // -100 Seems an OK trade off however shallow seagrass is over compensated for
+      // -250 Seems to be the best trade off. Seagrass in depths 5 - 10 m seems to be 
+      // compensated for and balanced.
+      // -500 Results in seagrass areas not getting much compensation and this appearing
+      // deeper then they should.
+      // 
+      var B2_OFFSET = -250;
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
