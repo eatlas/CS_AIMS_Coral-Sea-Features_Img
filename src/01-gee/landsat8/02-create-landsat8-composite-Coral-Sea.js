@@ -47,7 +47,7 @@ var REF2_OPTIONS = {
 // ======== Kenn reefs and Wreck reefs (Coral Sea - South east) =========
 // Searched 26 images
 // Good images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
   [
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20200813",
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20200509",
@@ -59,7 +59,7 @@ landsat8CompositeDisplayAndExport(
   false, false, REF1_OPTIONS);
 
 // OK and Maybe images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
   [
     // ok
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20151104",
@@ -81,7 +81,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Holmes Reefs and Moore Reefs (Coral Sea - Central) =========
 // Searched 7 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_094071_20141011",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094071_20190907",
@@ -95,7 +95,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Diane Bank (Coral Sea - Central) =========
 // Searched 15 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_093071_20180812",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093071_20200817",
@@ -111,7 +111,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Herald Cays, East Ribbon Reef, and South West Islet (Coral Sea - Central) =========
 // Searched 29 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_093072_20170214",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093072_20200817",
@@ -126,7 +126,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Flinders Reefs, Flora Reef, and south Holmes Reefs (Coral Sea - Central) =========
 // Searched 12 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20190907",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20140707",
@@ -140,7 +140,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Marion Reef (Coral Sea - Central) =========
 // Searched 8 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_091073_20161010",
         "LANDSAT/LC08/C02/T1_TOA/LC08_091073_20140903",
@@ -155,7 +155,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Saumarez Reefs (Coral Sea - South )=========
 // Searched 15 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_090075_20150510",
         "LANDSAT/LC08/C02/T1_TOA/LC08_090075_20140710",
@@ -171,7 +171,7 @@ landsat8CompositeDisplayAndExport(
 // ======== North part of Frederick Reefs (Coral Sea - South )=========
 // Searched 2 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_089074_20170524",
         "LANDSAT/LC08/C02/T1_TOA/LC08_089074_20180815"
@@ -183,7 +183,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Frederick Reefs and Wreck Reefs (Coral Sea - South )=========
 // Searched 23 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_089075_20190903",
         "LANDSAT/LC08/C02/T1_TOA/LC08_089075_20200601",
@@ -199,7 +199,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Wreck Reefs and Hutchison Rock (Coral Sea - South )=========
 // Searched 23 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_088076_20150901",
         "LANDSAT/LC08/C02/T1_TOA/LC08_088076_20161005",
@@ -215,7 +215,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Bampton Reefs - northern part (Coral Sea - Far East )=========
 // Searched 8 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_087073_20191108",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087073_20180716",
@@ -230,7 +230,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Bampton Reefs - southern part (Coral Sea - Far East )=========
 // Searched 25 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20191108",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20170118",
@@ -247,7 +247,7 @@ landsat8CompositeDisplayAndExport(
 
 // ===============================================================
 // Sharkbay
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150627",
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130621",
