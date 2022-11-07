@@ -146,6 +146,112 @@ var utils = {
     return image.updateMask(mask);
   },
 
+
+  // Utility function for estimating the depth from the image. Note: While this is
+  // called depth it trends deeper regions has negative values. i.e. -10 m means
+  // 10 m below the surface. 
+  // 
+  // This function assumes that the image has had sunglint correction and brightness normalisation
+  // already applied to the image. If not the output values will not be accurate. 
+  // 
+  // This method is only moderately accurate from -4 - -12 m of depth.
+  // Its primary goal is to help with the determining the -5 and -10 m contour lines.
+  // This algorithm performs better than simply performing the ln(B3), but is still
+  // suseptible to dark substrates, particularly in shallow areas. These can introduce
+  // errors of up to 5 m, this is compared with an error of about 8 m by just using the
+  // B3 channel. 
+  //
+  // Areas estimated as land, based on their brightness in the B8 channel have a depth
+  // of 1. Depths below -12 m are masked off.
+  
+  // @param {integer} filterRadius - Radius of the filter (m) to apply to the depth to reduce
+  //                                spatial noise. Typically: 20. Should be multiples of the
+  //                                native image pixel resolution.
+  // @param {integer} filterIterations - Number of iterations of the filter to apply. Typically: 1-2
+  
+  estimateDepth: function(img, filterRadius, filterIterations) {
+      // Result: This depth model seems to work quite well for depths between 5 - 12 m. In shallow areas
+      // dark seagrass is not compensated for very well.
+      // In shallow areas seagrass introduces a 4 - 6 m error in the depth estimate, appearing to
+      // be deeper than it is. This is based on the assumption that neighbouring sand areas are at a
+      // similar depth to the seagrass. 
+      
+      // Offset that corrects for the colour balance of the image. This also allows the depth
+      // estimate to be optimised for a particular depth. 
+      // If this is increased to say 250 the compensation for seagrass is slightly between for shallower
+      // areas (3 - 5 m), but still far from good. The downside is that in deep areas the seagrass gets
+      // over compensated so seagrass areas appear shallower than intended.
+      // An offset of 120 is chosen to optimise the dark substrate compensation from 10 - 15 m.
+      var B2_OFFSET = 150;
+      
+      
+      // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
+      // depths measured in metres. Changing this changes the slope of the relationship between
+      // the depth estimate and the real depth. 
+      // This scalar and depth offset were determined by mapping the 5 and 10 m depth contours
+      // generated from the satellite imagery and the GBR30 2020 dataset for the following scenes:
+      // 55KFU, 55LCD, 55KCB, 55KGU, 56KKC. The tuning focused on matching areas where there 
+      // were gentle gradients crossing the 5 m and 10 m contours as these areas are most sentive
+      // to slight bias differences (i.e. the coutour moves quickly over a large distance for small
+      // changes in bathymetry. The difference between the 5 m and 10 m contours was used to 
+      // calculate the slope and offset. The resulting alignment was a close match with contours
+      // matching to within approximately +- 1 m. 
+      // The GBR30 bathymetry dataset is normalised to approximately MSL and for reef tops was
+      // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
+      // from SDB will be copied into this dataset.
+      // 
+      var DEPTH_SCALAR = 145.1;
+      
+      // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
+      // Changing this modifies the intercept of the depth relationship. If the 
+      // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
+      // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
+      // the DEPTH_OFFSET needs to be adjusted by approx -1. 
+      var DEPTH_OFFSET = -145.85;
+      
+      // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
+      // It also doesn't work in turbid water. It is also slight non-linear with the depth
+      // estimate asympotically approach ~-15 m. As a result depths below -10 m are
+      // reported as shallower than reality.
+      var depthB3B2 = 
+        img.select('B3').log().divide(img.select('B2').subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
+        .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
+      
+      // Consider anything brighter than this as land. This threshold is chosen slightly higher than
+      // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
+      // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
+      // result in dark areas on land (such as on Magnetic Island) as appearing as water.
+      var B8LAND_THRESHOLD = 1400; 
+      //var waterMask = img.select('B8').lt(B8LAND_THRESHOLD);
+      
+      // Mask out any land areas because the depth estimates would 
+      //var depthWithLandMask = depthB3B2.updateMask(waterMask);
+      
+      // Set any areas that are most likely to be land to have a height of 1 m. 
+      // We can't know the height, hence the cap and we don't want to mask because
+      // we want to be able to create depth contours without holes for land areas
+      // because we are separately mapping the land using another process that
+      // has much more precision.
+      depthB3B2 = depthB3B2.where(img.select('B6').gt(B8LAND_THRESHOLD), ee.Image(1));
+      
+      // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
+      //var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
+      var filteredDepth = depthB3B2.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
+      
+      // This slope of the depth estimate becomes very flat below -12 m, thus we need to remove this data from the
+      // result to limit the improper use of the data.
+      var MAX_DEPTH = -12;
+      
+      // Remove all areas where the depth estimate is likely to be poor.
+      // Smooth the edges of the mask by applying a dilate. This is equivalent to applying a buffer to the mask image, 
+      // helping to fill in neighbouring holes in the mask. This will expand the mask slightly.
+      var depthMask = filteredDepth.gt(MAX_DEPTH)
+        .focal_min({kernel: ee.Kernel.circle({radius: 10, units: 'meters'}), iterations: 1})  // (Erode) Remove single pixel elements
+        .focal_max({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1}); // (Dilate) Expand back out, plus a bit more to merge
+      var compositeContrast = filteredDepth.updateMask(depthMask);
+      return(compositeContrast);
+  },
+
   /**
    * Apply band modifications according to the visualisation parameters and return the updated image.
    * @param image
@@ -157,6 +263,9 @@ var utils = {
     var visParams = this.VIS_OPTIONS[selectedVisOption].visParams;
 
     switch (selectedVisOption) {
+      case "Depth":
+        estimateDepth(image, 30, 1)
+        resultImage = ee.Image.rgb(redBand, greenBand, blueBand);
       case "ReefTop":
         var smootherKernel = ee.Kernel.circle({radius: 10, units: 'meters'});
         var filteredRedBand = image.select(visParams.bands[0]).focal_mean({kernel: smootherKernel, iterations: 4});
