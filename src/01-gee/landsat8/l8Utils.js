@@ -238,7 +238,7 @@ var utils = {
       // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
       // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
       // result in dark areas on land (such as on Magnetic Island) as appearing as water.
-      var B8LAND_THRESHOLD = 20; 
+      var B8LAND_THRESHOLD = 100; 
       //var waterMask = img.select('B8').lt(B8LAND_THRESHOLD);
       
       // Mask out any land areas because the depth estimates would 
