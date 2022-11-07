@@ -256,7 +256,7 @@ var utils = {
    * Apply band modifications according to the visualisation parameters and return the updated image.
    * @param image
    * @param selectedVisOption
-   * @return {ee.Image.rgb} 8 bit RGB image with applied styles
+   * @return {ee.Image.rgb} 8 bit RGB image with applied styles, except for Depth style
    */
   visualiseImage: function (image, selectedVisOption) {
     var resultImage, redBand, greenBand, blueBand;
