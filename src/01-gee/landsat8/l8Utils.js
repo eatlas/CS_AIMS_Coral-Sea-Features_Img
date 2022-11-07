@@ -233,12 +233,9 @@ var utils = {
       var depthB3B2 = 
         img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').multiply(B_SCALAR).subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
         .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
-      //return(img.select('B2'));
-      // Consider anything brighter than this as land. This threshold is chosen slightly higher than
-      // the sunglint correction LAND THRESHOLD and we want to ensure that it is dry land and not simply
-      // shallow.  Chosing this at 1000 brings the estimates close to the high mean tide mark, but also
-      // result in dark areas on land (such as on Magnetic Island) as appearing as water.
-      var B8LAND_THRESHOLD = 100; 
+
+      // Consider anything brighter than this as land. 
+      //var B8LAND_THRESHOLD = 100; 
       //var waterMask = img.select('B8').lt(B8LAND_THRESHOLD);
       
       // Mask out any land areas because the depth estimates would 
@@ -249,7 +246,7 @@ var utils = {
       // we want to be able to create depth contours without holes for land areas
       // because we are separately mapping the land using another process that
       // has much more precision.
-      depthB3B2 = depthB3B2.where(img.select('B6').multiply(B_SCALAR).gt(B8LAND_THRESHOLD), ee.Image(1));
+      //depthB3B2 = depthB3B2.where(img.select('B6').multiply(B_SCALAR).gt(B8LAND_THRESHOLD), ee.Image(1));
       
       // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
       //var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
