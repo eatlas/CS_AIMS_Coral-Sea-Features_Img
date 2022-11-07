@@ -343,7 +343,7 @@ var utils = {
     // Scale and convert the image to an 8 bit image to make the export file size considerably smaller.
     // Reserve 0 for no_data so that the images can be converted to not have black borders. Scaling the data ensures
     // that no valid data is 0.
-    if (apply8bitscaling) {
+    if (apply8bitScaling) {
       return resultImage.multiply(254).add(1).toUint8();
     } else {
       return resultImage;
