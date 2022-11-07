@@ -181,7 +181,7 @@ var utils = {
       // A value of 250 results in seagrass areas getting over compensated for and appearing
       // to shallow. 
       // A value of 0 looks pretty good.
-      var B2_OFFSET = -500;
+      var B2_OFFSET = 100;
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
