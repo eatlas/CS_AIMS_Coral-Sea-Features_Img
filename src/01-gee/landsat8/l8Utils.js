@@ -265,8 +265,9 @@ var utils = {
     
     switch (selectedVisOption) {
       case "Depth":
-        print(image);
-        resultImage = this.estimateDepth(image, 30, 1);
+        //print(image);
+        resultImage = image.select('B2');
+        //resultImage = this.estimateDepth(image, 30, 1);
         apply8bitScaling = false;
         break;
       case "ReefTop":
