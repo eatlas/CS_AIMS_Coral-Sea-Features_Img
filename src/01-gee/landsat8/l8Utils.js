@@ -55,7 +55,17 @@ var utils = {
         min: [0.00025, 0.00025, 0.00025],
         max: [0.007, 0.007, 0.007]
       }
-    }
+    },
+    'Depth': {
+      description: "This is a Satellite Derived Bathymetry calibrated against the GA GBR30 2020 dataset. It is " +
+        "intended to be used for creating reef contours.",
+      visParams: {
+        bands: ['Depth'],
+        gamma: 1,
+        min: -15,
+        max: 0
+      }
+    },
   },
 
   /**
