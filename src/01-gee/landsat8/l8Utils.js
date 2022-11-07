@@ -182,7 +182,7 @@ var utils = {
       // areas (3 - 5 m), but still far from good. The downside is that in deep areas the seagrass gets
       // over compensated so seagrass areas appear shallower than intended.
       // An offset of 120 is chosen to optimise the dark substrate compensation from 10 - 15 m.
-      var B2_OFFSET = -100;
+      var B2_OFFSET = 0;
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
@@ -214,7 +214,7 @@ var utils = {
       // estimate asympotically approach ~-15 m. As a result depths below -10 m are
       // reported as shallower than reality.
       var depthB3B2 = 
-        img.select('B3').multiply(10000).log().divide(img.select('B2').multiply(10000).subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
+        img.select('B3').multiply(1).log().divide(img.select('B2').multiply(1).subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
         .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
       //return(img.select('B2'));
       // Consider anything brighter than this as land. This threshold is chosen slightly higher than
