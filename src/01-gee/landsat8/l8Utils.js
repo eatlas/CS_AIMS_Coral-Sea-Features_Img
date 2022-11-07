@@ -178,17 +178,17 @@ var utils = {
       
       // Offset that corrects for the colour balance of the image. This also allows the depth
       // estimate to be optimised for a particular depth. 
-      // A value of 250 results in seagrass areas getting over compensated for and appearing
+      // A value of 0.0250 results in seagrass areas getting over compensated for and appearing
       // to shallow. 
       // A value of 0 looks pretty good, although deeper seagrass (~10-15 m) gets over compensated
       // for a bit.
-      // -100 Seems an OK trade off however shallow seagrass is over compensated for
-      // -250 Seems to be the best trade off. Seagrass in depths 5 - 10 m seems to be 
+      // -0.0100 Seems an OK trade off however shallow seagrass is over compensated for
+      // -0.0250 Seems to be the best trade off. Seagrass in depths 5 - 10 m seems to be 
       // compensated for and balanced.
-      // -500 Results in seagrass areas not getting much compensation and this appearing
+      // -0.0500 Results in seagrass areas not getting much compensation and this appearing
       // deeper then they should.
       // 
-      var B2_OFFSET = -500;
+      var B2_OFFSET = 0;
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
@@ -223,7 +223,7 @@ var utils = {
       // Lowering this value from shifts and can invert the depth relationship. 
       // We fix this value at 10000 because this is what we used with Sentinel 2 with non modified
       // images. In this case the input image is 0 - 1 and so we need to scale it up to 0 - 10000.
-      var B_SCALAR = 10000;
+      var B_SCALAR = 10;
       
       // This depth estimation is still suseptible to dark substrates at shallow depths (< 5m).
       // It also doesn't work in turbid water. It is also slight non-linear with the depth
@@ -231,7 +231,7 @@ var utils = {
       // reported as shallower than reality.
       
       var depthB3B2 = 
-        img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').multiply(B_SCALAR).subtract(B2_OFFSET).log())     // core depth estimation (unscaled)
+        img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').multiply(B_SCALAR).subtract(B2_OFFSET*B_SCALAR).log())     // core depth estimation (unscaled)
         .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
 
       
