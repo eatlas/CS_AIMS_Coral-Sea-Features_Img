@@ -19,8 +19,10 @@ var landsat8Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src
 var REF1_OPTIONS = {
     // colourGrades: ['TrueColour', 'DeepMarine', 'DeepFalse', 'ReefTop', 'Slope'],
     // exportScale: [30, 30, 30, 30, 30],
-    colourGrades: ['TrueColour', 'DeepFalse'],
-    exportScale: [30, 30],
+    //colourGrades: ['TrueColour', 'DeepFalse'],
+    //exportScale: [30, 30],
+    colourGrades: ['Depth'],
+    exportScale: [30],
     exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_L8_R1',
     exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
     applySunGlintCorrection: true,
@@ -166,7 +168,7 @@ landsat8CompositeDisplayAndExport(
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20170922",
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20210221"
   ],
-  false, true, REF2_OPTIONS);
+  false, false, REF2_OPTIONS);
 
 // ===============================================================
 // ======== Holmes Reefs and Moore Reefs (Coral Sea - Central) =========
@@ -225,7 +227,7 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20141011"
     ],
-    false, false, REF1_OPTIONS);
+    true, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Marion Reef (Coral Sea - Central) =========
