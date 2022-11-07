@@ -441,7 +441,7 @@ var utils = {
         var displayName = colourGrades[i] + '_' + tileId;
   
         Map.addLayer(finalComposite, {}, displayName, false, 1);
-        Map.centerObject(composite.geometry());
+        //Map.centerObject(composite.geometry());
   
         // https://gis.stackexchange.com/questions/362192/gee-tile-error-reprojection-output-too-large-when-joining-modis-and-era-5-data
         // https://developers.google.com/earth-engine/guides/scale
@@ -450,9 +450,9 @@ var utils = {
         // Errors when displaying slope images on map are caused by the combination of map zoom level and scaling factor:
         //
         // "If the scale you specified in the reproject() call is much smaller than the zoom level of the map, Earth Engine will request all the inputs at very small scale, over a very wide spatial extent. This can result in much too much data being requested at once and lead to an error."
-        if (Map.getZoom() < 9) {
-          Map.setZoom(9);
-        }
+        //if (Map.getZoom() < 9) {
+        //  Map.setZoom(9);
+        //}
       }
     }
   }
