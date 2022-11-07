@@ -360,6 +360,101 @@ var utils = {
    */
   enhanceContrast: function (image, min, max, gamma) {
     return image.subtract(min).divide(max - min).clamp(0, 1).pow(1 / gamma);
+  },
+  
+  /**
+   * Utility function to display and export the mosaic
+   *
+   * @param imageIds
+   * @param isDisplay
+   * @param isExport
+   * @param options
+   */
+  composeDisplayAndExport: function (imageIds, isDisplay, isExport, options) {
+    var colourGrades = options.colourGrades;
+    var exportFolder = options.exportFolder;
+    var exportBasename = options.exportBasename;
+    var exportScale = options.exportScale;
+  
+    // Skip over if nothing to do
+    if (!(isExport || isDisplay)) {
+      return;
+    }
+  
+    // check options
+    if (!Array.isArray(colourGrades)) {
+      throw "The colourGrades must be an array for proper behaviour";
+    }
+    if (isExport && !Array.isArray(exportScale)) {
+      throw "options.exportScale should be an array was: " + exportScale;
+    }
+    if (isExport && (colourGrades.length !== exportScale.length)) {
+      throw "number of elements in options.exportScale (" + exportScale.length + ") " +
+      "must match the options.colourGrades (" + colourGrades.length + ")";
+    }
+  
+    // remove duplicates
+    imageIds = imageIds.filter(function (item, pos, self) {
+      return self.indexOf(item) === pos;
+    })
+  
+    // get the specific tile number and remove all duplicate. In the end there should only be one left (all images should
+    // be from the same tile).
+    // LANDSAT/LC08/C02/T1_TOA/LC08_091075_20160706
+    // => 091075
+    var tileId = imageIds.map(function (id) {
+      var n = id.lastIndexOf("_");
+      return id.substring((n - 6), n);
+    }).filter(function (item, pos, self) {
+      return self.indexOf(item) === pos;
+    });
+    // Make sure we are dealing with a single image tile.
+    if (tileId.length > 1) {
+      throw "This only supports images from a single tile, found: " + String(tileId);
+    }
+  
+    var composite = this.createCompositeImage(imageIds, options.applySunGlintCorrection, options.applyCloudMask);
+  
+    // Prepare images for each of the specified colourGrades
+    for (var i = 0; i < colourGrades.length; i++) {
+      var finalComposite = this.visualiseImage(composite, colourGrades[i]);
+  
+      if (isExport) {
+        // Example name: AU_AIMS_Landsat8-marine_V1_TrueColour_55KDU_2016-2020-n10
+        var exportName = exportBasename + '_' + colourGrades[i] + '_' + tileId;
+        print("======= Exporting image " + exportName + " =======");
+  
+        Export.image.toDrive({
+          image: finalComposite,
+          description: exportName,
+          folder: exportFolder,
+          fileNamePrefix: exportName,
+          scale: exportScale[i],
+          region: composite.geometry(),
+          maxPixels: 3e8                // Raise the default limit of 1e8 to fit the export
+        });
+      }
+  
+      if (isDisplay) {
+        // Create a shorter display name for on the map.
+        // Example name: TrueColour_091075_2016-2020-n10
+        var displayName = colourGrades[i] + '_' + tileId;
+  
+        Map.addLayer(finalComposite, {}, displayName, false, 1);
+        Map.centerObject(composite.geometry());
+  
+        // https://gis.stackexchange.com/questions/362192/gee-tile-error-reprojection-output-too-large-when-joining-modis-and-era-5-data
+        // https://developers.google.com/earth-engine/guides/scale
+        // https://developers.google.com/earth-engine/guides/projections
+        //
+        // Errors when displaying slope images on map are caused by the combination of map zoom level and scaling factor:
+        //
+        // "If the scale you specified in the reproject() call is much smaller than the zoom level of the map, Earth Engine will request all the inputs at very small scale, over a very wide spatial extent. This can result in much too much data being requested at once and lead to an error."
+        if (Map.getZoom() < 9) {
+          Map.setZoom(9);
+        }
+      }
+    }
   }
 }
 
