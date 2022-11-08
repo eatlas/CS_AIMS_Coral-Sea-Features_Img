@@ -263,7 +263,7 @@ landsat8Utils.composeDisplayAndExport(
     
 // Depth calibration images.
 // These scenes were used to calibrate the depth calculations against the GA GBR30 2020
-// dataset. Not tidal assessment was made.
+// dataset. No tidal assessment was made.
 
 // Davies reef
 landsat8Utils.composeDisplayAndExport(
