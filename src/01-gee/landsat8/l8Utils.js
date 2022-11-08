@@ -344,8 +344,8 @@ var utils = {
           // Median filter removes noise but retain edges better than gaussian filter.
           // At the final threshold the median filter can result in small anomalies and
           // so we apply a small 
-          .focal_median({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1})
-          .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1})
+          .focal_median({kernel: ee.Kernel.circle({radius: 60, units: 'meters'}), iterations: 1})
+          .focal_mean({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
           .gt(0.0483);
         
         apply8bitScaling = false;
