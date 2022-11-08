@@ -55,17 +55,7 @@ var utils = {
         min: [0.00025, 0.00025, 0.00025],
         max: [0.007, 0.007, 0.007]
       }
-    },
-    'Depth': {
-      description: "This is a Satellite Derived Bathymetry calibrated against the GA GBR30 2020 dataset. It is " +
-        "intended to be used for creating reef contours.",
-      visParams: {
-        bands: ['Depth'],
-        gamma: 1,
-        min: -15,
-        max: 0
-      }
-    },
+    }
   },
 
   /**
@@ -515,7 +505,7 @@ var utils = {
       var finalComposite = this.visualiseImage(composite, colourGrades[i]);
       // === Vector layers ===
       if (colourGrades[i] === 'Depth10m' || 
-          colourGrades[i] === 'Depth20m' ||
+          //colourGrades[i] === 'Depth20m' ||
           colourGrades[i] === 'Depth5m') {
           //makeAndSaveShp(final_composite, displayName, exportName, exportFolder, exportScale[i], tilesGeometry, is_display, is_export);
           // Apply a threshold to the image
