@@ -349,7 +349,7 @@ var utils = {
         // 094073 Davies reef
         // 096071 Tongue and Batt Reef
         // 091075 Paul Reef
-        compositeContrast = scaled_img.select('B3')
+        compositeContrast = image.select('B3')
           // Median filter removes noise but retain edges better than gaussian filter.
           // At the final threshold the median filter can result in small anomalies and
           // so we apply a small 
