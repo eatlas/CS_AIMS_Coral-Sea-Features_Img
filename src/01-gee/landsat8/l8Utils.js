@@ -245,7 +245,7 @@ var utils = {
       var depthB2 = 
         img.select('B2').multiply(B_SCALAR).log().subtract(6.643).multiply(1.720);
         
-      var depthB3B2 = depthB3.subtract(depthB2*0.5);
+      var depthB3B2 = depthB3.subtract(depthB2*multiply(0.5));
       // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
       //var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
       var filteredDepth = depthB3B2.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
