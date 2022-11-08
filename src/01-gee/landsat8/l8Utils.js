@@ -506,7 +506,7 @@ var utils = {
       var finalComposite = this.visualiseImage(composite, colourGrades[i]);
       // === Vector layers ===
       if (colourGrades[i] === 'Depth10m' || 
-          //colourGrades[i] === 'Depth20m' ||
+          colourGrades[i] === 'Depth20m' ||
           colourGrades[i] === 'Depth5m') {
           //makeAndSaveShp(final_composite, displayName, exportName, exportFolder, exportScale[i], tilesGeometry, is_display, is_export);
           // Apply a threshold to the image
