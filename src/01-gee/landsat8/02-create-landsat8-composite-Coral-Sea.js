@@ -260,3 +260,34 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130824"
     ],
     false, false, REF1_OPTIONS);
+    
+// Depth calibration images.
+// These scenes were used to calibrate the depth calculations against the GA GBR30 2020
+// dataset. Not tidal assessment was made.
+
+// Davies reef
+landsat8Utils.composeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190822",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190907"
+    ],
+    false, false, REF1_OPTIONS);
+    
+// Tonge and Batt Reef
+landsat8Utils.composeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20160608",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20180801",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20190905",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20130702"
+    ],
+    false, false, REF1_OPTIONS);
+    
+    
+// Paul Reef
+landsat8Utils.composeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20140903",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20180829"
+    ],
+    false, false, REF1_OPTIONS);
