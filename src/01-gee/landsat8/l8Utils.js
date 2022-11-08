@@ -346,9 +346,9 @@ var utils = {
         // with the GA GBR30 Bathymetry 2020 dataset. The threshold was adjusted for multiple
         // scenes until the best match was found. Inshore areas were ignored.
         // Scene  Threshold Reef/notes
-        // 094073 
-        // 096071
-        // 091075
+        // 094073 Davies reef
+        // 096071 Tongue and Batt Reef
+        // 091075 Paul Reef
         compositeContrast = scaled_img.select('B3')
           // Median filter removes noise but retain edges better than gaussian filter.
           // At the final threshold the median filter can result in small anomalies and
