@@ -335,6 +335,10 @@ var utils = {
         // The threshold associated with -20 m was calibrated by comparing rendered masked
         // with the GA GBR30 Bathymetry 2020 dataset. The threshold was adjusted for multiple
         // scenes until the best match was found. Inshore areas were ignored.
+        // The threshold was calculated by changing this style to simply output B3
+        // with no filtering or gt threshold. The layer visualisation (using a custom visualisation 
+        // range) was then adjusted to match the same extent as GBR30 dataset for 20 m depth.
+        // 
         // Scene  Threshold Reef/notes
         // 094073 0.047     Davies reef
         // 096071 0.049     Tongue and Batt Reef (More turbid waters)
@@ -506,7 +510,7 @@ var utils = {
       var finalComposite = this.visualiseImage(composite, colourGrades[i]);
       // === Vector layers ===
       if (colourGrades[i] === 'Depth10m' || 
-          colourGrades[i] === 'Depth20m' ||
+          colourGrades[i] === 'Depth20m' ||   // During calibration this style was switched to being a raster.
           colourGrades[i] === 'Depth5m') {
           // Apply a threshold to the image
           var imgContour = finalComposite.gt(0.5);
