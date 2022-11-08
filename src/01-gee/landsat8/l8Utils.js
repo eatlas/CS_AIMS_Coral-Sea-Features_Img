@@ -508,7 +508,6 @@ var utils = {
       if (colourGrades[i] === 'Depth10m' || 
           colourGrades[i] === 'Depth20m' ||
           colourGrades[i] === 'Depth5m') {
-          //makeAndSaveShp(final_composite, displayName, exportName, exportFolder, exportScale[i], tilesGeometry, is_display, is_export);
           // Apply a threshold to the image
           var imgContour = finalComposite.gt(0.5);
           
