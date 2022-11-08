@@ -486,6 +486,9 @@ var utils = {
     // Prepare images for each of the specified colourGrades
     for (var i = 0; i < colourGrades.length; i++) {
       var exportName = exportBasename + '_' + colourGrades[i] + '_' + tileId;
+      // Create a shorter display name for on the map.
+      // Example name: TrueColour_091075_2016-2020-n10
+      var displayName = colourGrades[i] + '_' + tileId;
       var finalComposite = this.visualiseImage(composite, colourGrades[i]);
       // === Vector layers ===
       if (colourGrades[i] === 'Depth10m' || 
@@ -511,7 +514,7 @@ var utils = {
           if (isDisplay) {
             // Make a display image for the vectors, add it to the map.
             var display = ee.Image(0).updateMask(0).paint(vector, '000000', 2);
-            Map.addLayer(display, {palette: '000000'}, layerName, false);
+            Map.addLayer(display, {palette: '000000'}, displayName, false);
           }
           if (isExport) {
             // Export the FeatureCollection to a KML file.
@@ -542,9 +545,7 @@ var utils = {
         }
     
         if (isDisplay) {
-          // Create a shorter display name for on the map.
-          // Example name: TrueColour_091075_2016-2020-n10
-          var displayName = colourGrades[i] + '_' + tileId;
+          
     
           Map.addLayer(finalComposite, {}, displayName, false, 1);
           //Map.centerObject(composite.geometry());
