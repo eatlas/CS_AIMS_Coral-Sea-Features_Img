@@ -188,7 +188,7 @@ var utils = {
       // -0.0500 Results in seagrass areas not getting much compensation and this appearing
       // deeper then they should.
       // 
-      var B2_OFFSET = 0;
+      var B2_OFFSET = -0.025;
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
