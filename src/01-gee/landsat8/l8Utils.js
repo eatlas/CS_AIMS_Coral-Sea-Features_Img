@@ -190,14 +190,15 @@ var utils = {
       // 
       var B2_OFFSET = -0.025;
       
+      // The GBR30 bathymetry dataset is normalised to approximately MSL and for reef tops was
+      // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
+      // from SDB will be copied into this dataset.
       
-      // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
-      // depths measured in metres. Changing this changes the slope of the relationship between
-      // the depth estimate and the real depth. 
+      // ========= Depth Calibration =========
       // This scalar and depth offset were determined by mapping the 5 and 10 m depth contours
       // generated from the satellite imagery and the GBR30 2020 dataset for the following scenes:
-      // Starting guess values based on Sentinel 2
-      // Starting DEPTH_SCALAR 145.1, DEPTH_OFFSET 145.85
+      // We started with DEPTH_SCALAR 145.1, DEPTH_OFFSET 145.85 based on Sentinel 2.
+      // The resulting matching depths (SDB depth vs GBR30)
       // Scene      5m    10m   15m
       // 094073  -13.6  -17.6 -19.4 Davies Reef
       // 096071  -12.4  -16.9 -18.2 Batt Reef (Water is not as clear)
@@ -205,26 +206,28 @@ var utils = {
       // Avg     -13.0  -17.2 -18.9
       // This shows that the respond falls off close to 15 m. We therefore linearise the response
       // from 5 m - 10 m as these are the contours that we are extracting.
-      // Slope adjustment = (10-5)/(17.2-13)*145.1 = 172.7
       // 
+      // We adjust the DEPTH_OFFSET and DEPTH_SCALAR based on these new data.
+      // For this we calculate the value in the calculation prior to the application
+      // of these scaling factors.
       // Log band ratio = (depth-DEPTH_OFFSET)/DEPTH_SCALAR. 
       // 10 m: (-17.2-(-145.85)) / 145.1 = 0.8866
       // 5 m: (-13-(-145.85))/145.1 = 0.9155
-      // Slope = (-10-(-5))/(0.8866-0.9155) = 173.01
-      // Offset adjustment = -(0.9155*173.01 - (-5)) = -163.39
+      // New Scalar = (-10-(-5))/(0.8866-0.9155) = 173.01
+      // New Depth Offset = -(0.9155*173.01 - (-5)) = -163.39
       
-      // The GBR30 bathymetry dataset is normalised to approximately MSL and for reef tops was
-      // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
-      // from SDB will be copied into this dataset.
+      // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
+      // depths measured in metres. Changing this changes the slope of the relationship between
+      // the depth estimate and the real depth. 
       // 
-      var DEPTH_SCALAR = 145.1;
+      var DEPTH_SCALAR = 173.01;
       
       // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
       // Changing this modifies the intercept of the depth relationship. If the 
       // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
       // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
       // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-      var DEPTH_OFFSET = -145.85;
+      var DEPTH_OFFSET = -163.39;
       
       // This ratio scales the nominal maximum value of the brightness. i.e. 10000 results
       // in images that are approximately 0 - 10000.
