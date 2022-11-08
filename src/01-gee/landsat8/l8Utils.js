@@ -283,6 +283,14 @@ var utils = {
         resultImage = this.estimateDepth(image, 30, 1);
         apply8bitScaling = false;
         break;
+      case "Depth5m":
+        resultImage = this.estimateDepth(image, 30, 1).gt(-5);
+        apply8bitScaling = false;
+        break;
+      case "Depth10m":
+        resultImage = this.estimateDepth(image, 30, 1).gt(-10);
+        apply8bitScaling = false;
+        break;
       case "ReefTop":
         var smootherKernel = ee.Kernel.circle({radius: 10, units: 'meters'});
         var filteredRedBand = image.select(visParams.bands[0]).focal_mean({kernel: smootherKernel, iterations: 4});
