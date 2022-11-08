@@ -238,7 +238,7 @@ var utils = {
       //  .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
         
       var depthB3B2 = 
-        img.select('B3').multiply(B_SCALAR).log(); //.divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
+        img.select('B3').multiply(B_SCALAR).log().subtract(5.935).multiply(1.271); //.divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
         //.multiply(DEPTH_SCALAR).add(DEPTH_OFFSET); 
 
       
