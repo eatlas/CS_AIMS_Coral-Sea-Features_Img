@@ -345,7 +345,6 @@ var utils = {
         // 091075 0.049     Paul Reef
         // 115078 0.049     Shark bay (having a lower threshold 0.0483 resulted in a too big border
         //                  and significant noise, essentially we are in the noise).
-        // Avg    0.0483
         resultImage = image.select('B3')
           // Median filter removes noise but retain edges better than gaussian filter.
           // At the final threshold the median filter can result in small anomalies and
