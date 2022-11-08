@@ -343,13 +343,15 @@ var utils = {
         // 094073 0.047     Davies reef
         // 096071 0.049     Tongue and Batt Reef (More turbid waters)
         // 091075 0.049     Paul Reef
+        // 115078 0.049     Shark bay (having a lower threshold 0.0483 resulted in a too big border
+        //                  and significant noise, essentially we are in the noise).
         // Avg    0.0483
         resultImage = image.select('B3')
           // Median filter removes noise but retain edges better than gaussian filter.
           // At the final threshold the median filter can result in small anomalies and
           // so we apply a small 
-          .focal_median({kernel: ee.Kernel.circle({radius: 60, units: 'meters'}), iterations: 1})
-          .focal_mean({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
+          .focal_median({kernel: ee.Kernel.circle({radius: 90, units: 'meters'}), iterations: 1})
+          .focal_mean({kernel: ee.Kernel.circle({radius: 60, units: 'meters'}), iterations: 1})
           .gt(0.049);
           //.gt(0.0483);
         
