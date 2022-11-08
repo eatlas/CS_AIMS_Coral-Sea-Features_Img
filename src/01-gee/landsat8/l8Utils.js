@@ -226,16 +226,20 @@ var utils = {
       // B_SCALAR Effect
       // 10,100       Binary threshold (Extremely large ranges of values, not useful)
       // 1000         Values at the edge of the masking lead to large values
-      var B_SCALAR = 0.1;
+      var B_SCALAR = 10000;
       
       // This depth estimation is still suseptible to dark substrates at shallow depths (< 5m).
       // It also doesn't work in turbid water. It is also slight non-linear with the depth
       // estimate asympotically approach ~-15 m. As a result depths below -10 m are
       // reported as shallower than reality.
       
+      //var depthB3B2 = 
+      //  img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
+      //  .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
+        
       var depthB3B2 = 
-        img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').multiply(B_SCALAR).subtract(B2_OFFSET*B_SCALAR).log())     // core depth estimation (unscaled)
-        .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
+        img.select('B3').multiply(B_SCALAR).log(); //.divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
+        //.multiply(DEPTH_SCALAR).add(DEPTH_OFFSET); 
 
       
       // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
