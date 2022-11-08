@@ -237,11 +237,15 @@ var utils = {
       //  img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
       //  .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
         
-      var depthB3B2 = 
+      // Normalised the LN transform so that the 2 std dev is from 0 - 1.
+      var depthB3 = 
         img.select('B3').multiply(B_SCALAR).log().subtract(5.935).multiply(1.271); //.divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
         //.multiply(DEPTH_SCALAR).add(DEPTH_OFFSET); 
 
-      
+      var depthB2 = 
+        img.select('B2').multiply(B_SCALAR).log().subtract(6.643).multiply(1.720);
+        
+      var depthB3B2 = depthB3.subtract(depthB2);
       // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
       //var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
       var filteredDepth = depthB3B2.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
