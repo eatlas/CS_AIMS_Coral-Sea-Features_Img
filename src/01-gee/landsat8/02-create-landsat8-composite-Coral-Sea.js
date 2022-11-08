@@ -71,7 +71,7 @@ var landsat8CompositeDisplayAndExport = function (imageIds, isDisplay, isExport,
   // remove duplicates
   imageIds = imageIds.filter(function (item, pos, self) {
     return self.indexOf(item) === pos;
-  })
+  });
 
   // get the specific tile number and remove all duplicate. In the end there should only be one left (all images should
   // be from the same tile).
