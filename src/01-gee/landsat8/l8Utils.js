@@ -338,15 +338,16 @@ var utils = {
         // Scene  Threshold Reef/notes
         // 094073 0.047     Davies reef
         // 096071 0.049     Tongue and Batt Reef (More turbid waters)
-        // 091075 Paul Reef
-        //resultImage = image.select('B3')
+        // 091075 0.049     Paul Reef
+        // Avg    0.0483
+        resultImage = image.select('B3')
           // Median filter removes noise but retain edges better than gaussian filter.
           // At the final threshold the median filter can result in small anomalies and
           // so we apply a small 
-        //  .focal_median({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1})
-        //  .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1});
-          //.gt(0.041);
-        resultImage = image.select('B3');
+          .focal_median({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1})
+          .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1})
+          .gt(0.0483);
+        
         apply8bitScaling = false;
         break;
       case "ReefTop":
