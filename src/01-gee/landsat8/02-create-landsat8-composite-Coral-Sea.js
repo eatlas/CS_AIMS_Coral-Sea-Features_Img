@@ -21,7 +21,7 @@ var REF1_OPTIONS = {
     // exportScale: [30, 30, 30, 30, 30],
     //colourGrades: ['TrueColour', 'DeepFalse'],
     //exportScale: [30, 30],
-    colourGrades: ['Depth10m'],
+    colourGrades: ['Depth20m'],
     exportScale: [30],
     exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_L8_R1',
     exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
