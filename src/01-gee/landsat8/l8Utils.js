@@ -264,6 +264,51 @@ var utils = {
       var compositeContrast = filteredDepth;
       return(compositeContrast);
   },
+  // Helper function that converts the provided image into a vector image and saves it
+  // as a SHP file in Google Drive. Use 3 m resolution.
+  // If the image is large then the vectorisation may fail or be very slow.
+  // img - image to vectorise. Should be grey scale 0 - 1. A 0.5 threshold is applied
+  // layerName - Display name to give to the vector layer.
+  // fileName - Name to give in the export task
+  // exportFolder - folder to save into on Google Drive
+  // scale - scale to export the vector at. 10 for 10 m. For Sentinel 2 images 
+  //         the finest scale is 10 m before GEE runs out of memory and just stops working,
+  //         often with no error message.
+  // geometry - limit of the vectorisation.
+  makeAndSaveShp: function (img, layerName, fileName, exportFolder, scale, geometry, is_display, is_export) {
+  
+    // Apply a threshold to the image
+    var imgContour = img.gt(0.5);
+    
+    // Make the water area transparent
+    imgContour = imgContour.updateMask(imgContour.neq(0));
+    // Convert the image to vectors.
+    var vector = imgContour.reduceToVectors({
+      geometry: geometry,
+      crs: imgContour.projection(),
+      scale: scale,
+      geometryType: 'polygon',
+      eightConnected: false,
+      labelProperty: 'DIN',
+      maxPixels: 6e8
+    });
+    
+    if (is_display) {
+      // Make a display image for the vectors, add it to the map.
+      var display = ee.Image(0).updateMask(0).paint(vector, '000000', 2);
+      Map.addLayer(display, {palette: '000000'}, layerName, false);
+    }
+    if (is_export) {
+      // Export the FeatureCollection to a KML file.
+      Export.table.toDrive({
+        collection: vector,
+        description: fileName,
+        folder:exportFolder,
+        fileNamePrefix: fileName,
+        fileFormat: 'GeoJSON'
+      });
+    }
+  },
 
   /**
    * Apply band modifications according to the visualisation parameters and return the updated image.
@@ -417,7 +462,7 @@ var utils = {
     // remove duplicates
     imageIds = imageIds.filter(function (item, pos, self) {
       return self.indexOf(item) === pos;
-    })
+    });
   
     // get the specific tile number and remove all duplicate. In the end there should only be one left (all images should
     // be from the same tile).
@@ -438,42 +483,81 @@ var utils = {
   
     // Prepare images for each of the specified colourGrades
     for (var i = 0; i < colourGrades.length; i++) {
+      var exportName = exportBasename + '_' + colourGrades[i] + '_' + tileId;
       var finalComposite = this.visualiseImage(composite, colourGrades[i]);
-  
-      if (isExport) {
-        // Example name: AU_AIMS_Landsat8-marine_V1_TrueColour_55KDU_2016-2020-n10
-        var exportName = exportBasename + '_' + colourGrades[i] + '_' + tileId;
-        print("======= Exporting image " + exportName + " =======");
-  
-        Export.image.toDrive({
-          image: finalComposite,
-          description: exportName,
-          folder: exportFolder,
-          fileNamePrefix: exportName,
-          scale: exportScale[i],
-          region: composite.geometry(),
-          maxPixels: 3e8                // Raise the default limit of 1e8 to fit the export
-        });
-      }
-  
-      if (isDisplay) {
-        // Create a shorter display name for on the map.
-        // Example name: TrueColour_091075_2016-2020-n10
-        var displayName = colourGrades[i] + '_' + tileId;
-  
-        Map.addLayer(finalComposite, {}, displayName, false, 1);
-        //Map.centerObject(composite.geometry());
-  
-        // https://gis.stackexchange.com/questions/362192/gee-tile-error-reprojection-output-too-large-when-joining-modis-and-era-5-data
-        // https://developers.google.com/earth-engine/guides/scale
-        // https://developers.google.com/earth-engine/guides/projections
-        //
-        // Errors when displaying slope images on map are caused by the combination of map zoom level and scaling factor:
-        //
-        // "If the scale you specified in the reproject() call is much smaller than the zoom level of the map, Earth Engine will request all the inputs at very small scale, over a very wide spatial extent. This can result in much too much data being requested at once and lead to an error."
-        //if (Map.getZoom() < 9) {
-        //  Map.setZoom(9);
-        //}
+      // === Vector layers ===
+      if (colourGrades[i] === 'Depth10m' || 
+          colourGrades[i] === 'Depth20m' ||
+          colourGrades[i] === 'Depth5m') {
+          //makeAndSaveShp(final_composite, displayName, exportName, exportFolder, exportScale[i], tilesGeometry, is_display, is_export);
+          // Apply a threshold to the image
+          var imgContour = finalComposite.gt(0.5);
+          
+          // Make the water area transparent
+          imgContour = imgContour.updateMask(imgContour.neq(0));
+          // Convert the image to vectors.
+          var vector = imgContour.reduceToVectors({
+            geometry: imgContour.geometry(),
+            crs: imgContour.projection(),
+            scale: exportScale[i],
+            geometryType: 'polygon',
+            eightConnected: false,
+            labelProperty: 'DIN',
+            maxPixels: 6e8
+          });
+          
+          if (is_display) {
+            // Make a display image for the vectors, add it to the map.
+            var display = ee.Image(0).updateMask(0).paint(vector, '000000', 2);
+            Map.addLayer(display, {palette: '000000'}, layerName, false);
+          }
+          if (is_export) {
+            // Export the FeatureCollection to a KML file.
+            Export.table.toDrive({
+              collection: vector,
+              description: exportName,
+              folder:exportFolder,
+              fileNamePrefix: exportName,
+              fileFormat: 'GeoJSON'
+            });
+          }
+      } else {
+        // === Raster layers ===
+        if (isExport) {
+          // Example name: AU_AIMS_Landsat8-marine_V1_TrueColour_55KDU_2016-2020-n10
+          
+          print("======= Exporting image " + exportName + " =======");
+    
+          Export.image.toDrive({
+            image: finalComposite,
+            description: exportName,
+            folder: exportFolder,
+            fileNamePrefix: exportName,
+            scale: exportScale[i],
+            region: composite.geometry(),
+            maxPixels: 3e8                // Raise the default limit of 1e8 to fit the export
+          });
+        }
+    
+        if (isDisplay) {
+          // Create a shorter display name for on the map.
+          // Example name: TrueColour_091075_2016-2020-n10
+          var displayName = colourGrades[i] + '_' + tileId;
+    
+          Map.addLayer(finalComposite, {}, displayName, false, 1);
+          //Map.centerObject(composite.geometry());
+    
+          // https://gis.stackexchange.com/questions/362192/gee-tile-error-reprojection-output-too-large-when-joining-modis-and-era-5-data
+          // https://developers.google.com/earth-engine/guides/scale
+          // https://developers.google.com/earth-engine/guides/projections
+          //
+          // Errors when displaying slope images on map are caused by the combination of map zoom level and scaling factor:
+          //
+          // "If the scale you specified in the reproject() call is much smaller than the zoom level of the map, Earth Engine will request all the inputs at very small scale, over a very wide spatial extent. This can result in much too much data being requested at once and lead to an error."
+          //if (Map.getZoom() < 9) {
+          //  Map.setZoom(9);
+          //}
+        }
       }
     }
   }
