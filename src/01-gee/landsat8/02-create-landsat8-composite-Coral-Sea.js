@@ -259,7 +259,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150814",
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130824"
     ],
-    true, false, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     
 // Depth calibration images.
 // These scenes were used to calibrate the depth calculations against the GA GBR30 2020
@@ -272,7 +272,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190907"
     ],
-    false, false, REF1_OPTIONS);
+    true, false, REF1_OPTIONS);
     
 // Tongue and Batt Reef
 landsat8Utils.composeDisplayAndExport(
