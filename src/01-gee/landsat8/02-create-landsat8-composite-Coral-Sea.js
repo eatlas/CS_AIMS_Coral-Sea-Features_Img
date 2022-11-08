@@ -247,6 +247,11 @@ landsat8Utils.composeDisplayAndExport(
 
 // ===============================================================
 // Sharkbay
+// This area was used for tuning the B2_OFFSET parameter in the Depth
+// estimation. This area was used due to the large seagrass meadows
+// in clear water on sand. The B2_OFFSET was tuned so that seagrass areas
+// would result in a similar depth to the immediately neighbouring sandy areas,
+// working off the assumption that they are probably a similar depth.
 landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150627",
@@ -254,4 +259,4 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150814",
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130824"
     ],
-    true, false, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
