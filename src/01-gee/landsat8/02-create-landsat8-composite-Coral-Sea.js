@@ -15,12 +15,10 @@ var landsat8Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src
 // made from the best set of images available, with the goal being
 // to get the cleanest image.
 
-// possible colour grades: ['TrueColour','DeepMarine','DeepFalse','ReefTop', 'Slope']
+// possible colour grades: ['TrueColour','DeepMarine','DeepFalse','ReefTop', 'Slope', 'Depth5m', 'Depth10m', 'Depth20m' ]
 var REF1_OPTIONS = {
-    // colourGrades: ['TrueColour', 'DeepMarine', 'DeepFalse', 'ReefTop', 'Slope'],
+    // colourGrades: ['TrueColour', 'DeepFalse', 'Depth5m', 'Depth10m', 'Depth20m'],
     // exportScale: [30, 30, 30, 30, 30],
-    //colourGrades: ['TrueColour', 'DeepFalse'],
-    //exportScale: [30, 30],
     colourGrades: ['Depth5m', 'Depth10m', 'Depth20m'],
     exportScale: [30, 30, 30],
     exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_L8_R1',
@@ -37,100 +35,7 @@ var REF2_OPTIONS = {
     applyCloudMask: true
 };
 
-/**
- * Utility function to display and export the mosaic
- *
- * @param imageIds
- * @param isDisplay
- * @param isExport
- * @param options
- */
-var landsat8CompositeDisplayAndExport = function (imageIds, isDisplay, isExport, options) {
-  var colourGrades = options.colourGrades;
-  var exportFolder = options.exportFolder;
-  var exportBasename = options.exportBasename;
-  var exportScale = options.exportScale;
 
-  // Skip over if nothing to do
-  if (!(isExport || isDisplay)) {
-    return;
-  }
-
-  // check options
-  if (!Array.isArray(colourGrades)) {
-    throw "The colourGrades must be an array for proper behaviour";
-  }
-  if (isExport && !Array.isArray(exportScale)) {
-    throw "options.exportScale should be an array was: " + exportScale;
-  }
-  if (isExport && (colourGrades.length !== exportScale.length)) {
-    throw "number of elements in options.exportScale (" + exportScale.length + ") " +
-    "must match the options.colourGrades (" + colourGrades.length + ")";
-  }
-
-  // remove duplicates
-  imageIds = imageIds.filter(function (item, pos, self) {
-    return self.indexOf(item) === pos;
-  });
-
-  // get the specific tile number and remove all duplicate. In the end there should only be one left (all images should
-  // be from the same tile).
-  // LANDSAT/LC08/C02/T1_TOA/LC08_091075_20160706
-  // => 091075
-  var tileId = imageIds.map(function (id) {
-    var n = id.lastIndexOf("_");
-    return id.substring((n - 6), n);
-  }).filter(function (item, pos, self) {
-    return self.indexOf(item) === pos;
-  });
-  // Make sure we are dealing with a single image tile.
-  if (tileId.length > 1) {
-    throw "This only supports images from a single tile, found: " + String(tileId);
-  }
-
-  var composite = landsat8Utils.createCompositeImage(imageIds, options.applySunGlintCorrection, options.applyCloudMask);
-
-  // Prepare images for each of the specified colourGrades
-  for (var i = 0; i < colourGrades.length; i++) {
-    var finalComposite = landsat8Utils.visualiseImage(composite, colourGrades[i]);
-
-    if (isExport) {
-      // Example name: AU_AIMS_Landsat8-marine_V1_TrueColour_55KDU_2016-2020-n10
-      var exportName = exportBasename + '_' + colourGrades[i] + '_' + tileId;
-      print("======= Exporting image " + exportName + " =======");
-
-      Export.image.toDrive({
-        image: finalComposite,
-        description: exportName,
-        folder: exportFolder,
-        fileNamePrefix: exportName,
-        scale: exportScale[i],
-        region: composite.geometry(),
-        maxPixels: 3e8                // Raise the default limit of 1e8 to fit the export
-      });
-    }
-
-    if (isDisplay) {
-      // Create a shorter display name for on the map.
-      // Example name: TrueColour_091075_2016-2020-n10
-      var displayName = colourGrades[i] + '_' + tileId;
-
-      Map.addLayer(finalComposite, {}, displayName, false, 1);
-      Map.centerObject(composite.geometry());
-
-      // https://gis.stackexchange.com/questions/362192/gee-tile-error-reprojection-output-too-large-when-joining-modis-and-era-5-data
-      // https://developers.google.com/earth-engine/guides/scale
-      // https://developers.google.com/earth-engine/guides/projections
-      //
-      // Errors when displaying slope images on map are caused by the combination of map zoom level and scaling factor:
-      //
-      // "If the scale you specified in the reproject() call is much smaller than the zoom level of the map, Earth Engine will request all the inputs at very small scale, over a very wide spatial extent. This can result in much too much data being requested at once and lead to an error."
-      if (Map.getZoom() < 9) {
-        Map.setZoom(9);
-      }
-    }
-  }
-}
 
 // ===============================================================
 //
@@ -140,7 +45,7 @@ var landsat8CompositeDisplayAndExport = function (imageIds, isDisplay, isExport,
 // ======== Kenn reefs and Wreck reefs (Coral Sea - South east) =========
 // Searched 26 images
 // Good images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
   [
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20200813",
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20200509",
@@ -152,7 +57,7 @@ landsat8CompositeDisplayAndExport(
   false, false, REF1_OPTIONS);
 
 // OK and Maybe images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
   [
     // ok
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20151104",
@@ -174,7 +79,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Holmes Reefs and Moore Reefs (Coral Sea - Central) =========
 // Searched 7 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_094071_20141011",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094071_20190907",
@@ -188,7 +93,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Diane Bank (Coral Sea - Central) =========
 // Searched 15 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_093071_20180812",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093071_20200817",
@@ -204,7 +109,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Herald Cays, East Ribbon Reef, and South West Islet (Coral Sea - Central) =========
 // Searched 29 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_093072_20170214",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093072_20200817",
@@ -219,7 +124,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Flinders Reefs, Flora Reef, and south Holmes Reefs (Coral Sea - Central) =========
 // Searched 12 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20190907",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20140707",
@@ -227,13 +132,13 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094072_20141011"
     ],
-    true, false, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Marion Reef (Coral Sea - Central) =========
 // Searched 8 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_091073_20161010",
         "LANDSAT/LC08/C02/T1_TOA/LC08_091073_20140903",
@@ -248,7 +153,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Saumarez Reefs (Coral Sea - South )=========
 // Searched 15 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_090075_20150510",
         "LANDSAT/LC08/C02/T1_TOA/LC08_090075_20140710",
@@ -264,7 +169,7 @@ landsat8CompositeDisplayAndExport(
 // ======== North part of Frederick Reefs (Coral Sea - South )=========
 // Searched 2 images
 // Good and OK images 
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_089074_20170524",
         "LANDSAT/LC08/C02/T1_TOA/LC08_089074_20180815"
@@ -276,7 +181,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Frederick Reefs and Wreck Reefs (Coral Sea - South )=========
 // Searched 23 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_089075_20190903",
         "LANDSAT/LC08/C02/T1_TOA/LC08_089075_20200601",
@@ -292,7 +197,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Wreck Reefs and Hutchison Rock (Coral Sea - South )=========
 // Searched 23 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_088076_20150901",
         "LANDSAT/LC08/C02/T1_TOA/LC08_088076_20161005",
@@ -308,7 +213,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Bampton Reefs - northern part (Coral Sea - Far East )=========
 // Searched 8 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_087073_20191108",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087073_20180716",
@@ -323,7 +228,7 @@ landsat8CompositeDisplayAndExport(
 // ======== Bampton Reefs - southern part (Coral Sea - Far East )=========
 // Searched 25 images
 // Good and OK images
-landsat8CompositeDisplayAndExport(
+landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20191108",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20170118",
@@ -334,5 +239,54 @@ landsat8CompositeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20200822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20151113",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20170814"
+    ],
+    false, false, REF1_OPTIONS);
+
+
+// ===============================================================
+// Sharkbay
+// This area was used for tuning the B2_OFFSET parameter in the Depth
+// estimation. This area was used due to the large seagrass meadows
+// in clear water on sand. The B2_OFFSET was tuned so that seagrass areas
+// would result in a similar depth to the immediately neighbouring sandy areas,
+// working off the assumption that they are probably a similar depth.
+landsat8Utils.composeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150627",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130621",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150814",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130824"
+    ],
+    false, false, REF1_OPTIONS);
+    
+// Depth calibration images.
+// These scenes were used to calibrate the depth calculations against the GA GBR30 2020
+// dataset. No tidal assessment was made. For this calibration the Depth styles were used.
+// 
+
+// Davies reef
+landsat8Utils.composeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190822",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190907"
+    ],
+    true, false, REF1_OPTIONS);
+    
+// Tongue and Batt Reef
+landsat8Utils.composeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20160608",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20180801",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20190905",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20130702"
+    ],
+    false, false, REF1_OPTIONS);
+    
+    
+// Paul Reef
+landsat8Utils.composeDisplayAndExport(
+    [
+        "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20140903",
+        "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20180829"
     ],
     false, false, REF1_OPTIONS);
