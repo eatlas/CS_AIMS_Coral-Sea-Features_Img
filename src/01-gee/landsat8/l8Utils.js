@@ -196,12 +196,23 @@ var utils = {
       // the depth estimate and the real depth. 
       // This scalar and depth offset were determined by mapping the 5 and 10 m depth contours
       // generated from the satellite imagery and the GBR30 2020 dataset for the following scenes:
-      // 55KFU, 55LCD, 55KCB, 55KGU, 56KKC. The tuning focused on matching areas where there 
-      // were gentle gradients crossing the 5 m and 10 m contours as these areas are most sentive
-      // to slight bias differences (i.e. the coutour moves quickly over a large distance for small
-      // changes in bathymetry. The difference between the 5 m and 10 m contours was used to 
-      // calculate the slope and offset. The resulting alignment was a close match with contours
-      // matching to within approximately +- 1 m. 
+      // Starting guess values based on Sentinel 2
+      // Starting DEPTH_SCALAR 145.1, DEPTH_OFFSET 145.85
+      // Scene      5m    10m   15m
+      // 094073  -13.6  -17.6 -19.4 Davies Reef
+      // 096071  -12.4  -16.9 -18.2 Batt Reef (Water is not as clear)
+      // 091075  -12.9  -17   -19   Paul Reef
+      // Avg     -13.0  -17.2 -18.9
+      // This shows that the respond falls off close to 15 m. We therefore linearise the response
+      // from 5 m - 10 m as these are the contours that we are extracting.
+      // Slope adjustment = (10-5)/(17.2-13)*145.1 = 172.7
+      // 
+      // Log band ratio = (depth-DEPTH_OFFSET)/DEPTH_SCALAR. 
+      // 10 m: (-17.2-(-145.85)) / 145.1 = 0.8866
+      // 5 m: (-13-(-145.85))/145.1 = 0.9155
+      // Slope = (-10-(-5))/(0.8866-0.9155) = 173.01
+      // Offset adjustment = -(0.9155*173.01 - (-5)) = -163.39
+      
       // The GBR30 bathymetry dataset is normalised to approximately MSL and for reef tops was
       // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
       // from SDB will be copied into this dataset.
