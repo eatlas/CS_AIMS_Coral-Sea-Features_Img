@@ -336,6 +336,28 @@ var utils = {
         resultImage = this.estimateDepth(image, 30, 1).gt(-10);
         apply8bitScaling = false;
         break;
+      case "Depth20m":
+        // This algorithm is optimised for estimating the 20 m contour in sandy areas in
+        // clear water. It is intended to help map the backs of reefs. It might be OK in
+        // other areas, but it has not been checked. It is likely to sensitive to dark
+        // substrates.
+
+        // The threshold associated with -20 m was calibrated by comparing rendered masked
+        // with the GA GBR30 Bathymetry 2020 dataset. The threshold was adjusted for multiple
+        // scenes until the best match was found. Inshore areas were ignored.
+        // Scene  Threshold Reef/notes
+        // 094073 
+        // 096071
+        // 091075
+        compositeContrast = scaled_img.select('B3')
+          // Median filter removes noise but retain edges better than gaussian filter.
+          // At the final threshold the median filter can result in small anomalies and
+          // so we apply a small 
+          .focal_median({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1})
+          .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1});
+          //.gt(0.041);
+        resultImage = compositeContrast;
+        break;
       case "ReefTop":
         var smootherKernel = ee.Kernel.circle({radius: 10, units: 'meters'});
         var filteredRedBand = image.select(visParams.bands[0]).focal_mean({kernel: smootherKernel, iterations: 4});
