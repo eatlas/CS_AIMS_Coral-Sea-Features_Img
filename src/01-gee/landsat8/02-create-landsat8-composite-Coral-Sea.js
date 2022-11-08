@@ -273,7 +273,7 @@ landsat8Utils.composeDisplayAndExport(
     ],
     false, false, REF1_OPTIONS);
     
-// Tonge and Batt Reef
+// Tongue and Batt Reef
 landsat8Utils.composeDisplayAndExport(
     [
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20160608",
