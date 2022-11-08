@@ -215,17 +215,13 @@ var utils = {
       // the DEPTH_OFFSET needs to be adjusted by approx -1. 
       var DEPTH_OFFSET = -145.85;
       
-      // The ratio of the ln depends on the normalisation of the image. i.e. the log ratio 
-      // of an image with brightness values from 0 - 10000, results in a substantially different
-      // linearisation than one normalised to 0 - 1. This is because ln(11000)/ln(10000) is
-      // not the same as ln(1.1)/ln(1.0). Changing this scalar effectively shifts the nonlinearity
-      // caused by the ln. 
-      // Lowering this value from shifts and can invert the depth relationship. 
-      // We fix this value at 10000 because this is what we used with Sentinel 2 with non modified
-      // images. In this case the input image is 0 - 1 and so we need to scale it up to 0 - 10000.
-      // B_SCALAR Effect
-      // 10,100       Binary threshold (Extremely large ranges of values, not useful)
-      // 1000         Values at the edge of the masking lead to large values
+      // This ratio scales the nominal maximum value of the brightness. i.e. 10000 results
+      // in images that are approximately 0 - 10000.
+      // Because ln(1) = 0, ln(B3)/ln(B2) the ln(B2) passes through 0 around a B2 value of
+      // 1. Values below 1 are inverted in brightness with depth and at 1 we set a divide by
+      // zero. For this reason we scale the image to be much bright so that no pixel values
+      // are close to 1. A B_SCALAR of 100, 1000, or 10000 makes no real difference to the
+      // result. We use 10000 because that is the range of the original imagery.
       var B_SCALAR = 10000;
       
       // This depth estimation is still suseptible to dark substrates at shallow depths (< 5m).
@@ -233,19 +229,20 @@ var utils = {
       // estimate asympotically approach ~-15 m. As a result depths below -10 m are
       // reported as shallower than reality.
       
-      //var depthB3B2 = 
-      //  img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
-      //  .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
-        
+      var depthB3B2 = 
+        img.select('B3').multiply(B_SCALAR).log().divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
+        .multiply(DEPTH_SCALAR).add(DEPTH_OFFSET);            // Scale the results to metres
+      
+      
+      // The following is a prototype alternative depth algorithm. The goal was to better control the
+      // substrate brightness in shallow waters. This algorithm produces a very similar result to
+      // the ln(b3)/ln(b2-offset) and does not yet make a significant improvement. I am leaving it here
+      // for future research.
       // Normalised the LN transform so that the 2 std dev is from 0 - 1.
-      var depthB3 = 
-        img.select('B3').multiply(B_SCALAR).log().subtract(5.935).multiply(1.271); //.divide(img.select('B2').subtract(B2_OFFSET).multiply(B_SCALAR).log())     // core depth estimation (unscaled)
-        //.multiply(DEPTH_SCALAR).add(DEPTH_OFFSET); 
-
-      var depthB2 = 
-        img.select('B2').multiply(B_SCALAR).log().subtract(6.643).multiply(1.720);
-        
-      var depthB3B2 = depthB3.subtract(depthB2.multiply(0.68));
+      //var depthB3 = img.select('B3').multiply(B_SCALAR).log().subtract(5.935).multiply(1.271); 
+      //var depthB2 = img.select('B2').multiply(B_SCALAR).log().subtract(6.643).multiply(1.720);
+      //var depthB3B2 = depthB3.subtract(depthB2.multiply(0.68));
+      
       // Perform spatial filtering to reduce the noise. This will make the depth estimates between for creating contours.
       //var filteredDepth = depthWithLandMask.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
       var filteredDepth = depthB3B2.focal_mean({kernel: ee.Kernel.circle({radius: filterRadius, units: 'meters'}), iterations: filterIterations});
