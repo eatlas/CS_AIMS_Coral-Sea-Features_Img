@@ -259,11 +259,12 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150814",
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130824"
     ],
-    false, false, REF1_OPTIONS);
+    true, false, REF1_OPTIONS);
     
 // Depth calibration images.
 // These scenes were used to calibrate the depth calculations against the GA GBR30 2020
-// dataset. No tidal assessment was made. For this calibration the Depth styling was rendered.
+// dataset. No tidal assessment was made. For this calibration the Depth styles were used.
+// 
 
 // Davies reef
 landsat8Utils.composeDisplayAndExport(
@@ -290,4 +291,4 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20140903",
         "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20180829"
     ],
-    true, false, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
