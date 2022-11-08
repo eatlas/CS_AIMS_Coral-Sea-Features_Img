@@ -281,7 +281,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20190905",
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20130702"
     ],
-    true, false, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     
     
 // Paul Reef
