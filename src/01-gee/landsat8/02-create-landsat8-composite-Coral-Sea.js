@@ -270,7 +270,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190907"
     ],
-    true, false, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     
 // Tongue and Batt Reef
 landsat8Utils.composeDisplayAndExport(
