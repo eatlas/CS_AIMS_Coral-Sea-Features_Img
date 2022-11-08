@@ -349,13 +349,14 @@ var utils = {
         // 094073 Davies reef
         // 096071 Tongue and Batt Reef
         // 091075 Paul Reef
-        resultImage = image.select('B3')
+        //resultImage = image.select('B3')
           // Median filter removes noise but retain edges better than gaussian filter.
           // At the final threshold the median filter can result in small anomalies and
           // so we apply a small 
-          .focal_median({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1})
-          .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1});
+        //  .focal_median({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1})
+        //  .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1});
           //.gt(0.041);
+        resultImage = image.select('B3');
         break;
       case "ReefTop":
         var smootherKernel = ee.Kernel.circle({radius: 10, units: 'meters'});
