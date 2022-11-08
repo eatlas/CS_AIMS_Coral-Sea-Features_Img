@@ -318,7 +318,7 @@ var utils = {
    */
   visualiseImage: function (image, selectedVisOption) {
     var resultImage, redBand, greenBand, blueBand;
-    var visParams = this.VIS_OPTIONS[selectedVisOption].visParams;
+    var visParams;
     var apply8bitScaling = true;
     
     switch (selectedVisOption) {
@@ -339,6 +339,7 @@ var utils = {
       case "ReefTop":
         var smootherKernel = ee.Kernel.circle({radius: 10, units: 'meters'});
         var filteredRedBand = image.select(visParams.bands[0]).focal_mean({kernel: smootherKernel, iterations: 4});
+        visParams = this.VIS_OPTIONS[selectedVisOption].visParams;
         resultImage = this.enhanceContrast(filteredRedBand, visParams.min, visParams.max, visParams.gamma);
         break;
       case "Slope":
@@ -364,7 +365,7 @@ var utils = {
         var filteredImage = projectedComposite.focal_median(
           {kernel: ee.Kernel.circle({radius: 90, units: 'meters'}), iterations: 2}
         );
-
+        visParams = this.VIS_OPTIONS[selectedVisOption].visParams;
         redBand = this.enhanceContrast(
           ee.Terrain.slope(filteredImage.select(visParams.bands[0])),
           visParams.min[0],
@@ -387,6 +388,7 @@ var utils = {
         resultImage = ee.Image.rgb(redBand, greenBand, blueBand);
         break;
       default:
+        visParams = this.VIS_OPTIONS[selectedVisOption].visParams;
         redBand = this.enhanceContrast(
           image.select(visParams.bands[0]),
           visParams.min[0],
