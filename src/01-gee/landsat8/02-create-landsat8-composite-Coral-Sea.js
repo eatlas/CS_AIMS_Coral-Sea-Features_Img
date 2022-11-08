@@ -271,7 +271,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190907"
     ],
-    true, false, REF1_OPTIONS);
+    false, false, REF1_OPTIONS);
     
 // Tonge and Batt Reef
 landsat8Utils.composeDisplayAndExport(
@@ -281,7 +281,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20190905",
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20130702"
     ],
-    false, false, REF1_OPTIONS);
+    true, false, REF1_OPTIONS);
     
     
 // Paul Reef
