@@ -263,7 +263,7 @@ landsat8Utils.composeDisplayAndExport(
     
 // Depth calibration images.
 // These scenes were used to calibrate the depth calculations against the GA GBR30 2020
-// dataset. No tidal assessment was made.
+// dataset. No tidal assessment was made. For this calibration the Depth styling was rendered.
 
 // Davies reef
 landsat8Utils.composeDisplayAndExport(
@@ -271,7 +271,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190907"
     ],
-    false, false, REF1_OPTIONS);
+    true, false, REF1_OPTIONS);
     
 // Tonge and Batt Reef
 landsat8Utils.composeDisplayAndExport(
