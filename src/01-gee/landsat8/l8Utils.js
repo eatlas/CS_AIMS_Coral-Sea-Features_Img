@@ -508,12 +508,12 @@ var utils = {
             maxPixels: 6e8
           });
           
-          if (is_display) {
+          if (isDisplay) {
             // Make a display image for the vectors, add it to the map.
             var display = ee.Image(0).updateMask(0).paint(vector, '000000', 2);
             Map.addLayer(display, {palette: '000000'}, layerName, false);
           }
-          if (is_export) {
+          if (isExport) {
             // Export the FeatureCollection to a KML file.
             Export.table.toDrive({
               collection: vector,
