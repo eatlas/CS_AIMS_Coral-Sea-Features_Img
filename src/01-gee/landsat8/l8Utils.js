@@ -350,7 +350,8 @@ var utils = {
           // so we apply a small 
           .focal_median({kernel: ee.Kernel.circle({radius: 60, units: 'meters'}), iterations: 1})
           .focal_mean({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
-          .gt(0.0483);
+          .gt(0.049);
+          //.gt(0.0483);
         
         apply8bitScaling = false;
         break;
