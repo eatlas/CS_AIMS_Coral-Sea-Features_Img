@@ -2014,7 +2014,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // contours didn't align. The Sentinel 2 contours were showing shallower areas and the
     // Landsat deeper areas. More detail on round 2 calibration is described in l8Utils.js
     // This calibration suggested that the Sentinel 2 depth could be improved by increasing
-    // the depth by 1.5 - 2 m.
+    // the depth by 1.5 - 2 m. There was insufficient information to adjust the slope.
     // New DEPTH_OFFSET = -145.85-(1.5+2)/2 = -147.6
     var DEPTH_SCALAR = 145.1;
     
