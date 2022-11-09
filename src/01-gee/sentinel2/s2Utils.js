@@ -1991,7 +1991,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // An offset of 120 is chosen to optimise the dark substrate compensation from 10 - 15 m.
     var B2_OFFSET = 150;
     
-    
+    // ========= Depth Calibration Round 1 =========
     // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
     // depths measured in metres. Changing this changes the slope of the relationship between
     // the depth estimate and the real depth. 
@@ -2006,7 +2006,16 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // The GBR30 bathymetry dataset is normalised to approximately MSL and for reef tops was
     // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
     // from SDB will be copied into this dataset.
-    // 
+    // DEPTH_SCALAR = 145.1
+    // DEPTH_OFFSET = -145.85
+    // ========= Depth Calibration Round 2 =========
+    // Depth contours were generated for both Sentinel 2 imagery and Landsat imagery based
+    // on round 1 calibrations determined from the GBR. It was found that the two sets of
+    // contours didn't align. The Sentinel 2 contours were showing shallower areas and the
+    // Landsat deeper areas. More detail on round 2 calibration is described in l8Utils.js
+    // This calibration suggested that the Sentinel 2 depth could be improved by increasing
+    // the depth by 1.5 - 2 m.
+    // New DEPTH_OFFSET = -145.85-(1.5+2)/2 = -147.6
     var DEPTH_SCALAR = 145.1;
     
     // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
@@ -2014,7 +2023,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
     // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
     // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-    var DEPTH_OFFSET = -145.85;
+    var DEPTH_OFFSET = -147.6;
     
     // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
     // It also doesn't work in turbid water. It is also slight non-linear with the depth
