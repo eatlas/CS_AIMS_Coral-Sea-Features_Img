@@ -184,7 +184,7 @@ var utils = {
       // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
       // from SDB will be copied into this dataset.
       
-      // ========= Depth Calibration =========
+      // ========= Depth Calibration Round 1 =========
       // This scalar and depth offset were determined by mapping the 5 and 10 m depth contours
       // generated from the satellite imagery and the GBR30 2020 dataset for the following scenes:
       // We started with DEPTH_SCALAR 145.1, DEPTH_OFFSET 145.85 based on Sentinel 2.
@@ -206,6 +206,41 @@ var utils = {
       // New Scalar = (-10-(-5))/(0.8866-0.9155) = 173.01
       // New Depth Offset = -(0.9155*173.01 - (-5)) = -163.39
       
+      // ========= Depth Calibration Round 2 =========
+      // Depth contours were generated for both Sentinel 2 imagery and Landsat imagery based
+      // on round 1 calibrations determined from the GBR. It was found that the two sets of
+      // contours didn't align. The Sentinel 2 contours were showing shallower areas and the
+      // Landsat deeper areas. The Landsat 5 m contour was almost reaching the extent of the
+      // Sentinel 2 10 m contour indicating an error nearing 5 m.
+      // To reduce this problem a third depth reference was established using the Red (B4) channel
+      // of the imagery. The red channel only penetrates the water 6 - 8 m and so it can be used to
+      // confirm that the 10 m contour should be deeper than the red penetration and the 5 m contour 
+      // should be close to the visible limit.
+      //
+      // The visibility limit depth of the Red channel for both Landsat 8 and Sentinel 2 was 
+      // checked against the GBR30 dataset. This highlighted that there are very few areas where 
+      // there are gentle gradients crossing the 5 - 10 m ranges, which likely explains the original
+      // calibration issues. It was found that for Sentinel 2 that for both Landsat 8 and Sentinel
+      // the maximum visibility for the Red channel was 6 - 8 m. It was difficult to narrow this
+      // range any better. I found that setting a fixed threshold in Sentinel 2 of the Red channel 
+      // from the TrueColour imagery (40 - 45) that corresponded to -5 m in one scene (55LCD) best
+      // matched -3.5 (55KFU) and -4 (55KCB), indicating the challenge in accurately determining
+      // a fixed threshold matching -5 m. It was found that in some scenes that particular resuspension
+      // in shallow lagoonal areas (8-10 m) was resulting in signal in the red channel where there
+      // should be none due to the depth. 
+      // Overall we found that using the visible limit (tuning the threshold to each image) was probably
+      // a more stable reference and in most cases corresponds to 6 - 8 m.
+      // This reference indicated that the true depths probably correspond to somewhere between
+      // the Sentinel 2 contours and the Landsat contours.
+      // Satellite  Contour EstimatedDepth Adjustment
+      // Sentinel 2 -5 m    -3.5 m         -1.5 m
+      // Sentinel 2 -10 m   -7 - -9 m      -2 m
+      // Landsat 8  -5 m    -6 - -7 m      +1.5 m
+      // Landsat 8  -10 m   -10 - -12 m    +1.5 m
+      // 
+      // New Depth Offset = -163.39+1.5 = -161.89
+      
+      
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
       // depths measured in metres. Changing this changes the slope of the relationship between
       // the depth estimate and the real depth. 
@@ -217,7 +252,7 @@ var utils = {
       // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
       // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
       // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-      var DEPTH_OFFSET = -163.39;
+      var DEPTH_OFFSET = -161.39;
       
       // This ratio scales the nominal maximum value of the brightness. i.e. 10000 results
       // in images that are approximately 0 - 10000.
