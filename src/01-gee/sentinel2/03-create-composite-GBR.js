@@ -6,8 +6,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 
 // Primary imagery
 var REF1_OPTIONS = {
-  colourGrades: ['Depth20m'],
-  exportScale: [20],
+  colourGrades: ['Depth5m', 'Depth10m', 'Depth20m'],
+  exportScale: [10, 10, 10],
   //colourGrades: ['DeepFalse','TrueColour','Depth5m', 'Depth10m'],
   //exportScale: [10, 10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
