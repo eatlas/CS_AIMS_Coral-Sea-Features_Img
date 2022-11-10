@@ -1908,11 +1908,11 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     
   } else if (colourGradeStyle === 'Depth10m') {
     
-    compositeContrast = exports.estimateDepth(img, 20, 2).gt(-10);
+    compositeContrast = exports.estimateDepth(img, 20, 1).gt(-10);
     
   } else if (colourGradeStyle === 'Depth5m') {
     
-    compositeContrast = exports.estimateDepth(img, 10, 2).gt(-5);
+    compositeContrast = exports.estimateDepth(img, 10, 1).gt(-5);
     
   } else if (colourGradeStyle === 'Depth20m') {
     // This algorithm is optimised for estimating the 20 m contour in sandy areas in
