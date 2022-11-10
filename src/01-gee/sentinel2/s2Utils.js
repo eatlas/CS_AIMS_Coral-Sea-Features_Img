@@ -2024,6 +2024,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // Comparing the Sentinel 2 with the Red channel on Flinders Reef indicates that the 
     // 5 m contour might be slightly too deep and that an offset of 1 m instead of the 1.75m
     // used in round 2 might be more appropriate. This may also improve the 10 m contour slightly.
+    // New DEPTH_OFFSET = -145.85+(1) = -144.85
     var DEPTH_SCALAR = 145.1;
     
     // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
@@ -2031,7 +2032,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
     // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
     // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-    var DEPTH_OFFSET = -143.35;
+    var DEPTH_OFFSET = -144.85;
     
     // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
     // It also doesn't work in turbid water. It is also slight non-linear with the depth
