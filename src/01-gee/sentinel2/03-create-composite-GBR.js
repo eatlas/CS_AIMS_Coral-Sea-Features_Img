@@ -3,13 +3,17 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // This imagery is used for aligning the reef mapping techniques with the GBR.
 // This was also used for tuning the depth estimations, by comparing them with the GBR 30m 
 // bathymetry.
+// For two of the scenes the tidal values of individual images were determined
+// from the eReefs GBR4 Hydro v2 model. These found that there was typically
+// 0.4 - 0.8 m tidal difference across a single image and that for composites with
+// multiple images that the tides tend to average out and thus most images would
+// be close to mean sea level +- 0.5 m. 
+
 
 // Primary imagery
 var REF1_OPTIONS = {
-  colourGrades: ['Depth5m', 'Depth10m', 'Depth20m'],
-  exportScale: [10, 10, 10],
-  //colourGrades: ['DeepFalse','TrueColour','Depth5m', 'Depth10m'],
-  //exportScale: [10, 10, 10, 10],
+  colourGrades: ['DeepFalse','TrueColour','Depth5m', 'Depth10m', 'Depth20m'],
+  exportScale: [10, 10, 10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/GBR',
   
