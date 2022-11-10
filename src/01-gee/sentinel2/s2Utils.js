@@ -1936,7 +1936,9 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     compositeContrast = scaled_img.select('B3')
       // Median filter removes noise but retain edges better than gaussian filter.
       // At the final threshold the median filter can result in small anomalies and
-      // so we apply a small 
+      // so we apply a small mean filter.
+      // This size of the filtering is kept small to ensure we retain features smaller than
+      // 40 m across.
       .focal_median({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
       .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1})
       .gt(0.041);
