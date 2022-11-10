@@ -19,8 +19,8 @@ var landsat8Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src
 var REF1_OPTIONS = {
     // colourGrades: ['TrueColour', 'DeepFalse', 'Depth5m', 'Depth10m', 'Depth20m'],
     // exportScale: [30, 30, 30, 30, 30],
-    colourGrades: ['Depth5m', 'Depth10m'],//, 'Depth20m'],
-    exportScale: [30, 30],//, 30],
+    colourGrades: ['Depth5m', 'Depth10m', 'Depth20m'],
+    exportScale: [30, 30, 30],
     exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_L8_R1',
     exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
     applySunGlintCorrection: true,
