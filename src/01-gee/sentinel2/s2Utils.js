@@ -2015,7 +2015,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // Landsat deeper areas. More detail on round 2 calibration is described in l8Utils.js
     // This calibration suggested that the Sentinel 2 depth could be improved by increasing
     // the depth by 1.5 - 2 m. There was insufficient information to refine the slope.
-    // New DEPTH_OFFSET = -145.85-(1.5+2)/2 = -147.6
+    // New DEPTH_OFFSET = -145.85+(1.5+2)/2 = -143.35
     var DEPTH_SCALAR = 145.1;
     
     // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
@@ -2023,7 +2023,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
     // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
     // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-    var DEPTH_OFFSET = -147.6;
+    var DEPTH_OFFSET = -143.35;
     
     // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
     // It also doesn't work in turbid water. It is also slight non-linear with the depth
