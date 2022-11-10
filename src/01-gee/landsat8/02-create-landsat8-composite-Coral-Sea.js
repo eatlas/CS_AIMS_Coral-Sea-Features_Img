@@ -54,7 +54,7 @@ landsat8Utils.composeDisplayAndExport(
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20180909",
     "LANDSAT/LC08/C02/T1_TOA/LC08_088075_20210731"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 // OK and Maybe images
 landsat8Utils.composeDisplayAndExport(
@@ -87,7 +87,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094071_20170613",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094071_20140707"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Diane Bank (Coral Sea - Central) =========
@@ -102,7 +102,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_093071_20181015",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093071_20201020"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -118,7 +118,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_093072_20180812",
         "LANDSAT/LC08/C02/T1_TOA/LC08_093072_20180828"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Flinders Reefs, Flora Reef, and south Holmes Reefs (Coral Sea - Central) =========
@@ -146,7 +146,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_091073_20140818",
         "LANDSAT/LC08/C02/T1_TOA/LC08_091073_20160706"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -162,7 +162,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_090075_20160528",
         "LANDSAT/LC08/C02/T1_TOA/LC08_090075_20200811"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -174,7 +174,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_089074_20170524",
         "LANDSAT/LC08/C02/T1_TOA/LC08_089074_20180815"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -191,7 +191,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_089075_20180916",
         "LANDSAT/LC08/C02/T1_TOA/LC08_089075_20150604"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Wreck Reefs and Hutchison Rock (Coral Sea - South )=========
@@ -207,7 +207,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_088076_20210325",
         "LANDSAT/LC08/C02/T1_TOA/LC08_088076_20190811"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 // ===============================================================
 // ======== Bampton Reefs - northern part (Coral Sea - Far East )=========
@@ -221,7 +221,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_087073_20130819",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087073_20170814"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -240,7 +240,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20151113",
         "LANDSAT/LC08/C02/T1_TOA/LC08_087074_20170814"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
 
 
 // ===============================================================
@@ -270,7 +270,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190907"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
     
 // Tongue and Batt Reef
 landsat8Utils.composeDisplayAndExport(
@@ -280,7 +280,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20190905",
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20130702"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
     
     
 // Paul Reef
@@ -289,4 +289,4 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20140903",
         "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20180829"
     ],
-    false, false, REF1_OPTIONS);
+    false, true, REF1_OPTIONS);
