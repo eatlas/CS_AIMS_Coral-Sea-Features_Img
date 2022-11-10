@@ -242,6 +242,8 @@ var utils = {
       // results in smaller areas being at a given depth, resulting in the contour
       // appearing to map at a shallower depth.
       // New Depth Offset = -163.39-1.5 = -164.89
+      // ========= Depth Calibration Round 3 =======
+      // Changes were only made to the Sentinel 2 parameters. 
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
@@ -387,8 +389,8 @@ var utils = {
           // Median filter removes noise but retains edges better than mean filter.
           // At the final threshold the median filter can result in small anomalies and
           // so we apply a mean filter to smooth the edges better.
-          .focal_median({kernel: ee.Kernel.circle({radius: 90, units: 'meters'}), iterations: 1})
-          .focal_mean({kernel: ee.Kernel.circle({radius: 60, units: 'meters'}), iterations: 1})
+          .focal_median({kernel: ee.Kernel.circle({radius: 60, units: 'meters'}), iterations: 1})
+          .focal_mean({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
           .gt(0.049);
         
         apply8bitScaling = false;
