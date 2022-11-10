@@ -16,9 +16,7 @@ var landsat8Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src
 // depth profile.
 
 // possible colour grades: ['TrueColour','DeepMarine','DeepFalse','ReefTop', 'Slope', 'Depth5m', 'Depth10m', 'Depth20m' ]
-var REF1_OPTIONS = {
-    // colourGrades: ['TrueColour', 'DeepFalse', 'Depth5m', 'Depth10m', 'Depth20m'],
-    // exportScale: [30, 30, 30, 30, 30],
+var REF1_GBR_OPTIONS = {
     colourGrades: ['Depth5m', 'Depth10m', 'Depth20m'],
     exportScale: [30, 30, 30],
     exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_L8_R1',
@@ -26,8 +24,12 @@ var REF1_OPTIONS = {
     applySunGlintCorrection: true,
     applyCloudMask: true
 };
+
+var REF1_WA_OPTIONS = REF1_GBR_OPTIONS;
+REF1_WA_OPTIONS.exportFolder = 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/WA';
+
 // ===============================================================
-// Sharkbay
+// Sharkbay - WA
 // This area was used for tuning the B2_OFFSET parameter in the Depth
 // estimation. This area was used due to the large seagrass meadows
 // in clear water on sand. The B2_OFFSET was tuned so that seagrass areas
@@ -40,8 +42,9 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20150814",
         "LANDSAT/LC08/C02/T1_TOA/LC08_115078_20130824"
     ],
-    false, true, REF1_OPTIONS);
+    false, true, REF1_WA_OPTIONS);
     
+// ===================== GBR ========================
 // Depth calibration images.
 // These scenes were used to calibrate the depth calculations against the GA GBR30 2020
 // dataset. No tidal assessment was made. For this calibration the Depth styles were used.
@@ -53,7 +56,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190822",
         "LANDSAT/LC08/C02/T1_TOA/LC08_094073_20190907"
     ],
-    false, true, REF1_OPTIONS);
+    false, true, REF1_GBR_OPTIONS);
     
 // Tongue and Batt Reef
 landsat8Utils.composeDisplayAndExport(
@@ -63,7 +66,7 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20190905",
         "LANDSAT/LC08/C02/T1_TOA/LC08_096071_20130702"
     ],
-    false, true, REF1_OPTIONS);
+    false, true, REF1_GBR_OPTIONS);
     
     
 // Paul Reef
@@ -72,4 +75,4 @@ landsat8Utils.composeDisplayAndExport(
         "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20140903",
         "LANDSAT/LC08/C02/T1_TOA/LC08_091075_20180829"
     ],
-    false, true, REF1_OPTIONS);
+    false, true, REF1_GBR_OPTIONS);
