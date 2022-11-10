@@ -7,7 +7,7 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // from the eReefs GBR4 Hydro v2 model. These found that there was typically
 // 0.4 - 0.8 m tidal difference across a single image and that for composites with
 // multiple images that the tides tend to average out and thus most images would
-// be close to mean sea level +- 0.5 m. 
+// be close to mean sea level +- 0.5 m. Tide values are shown below.
 
 
 // Primary imagery
