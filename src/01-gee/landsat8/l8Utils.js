@@ -232,13 +232,16 @@ var utils = {
       // a more stable reference and in most cases corresponds to 6 - 8 m.
       // This reference indicated that the true depths probably correspond to somewhere between
       // the Sentinel 2 contours and the Landsat contours.
-      // Satellite  Contour EstimatedDepth Adjustment
+      // Satellite  Contour EstimatedDepth Adjustment to contour
       // Sentinel 2 -5 m    -3.5 m         -1.5 m
       // Sentinel 2 -10 m   -7 - -9 m      -2 m
       // Landsat 8  -5 m    -6 - -7 m      +1.5 m
       // Landsat 8  -10 m   -10 - -12 m    +1.5 m
       // 
-      // New Depth Offset = -163.39+1.5 = -161.89
+      // Note: the adjustment to the offset is negative because shifting the depth down
+      // results in smaller areas being at a given depth, resulting in the contour
+      // appearing to map at a shallower depth.
+      // New Depth Offset = -163.39-1.5 = -164.89
       
       
       // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
@@ -252,7 +255,7 @@ var utils = {
       // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
       // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
       // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-      var DEPTH_OFFSET = -161.39;
+      var DEPTH_OFFSET = -164.39;
       
       // This ratio scales the nominal maximum value of the brightness. i.e. 10000 results
       // in images that are approximately 0 - 10000.
