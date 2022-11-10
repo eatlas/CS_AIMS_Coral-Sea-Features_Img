@@ -15,10 +15,11 @@ images based on their image IDs. This is useful for reassessing the image qualit
 a set of images.
 
 `03-create-composite-Coral-Sea.js` - Creates all the final composite images for the Coral Sea region.
-This generates lots of export Tasks. 
+This generates lots of export Tasks.
 
-`03-create-composite-Global.js` - Creates all the final composite images for the Global region.
-This generates lots of export Tasks. 
+`03-create-composite-Coral-Sea-water.js` - Creates images of open water sections of some parts of the coral sea. 
+
+`03-create-composite-GBR.js` - Creates imagery and depth contours used for calibrating the satellite derived bathymetry. 
 
 `s2Utils.js` - This is a library of functions that contains the bulk of the processing of the
 images. It is a reusable library. Updated versions of this library can be found in the
