@@ -2016,6 +2016,14 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // This calibration suggested that the Sentinel 2 depth could be improved by increasing
     // the depth by 1.5 - 2 m. There was insufficient information to refine the slope.
     // New DEPTH_OFFSET = -145.85+(1.5+2)/2 = -143.35
+    // ========= Depth Calibration Round 3 =========
+    // After performing round 2 calibration we were expecting a close alignment of Landsat
+    // and Sentinel 2 contours. The 5 m contours are close (within 1 m of each other), but 
+    // the Sentinel 2 10 m contour is significantly deeper (deeper than the Landsat 8 10 m
+    // from Calibration round 1. This indicates that the Sentinel scalar might be off a bit
+    // Comparing the Sentinel 2 with the Red channel on Flinders Reef indicates that the 
+    // 5 m contour might be slightly too deep and that an offset of 1 m instead of the 1.75m
+    // used in round 2 might be more appropriate. This may also improve the 10 m contour slightly.
     var DEPTH_SCALAR = 145.1;
     
     // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
