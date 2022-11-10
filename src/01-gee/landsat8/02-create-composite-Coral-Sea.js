@@ -9,6 +9,7 @@
 
 var landsat8Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-gee/landsat8/l8Utils.js').utils;
 
+// Eric Lawrey - Australian Institute of Marine Science
 // This script generates Landsat 8 composite images for parts of the 
 // Coral Sea. Landsat 8 coverage in GEE in the Coral Sea seems to be
 // quite limited and so there is incomplete overlap between the Landsat 8
