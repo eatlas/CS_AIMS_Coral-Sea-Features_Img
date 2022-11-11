@@ -1908,11 +1908,11 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     
   } else if (colourGradeStyle === 'Depth10m') {
     
-    compositeContrast = exports.estimateDepth(img, 20, 2).gt(-10);
+    compositeContrast = exports.estimateDepth(img, 20, 1).gt(-10);
     
   } else if (colourGradeStyle === 'Depth5m') {
     
-    compositeContrast = exports.estimateDepth(img, 10, 2).gt(-5);
+    compositeContrast = exports.estimateDepth(img, 10, 1).gt(-5);
     
   } else if (colourGradeStyle === 'Depth20m') {
     // This algorithm is optimised for estimating the 20 m contour in sandy areas in
@@ -1936,8 +1936,10 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
     compositeContrast = scaled_img.select('B3')
       // Median filter removes noise but retain edges better than gaussian filter.
       // At the final threshold the median filter can result in small anomalies and
-      // so we apply a small 
-      .focal_median({kernel: ee.Kernel.circle({radius: 40, units: 'meters'}), iterations: 1})
+      // so we apply a small mean filter.
+      // This size of the filtering is kept small to ensure we retain features smaller than
+      // 40 m across.
+      .focal_median({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
       .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1})
       .gt(0.041);
 
@@ -1991,7 +1993,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // An offset of 120 is chosen to optimise the dark substrate compensation from 10 - 15 m.
     var B2_OFFSET = 150;
     
-    
+    // ========= Depth Calibration Round 1 =========
     // Scaling factor so that the range of the ln(B3)/ln(B2) is expanded to cover the range of
     // depths measured in metres. Changing this changes the slope of the relationship between
     // the depth estimate and the real depth. 
@@ -2006,7 +2008,25 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // The GBR30 bathymetry dataset is normalised to approximately MSL and for reef tops was
     // itself created from Satellite Derived Bathymetry and so errors due to systematic issues
     // from SDB will be copied into this dataset.
-    // 
+    // DEPTH_SCALAR = 145.1
+    // DEPTH_OFFSET = -145.85
+    // ========= Depth Calibration Round 2 =========
+    // Depth contours were generated for both Sentinel 2 imagery and Landsat imagery based
+    // on round 1 calibrations determined from the GBR. It was found that the two sets of
+    // contours didn't align. The Sentinel 2 contours were showing shallower areas and the
+    // Landsat deeper areas. More detail on round 2 calibration is described in l8Utils.js
+    // This calibration suggested that the Sentinel 2 depth could be improved by increasing
+    // the depth by 1.5 - 2 m. There was insufficient information to refine the slope.
+    // New DEPTH_OFFSET = -145.85+(1.5+2)/2 = -143.35
+    // ========= Depth Calibration Round 3 =========
+    // After performing round 2 calibration we were expecting a close alignment of Landsat
+    // and Sentinel 2 contours. The 5 m contours are close (within 1 m of each other), but 
+    // the Sentinel 2 10 m contour is significantly deeper (deeper than the Landsat 8 10 m
+    // from Calibration round 1. This indicates that the Sentinel scalar might be off a bit
+    // Comparing the Sentinel 2 with the Red channel on Flinders Reef indicates that the 
+    // 5 m contour might be slightly too deep and that an offset of 1 m instead of the 1.75m
+    // used in round 2 might be more appropriate. This may also improve the 10 m contour slightly.
+    // New DEPTH_OFFSET = -145.85+(1) = -144.85
     var DEPTH_SCALAR = 145.1;
     
     // Shift the origin of the depth. This is shifted so that values hit the origin at 0 m.
@@ -2014,7 +2034,7 @@ exports.estimateDepth = function(img, filterRadius, filterIterations) {
     // DEPTH_SCALAR with modified then the DEPTH_OFFSET needs to be adjusted to ensure
     // that the depth passes through the origin. For each unit increase in DEPTH_SCALAR
     // the DEPTH_OFFSET needs to be adjusted by approx -1. 
-    var DEPTH_OFFSET = -145.85;
+    var DEPTH_OFFSET = -144.85;
     
     // This depth estimation is still suspetible to dark substrates at shallow depths (< 5m).
     // It also doesn't work in turbid water. It is also slight non-linear with the depth

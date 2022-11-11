@@ -27,8 +27,8 @@ This script also creates virtual layer files that represent all the images of a 
 single GDAL layer that can be loaded in one go into QGIS and manipulated as though it were
 a single moasic.
 
-The `01-mergePolygonStyles.py` merges the 5m and 10m GeoJSON polygon files into one shapefile
-per depth and region (Global, Coral-Sea). This needs to then by followed up with processing in
+The `01-mergePolygonStyles.py` merges the 5m and 10m contour GeoJSON polygon files into one shapefile
+per depth and region (WA, GBR, Coral-Sea). This needs to then by followed up with processing in
 QGIS using the `02-QGIS-model-smooth-polygons.model3` model to smooth and simplify the vector
 data. See section (#Processing the vector layers) for more detail.
 
@@ -43,7 +43,7 @@ The filing of images into these regional folders is retained in the final genera
 
 # Setup
 To run these Python scripts you will need GDAL installed. The easiest way on Windows is to 
-install GDAL via OSGeo4W (https://www.osgeo.org/projects/osgeo4w/). This package allows
+install GDAL via [OSGeo4W](https://www.osgeo.org/projects/osgeo4w/). This package allows
 multiple GIS tools to be installed. For this script you will need GDAL and Python. Many of
 the GDAL commands are written in Python and so we will run this script in the same Python
 installation to ensure all the paths are setup. 

@@ -41,14 +41,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // are made from the best set of images available.
 
 var REF1_OPTIONS = {
-  //colourGrades: ['DeepFalse','Shallow', 'TrueColour'],
-  //exportScale: [10, 10, 10],
-  //colourGrades: ['DeepFalse','TrueColour','Shallow','Depth5m', 'Depth10m'],
-  //exportScale: [10, 10, 10, 10, 10],
-  //colourGrades: ['Depth5m', 'Depth10m'],
-  //exportScale: [10, 10],
-  colourGrades: ['Depth20m'],
-  exportScale: [10],
+  colourGrades: ['DeepFalse','TrueColour','Shallow','Depth5m', 'Depth10m','Depth20m'],
+  exportScale: [10, 10, 10, 10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
   
@@ -530,7 +524,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55KFA",
     "COPERNICUS/S2/20210515T002059_20210515T002053_T55KFA"
   ],
-  false, true, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
 
 
 // Good images

@@ -7,6 +7,9 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 // These images correspond to areas that should have no reefs
 // in the Coral Sea, or overlap with a existing main image of a reef. 
 // These scenes are included for checking that there are no unknown reefs.
+// It should be noted that it is very difficult to spot small reefs deeper
+// than 25 m without knowing that it already exists. No new reefs were
+// discovered in this imagery, however this doesn't mean that reefs weren't missed.
 //
 // Landsat 8 imagery, Sentinel 3 imagery and AHO Marine Charts were also
 // used to ensure that all features were mapped.
