@@ -19,14 +19,7 @@
 // If you just want to preview one of the composites in the editor then 
 // you probably want to disable the the exports. This can be done using the find
 // and replace.
-//
-// Find and replace: false, false, REF1_OPTIONS
-// With: false, false, REF1_OPTIONS
-// Find and replace: false, false, REF2_OPTIONS
-// With: false, false, REF2_OPTIONS
-//
-// Now set the is_display option of the scene of interest to true
-// i.e. true, false, REF1_OPTIONS
+
 // Note: that this script does not zoom to the area of interest
 // and so you will need to zoom and pan the map to the correct
 // location to see the generated composite. The processing also
@@ -43,8 +36,8 @@ var s2Utils = require('users/ericlawrey/CS_AIMS_Coral-Sea-Features_Img:src/01-ge
 var REF1_OPTIONS = {
   //colourGrades: ['DeepFalse','TrueColour','Shallow','Depth5m', 'Depth10m','Depth20m'],
   //exportScale: [10, 10, 10, 10, 10, 10],
-  colourGrades: ['Depth5m', 'Depth10m'],
-  exportScale: [10, 10],
+  colourGrades: ['Depth5m', 'Depth10m','Depth20m'],
+  exportScale: [10, 10, 10],
   exportBasename: 'CS_AIMS_Coral-Sea-Features_Img_S2_R1',
   exportFolder: 'EarthEngine/CS_AIMS_Coral-Sea-Features_Img/Coral-Sea',
   
@@ -526,7 +519,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55KFA",
     "COPERNICUS/S2/20210515T002059_20210515T002053_T55KFA"
   ],
-  false, false, REF1_OPTIONS);
+  false, true, REF1_OPTIONS);
 
 
 // Good images
@@ -809,7 +802,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190905T001111_20190905T001109_T56KMD",
     "COPERNICUS/S2/20210726T001111_20210726T001112_T56KMD"
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 
 // 2 goog, 3 OK images
 s2Utils.s2_composite_display_and_export(
