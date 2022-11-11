@@ -1,35 +1,33 @@
-# Coral Sea Features Satellite imagery (Sentinel 2 and Landsat 8) 2015 – 2021 (AIMS)
+# Coral Sea features satellite imagery and raw depth contours (Sentinel 2 and Landsat 8) 2015 – 2021 (AIMS)
 
-Eric Lawrey – 27 October 2022
+Eric Lawrey – 12 November 2022
 
 Australian Institute of Marine Science
 
 ## What is this dataset
 
-This repository contains all the scripts used to create the imagery used in the 
-development of the Coral Sea Features dataset. This dataset contains cloud free 
-satellite image composites of the Coral Sea. The purpose of the Coral Sea imagery 
-was to map the boundary reef features.
+This dataset contains Sentinel 2 and Landsat 8 cloud free composite satellite images of the Coral Sea reef areas and some parts of the Great Barrier Reef. It also contains raw depth contours derived from the satellite imagery. This dataset was developed as the base information for mapping the boundaries of reefs and coral cays in the Coral Sea.
 
 ![Preview map of imagery in this dataset](media/Preview-coverage-map.jpeg)
 
-- [Dataset metadata](https://eatlas.org.au/data/uuid/df5a5b47-ad4c-431e-be49-af52f64aafce)
+- [Dataset metadata](https://doi.org/10.26274/NH77-ZW79)
 - [Dataset data download](https://nextcloud.eatlas.org.au/apps/sharealias/a/cs-aims-coral-sea-features-img)
 
-The Sentinel 2 imagery composites were processed into a number of different styles that each
+The Sentinel 2 and Landsat 8 imagery composites were processed into a number of different styles that each
 focus on a different task:
 - `DeepFalse` - False colour for best for viewing deep reef features (B2, B3, B4)
 - `Shallow` - False colour showing shallow (< 3 m) and dry areas (B5, B8, B11).
 - `TrueColour` - True colour imagery (B3, B4, B5)
 - `Depth5m` - Reef top features down to 5 m depth. No tidal compensation.
 - `Depth10m` - Reef top features down to 10 m depth. No tidal compensation.
+- `Depth20m` - Reef top features down to 20 m depth. No tidal compensation.
 
-The Sentinel 2 imagery was split into two groups:
+The imagery was split groups:
 - `Coral Sea`: Scenes with Coral Sea reefs. All stylings were generated.
 - `Coral Sea Waters`: Scenes with no Coral Sea reefs (although there are some GBR reefs in 
 some of these images). Only `DeepFalse` styling was generated.
-
-Landsat 8 imagery was only processed to render `DeepFalse` styling.
+- `GBR`: Scenes that were used for depth calibration.
+- `WA`: Landsat 8 scene of Shark bay used in depth calibration.
 
 Sentinel 3 imagery was only used when there was no better imagery available or additional
 checks were required on the existance of a feature. This imagery was processed using
@@ -98,25 +96,10 @@ developed used standard green / blue band ratio, which is moderately accurate fr
 it is influenced by water colour (no too much of a problem in the Coral Sea due to the clear water), 
 and substrate brightness, neither of these factors were fully compensated for in the algorthm.
 
-As such the depth contours should not be considered as high accuracy and may contain depth errors 
-up to 5 m. In addition to this the depth data is affected by clouds and in some Sentinel 2 scenes 
-(in particular Kenn Reef) there are significant clouds (due to the limited available imagery) resulting
-in lots of false depth contours. The depth data from this dataset is RAW and unfiltered or clipped.
-
-The parameters needed to calibrate the band ratio depth estimate were based the limited number depth measurements 
-in marine charts in Shark Bay in WA for depths between 0 - 15 m. This area was chosen due to its clear
-water, gentle slopes (minimising any positional errors), and the extensive seagrass meadows that allowed us
-to establish the affect of dark substrates on the depth estimates. The method used is only moderately accurate 
-from 4 - 12 m of depth. The algorithm performs better than simply performing the ln(B3), but is still suseptible to 
-very dark substrates, such as the thick seagrass meadows seen in Shark bay in WA, particularly in shallow areas. 
-These can introduce errors of up to 5 m in depth, as compared with an error of about 8 m by just using the 
-B3 channel. This algorithm was found to be less effective at shallow depths (0 - 5 m) and depths greater than 13 m 
-and so contours at 5 and 10 m were extracted. 
-
 These bathymetry polygons are raw and do contain false detections due to anomalies in the images such as clouds. 
 They are intended to be post processed and cleaned up.
 
-Further details of the depth mapping can be found in the code.
+Further details of the depth mapping can be found in the code and the [dataset metadata record](https://doi.org/10.26274/NH77-ZW79)
 
 ## Landsat 8 image processing
 
@@ -151,18 +134,9 @@ in the repository however they are available for [downloading and browsing](http
 To reconstruct this dataset and scripts as was originally prepared these files should be placed in the `big-files` directory.
 
 
-## Regional coverage of images
-This dataset contains imagery for three regions:
-- `Coral Sea`: Used for mapping the reefs for the [Coral Sea mapping project](https://eatlas.org.au/projects-other/coral-sea-reef-mapping)
-- `Coral Sea Open Water`: This is satellite imagery of open water in the Coral Sea. This 
-imagery was produced to check for any as yet unknown coral reefs in the Coral Sea. This
-imagery will be of little interest otherwise, and so was separated out to shrink the
-size of the more useful `Coral Sea` imagery. This imagery was only processed using the `DeepFalse`
-to save on space.
-
 ## Dataset metadata and lineage
 More information about this dataset can be found on the 
-[Dataset metadata page](https://eatlas.org.au/data/uuid/df5a5b47-ad4c-431e-be49-af52f64aafce).
+[Dataset metadata page](https://doi.org/10.26274/NH77-ZW79).
 
 This dataset is an update and improvement to the 
 [Coral Sea Sentinel 2 Marine Satellite Composite Draft Imagery version 0 (AIMS)](https://eatlas.org.au/data/uuid/2932dc63-9c9b-465f-80bf-09073aacaf1c)
@@ -184,9 +158,11 @@ of this imagery in this dataset.
 This includes an app for choosing images to create a final composite image and a script
 for recording the actual images processed to make the images in this dataset.
 
-`src\01-gee\landsat8`: This corresponds to the Google Earth Engine scripts for processing the
+`src\01-gee\sentinel2`: This corresponds to the Google Earth Engine scripts for processing the
 Sentinel 2 images. These were the primary image sources used in mapping the reef boundaries
 of the Coral Sea.
+
+`src\01-eobrowser`: This outlines the generation of Sentinel 3 scenes using the EOBrowser. 
 
 `src\02-local`: This contains the Python\GDAL script that is run on your local machine to
 post process the imagery downloaded from GEE into the `unprocessed-data` folder. This script
@@ -220,13 +196,13 @@ To reproduce this dataset from scratch you will need:
 On Windows this can be done using OSGeo4W or Anaconda.
  
 ### OSGeo4W
-I have used OSGeo4W for many years to install both QGIS and GDAL.
+OSGeo4W is a package managers for GIS tools and can be used to install both QGIS and GDAL.
 1. Download and install OSGeo4W making sure GDAL gets installed (https://www.osgeo.org/projects/osgeo4w/)
 2. Start the OSGeo4W cmd window. The default path for this is C:\OSGeo4W64\OSGeo4W.bat
 3. Test that GDAL installed OK by running: `gdalinfo --version`
    You should get something like: GDAL 3.4.1, released 2021/12/27
-4. `cd <directory to this script (convert.py)>`
-5. `python convert.py`
+4. `cd <directory to the scripts (src\02-local\01-convert.py)>`
+5. `python 01-convert.py`
 
 If you have trouble with GDAL from OSGeo4W (which sometime happens) you can install GDAL
 via Anaconda.
@@ -237,8 +213,8 @@ via Anaconda.
 3. Run `conda install -c conda-forge gdal`
 4. Test that GDAL installed OK by running: `gdalinfo --version`
    You should get something like: GDAL 3.0.2, released 2019/10/28
-5. `cd <directory to this script (convert.py)>`
-6. `python convert.py`
+5. `cd <directory to the scripts (src\02-local\01-convert.py)>`
+6. `python 01-convert.py`
  
 
 ### Google Earth Engine Setup
@@ -330,7 +306,7 @@ creation of the dataset.
 include in our image composites. It allows you to step through all the available images
 with some prefiltering based on cloud cover. When a good image was found its IDs was
 noted down and recorded in `03-create-composite-Coral-Sea.js`, `03-create-composite-Coral-Sea-water.js`
-or `03-create-composite-Global.js` depending on the region being developed.
+or `03-create-composite-GBR.js` depending on the region being developed.
 
 `02-view-selected-sentinel2-images.js` is a utility script used for reviewing images
 based on their IDs. Sometimes after collecting a bunch of images I might wish to review 
@@ -338,13 +314,15 @@ them again. Pasting the image IDs into this script allowed stepping through just
 images.
 
 `03-create-composite-Coral-Sea.js`, `03-create-composite-Coral-Sea-water.js`
-and `03-create-composite-Global.js` are the scripts that generate the images and depth
+and `03-create-composite-GBR.js` are the scripts that generate the images and depth
 GeoJson files. These scripts can be modified to view just a single scene interactively
 or used to trigger all the Google Earth Engine tasks to render and export the full resolution
 images. They are the record of the images that were used to create the composite images
 in this dataset. These scripts can generate hundreds of export tasks in
 Google Earth Engine which is very slow to trigger manually. This can be spead up using
 the Javascript hack outlined below.
+
+Landsat 8 has a similar set of scripts.
 
 
 ## Exporting many images from Google Earth Engine
