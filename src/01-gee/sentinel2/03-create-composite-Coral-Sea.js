@@ -526,7 +526,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55KFA",
     "COPERNICUS/S2/20210515T002059_20210515T002053_T55KFA"
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 
 
 // Good images
@@ -809,7 +809,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20190905T001111_20190905T001109_T56KMD",
     "COPERNICUS/S2/20210726T001111_20210726T001112_T56KMD"
   ],
-  false, false, REF1_OPTIONS);
+  true, false, REF1_OPTIONS);
 
 // 2 goog, 3 OK images
 s2Utils.s2_composite_display_and_export(
