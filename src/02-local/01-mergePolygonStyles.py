@@ -206,6 +206,9 @@ for srcRegionDir in srcRegionDirs:
 		# --------------- CLEAN UP -----------------------
 		# Remove the merge files
 		if os.path.isfile(shpPath01): 
-			print("Removing temporary merge file "+shpPath01)
-			os.remove(shpPath01)
+			print("Removing temporary merge files "+shpPath01)
+			os.remove(os.path.join(tmpPath, stageName01+".shp"))
+			os.remove(os.path.join(tmpPath, stageName01+".dbf"))
+			os.remove(os.path.join(tmpPath, stageName01+".prj"))
+			os.remove(os.path.join(tmpPath, stageName01+".shx"))
 
