@@ -364,7 +364,7 @@ s2Utils.s2_composite_display_and_export(
 
 
 
-// ======== false, false, REF1_OPTIONSd Cays, Willis Islets, Magdelaine Cays (West) (Coral Sea) =========
+// ======== Cays, Willis Islets, Magdelaine Cays (West) (Coral Sea) =========
 // Searched 70 out of 70 images
 // 7 Excellent images
 s2Utils.s2_composite_display_and_export(
@@ -377,7 +377,7 @@ s2Utils.s2_composite_display_and_export(
     "COPERNICUS/S2/20200818T002059_20200818T002058_T55KGB",
     "COPERNICUS/S2/20200823T002101_20200823T002100_T55KGB"
   ],
-  true, false, REF1_OPTIONS);
+  false, false, REF1_OPTIONS);
 
 
 // 14 Good
