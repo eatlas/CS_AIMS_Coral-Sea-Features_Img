@@ -56,7 +56,7 @@ if not os.path.exists(TMP):
 styles = [
 	'S2_R1_ReefTop', 'S2_R2_ReefTop','L8_R1_ReefTop', 'L8_R2_ReefTop',
 	'S2_R1_Depth10m', 'S2_R2_Depth10m','L8_R1_Depth10m', 'L8_R2_Depth10m',
-	'S2_R1_Depth20m', 'S2_R2_Depth20m',
+	'S2_R1_Depth20m', 'S2_R2_Depth20m','L8_R1_Depth20m', 'L8_R2_Depth20m',
 	'S2_R1_Depth5m', 'S2_R2_Depth5m','L8_R1_Depth5m', 'L8_R2_Depth5m',
 	'S2_R1_DryReef', 'S2_R2_DryReef','L8_R1_DryReef', 'L8_R2_DryReef',
 	'S2_R1_Breaking', 'S2_R2_Breaking','L8_R1_Breaking', 'L8_R2_Breaking',
@@ -202,4 +202,10 @@ for srcRegionDir in srcRegionDirs:
 			else:
 				callStr = 'ogr2ogr -f "ESRI Shapefile" -simplify 0.00007 '+shpPath03+' '+shpPath02
 				subprocess.call(callStr, shell=True)
+				
+		# --------------- CLEAN UP -----------------------
+		# Remove the merge files
+		if os.path.isfile(shpPath01): 
+			print("Removing temporary merge file "+shpPath01)
+			os.remove(shpPath01)
 
