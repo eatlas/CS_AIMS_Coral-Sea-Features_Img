@@ -1939,6 +1939,9 @@ exports.bake_s2_colour_grading = function(img, colourGradeStyle, processCloudMas
       // so we apply a small mean filter.
       // This size of the filtering is kept small to ensure we retain features smaller than
       // 40 m across.
+      // Note: This level of filtering is OK for the Coral Sea because of its clear waters,
+      // however on the GBR this filter radius should be increased to reduce the noise
+      // on some of the contours.
       .focal_median({kernel: ee.Kernel.circle({radius: 30, units: 'meters'}), iterations: 1})
       .focal_mean({kernel: ee.Kernel.circle({radius: 20, units: 'meters'}), iterations: 1})
       .gt(0.041);
